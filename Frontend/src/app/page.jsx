@@ -5,6 +5,7 @@ import SnippetList from "./components/SnippetList";
 import { Footer } from "./components/layouts/Footer";
 import { Navbar } from "./components/layouts/Navbar";
 import SearchBar from "./components/SearchBar";
+import { useRouter } from "next/navigation";
 
 const HomePage = () => {
   const [snippets, setSnippets] = useState([]);
@@ -12,30 +13,38 @@ const HomePage = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [message, setMessage] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const router = useRouter();
 
   // Récupérer les snippets de l'utilisateur lors du chargement de la page
   useEffect(() => {
-    const fetchSnippets = async () => {
-      const userId = localStorage.getItem("userId");
-      const response = await fetch(
-        `http://localhost:3000/snippets/user/${userId}`,
-        {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
+    const userId = localStorage.getItem("userId");
+    const token = localStorage.getItem("token");
+
+    // Vérifier si l'utilisateur est authentifié
+    if (!userId || !token) {
+      router.push("/login"); // Rediriger vers la page de connexion
+    } else {
+      const fetchSnippets = async () => {
+        const response = await fetch(
+          `http://localhost:3000/snippets/user/${userId}`,
+          {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        if (response.ok) {
+          const data = await response.json();
+          setSnippets(data);
+        } else {
+          console.error("Erreur lors de la récupération des snippets");
         }
-      );
+      };
 
-      if (response.ok) {
-        const data = await response.json();
-        setSnippets(data);
-      } else {
-        console.error("Erreur lors de la récupération des snippets");
-      }
-    };
-
-    fetchSnippets();
+      fetchSnippets();
+    }
   }, []);
 
   // Mettre à jour les snippets filtrés lorsque le terme de recherche change
