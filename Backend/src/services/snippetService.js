@@ -9,6 +9,7 @@ export const addSnippet = async (snippetData, userId) => {
     data: {
       title: snippetData.title,
       description: snippetData.description,
+      category: snippetData.category,
       userId: userId,
     },
   });

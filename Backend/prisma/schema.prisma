@@ -24,6 +24,7 @@ model Snippet{
   id Int @id @default(autoincrement())
   title String
   description String?
+  category String?
   userId Int
   user User @relation(fields: [userId], references: [id])
   createdAt DateTime @default(now())

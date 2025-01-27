@@ -3,6 +3,15 @@ import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { vscDarkPlus } from "react-syntax-highlighter/dist/esm/styles/prism";
 import { IoCopyOutline, IoCheckmark } from "react-icons/io5";
 
+// Styles pour les catégories
+const categoryStyles = {
+  JavaScript: "bg-yellow-200 text-yellow-800",
+  Python: "bg-blue-200 text-blue-800",
+  React: "bg-purple-200 text-purple-800",
+  "Node.js": "bg-green-200 text-green-800",
+  C: "bg-red-200 text-red-800",
+};
+
 const SnippetList = ({ snippets }) => {
   // État pour suivre quel snippet a été copié
   const [copiedSnippetId, setCopiedSnippetId] = useState(null);
@@ -31,9 +40,20 @@ const SnippetList = ({ snippets }) => {
               key={snippet.id}
               className="bg-white p-4 rounded-lg shadow-lg transition-transform transform hover:scale-[1.01] max-w-xl max-h-80 overflow-auto border border-gray-300"
             >
-              <h3 className="text-gray-800 pb-3 font-semibold text-lg">
-                {snippet.title}
-              </h3>
+              <div className="flex justify-between items-center mb-2">
+                <h3 className="text-gray-800 font-semibold text-lg">
+                  {snippet.title}
+                </h3>
+                {snippet.category && (
+                  <span
+                    className={`px-2 py-1 rounded-full text-sm font-semibold ${
+                      categoryStyles[snippet.category]
+                    }`}
+                  >
+                    {snippet.category}
+                  </span>
+                )}
+              </div>
               <SyntaxHighlighter
                 className="max-h-48 rounded-lg"
                 language="javascript"
