@@ -49,9 +49,9 @@ export const signin = async (req, res) => {
       return res.status(401).json({ message: "Invalid credentials" });
     }
 
-    // Crér un JWT
+    // Créer un JWT
     const token = createJWT(user);
-    res.json({ token });
+    res.json({ token, userId: user.id });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server error" });

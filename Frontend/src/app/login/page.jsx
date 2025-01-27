@@ -30,12 +30,12 @@ const Login = () => {
 
       const data = await response.json();
       localStorage.setItem("token", data.token);
+      localStorage.setItem("userId", data.userId);
       setSuccessMessage("Connexion réussie ! Bienvenue !");
-      console.log("Connexion réussie", data);
-
       setTimeout(() => {
         router.push("/");
       }, 2000);
+      console.log("Connexion réussie", data);
     } catch (err) {
       setError(err.message);
     }

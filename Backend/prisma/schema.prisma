@@ -17,10 +17,10 @@ model User {
   id Int @id @default(autoincrement())
   username String @unique
   password String
-  tasks Task[] //Relation avec les taches
+  snippets Snippet[] //Relation avec les taches
 }
 
-model Task{
+model Snippet{
   id Int @id @default(autoincrement())
   title String
   description String?
