@@ -42,9 +42,9 @@ const Login = () => {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-900">
-      <div className="bg-gray-800 p-8 rounded-lg shadow-lg w-96">
-        <h2 className="text-3xl font-bold text-center text-white mb-4">
+    <div className="flex items-center justify-center min-h-screen bg-white/95">
+      <div className="bg-white p-8 rounded-lg shadow-lg w-96">
+        <h2 className="text-3xl font-bold text-center text-black mb-4">
           Connexion
         </h2>
         {successMessage && (
@@ -58,7 +58,7 @@ const Login = () => {
             required
             value={username}
             onChange={(e) => setUsername(e.target.value)}
-            className="w-full p-2 border border-gray-600 rounded mt-4 bg-gray-700 text-white placeholder-gray-400"
+            className="w-full p-2 border border-gray-400 rounded mt-4 bg-white text-black placeholder-gray-500 outline-none focus:ring-1 focus:ring-black"
           />
           <input
             type="password"
@@ -66,18 +66,18 @@ const Login = () => {
             required
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="w-full p-2 border border-gray-600 rounded mt-4 bg-gray-700 text-white placeholder-gray-400"
+            className="w-full p-2 border border-gray-400 rounded mt-4 bg-white text-black placeholder-gray-500 outline-none focus:ring-1 focus:ring-black"
           />
           <button
             type="submit"
-            className="w-full bg-blue-600 text-white p-2 rounded mt-4 hover:bg-blue-500 transition duration-200"
+            className="w-full bg-black text-white p-2 rounded mt-4 hover:scale-[1.02] transition duration-200"
           >
             Se connecter
           </button>
         </form>
-        <p className="text-center text-white mt-4">
+        <p className="text-center text-gray-600 mt-4">
           Vous n'avez pas de compte ?{" "}
-          <a href="/register" className="text-blue-400 hover:underline">
+          <a href="/register" className="text-gray-400 hover:underline">
             Inscrivez-vous ici
           </a>
         </p>
