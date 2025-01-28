@@ -96,15 +96,16 @@ const HomePage = () => {
       <header className="bg-gray-50 p-4">
         <Navbar />
       </header>
-      <main className="flex flex-col flex-grow p-6 max-w-[1500px] mx-auto">
+      <main className="flex flex-col flex-grow p-6 max-w-[1500px] mx-auto w-full">
+        <div className="mb-6">
+          <h1 className="text-2xl font-bold text-gray-800">Mes snippets</h1>
+        </div>
         <div className="flex items-center mb-6">
           <div className="w-full pr-4">
-            {" "}
             {/* La barre de recherche prend 80% de la largeur avec un petit padding à droite */}
             <SearchBar setSearchTerm={setSearchTerm} />
           </div>
           <div className="w-1/4">
-            {" "}
             {/* Le filtre de catégorie prend 20% de la largeur */}
             <CategoryFilter onSelectCategory={setSelectedCategory} />
           </div>
@@ -117,6 +118,7 @@ const HomePage = () => {
           onDelete={handleDeleteSnippet}
         />
       </main>
+
       <Footer />
 
       {isModalOpen && (

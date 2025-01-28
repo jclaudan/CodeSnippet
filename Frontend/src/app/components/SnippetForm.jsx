@@ -39,7 +39,7 @@ const SnippetForm = ({ setSnippets, setMessage, closeModal, initialData }) => {
             );
             toast.success("Snippet modifié avec succès !", {
               style: {
-                backgroundColor: "#9575CD", // Vert clair
+                backgroundColor: "", // Vert clair
                 color: "white",
               },
             });
