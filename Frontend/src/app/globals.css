@@ -17,6 +17,6 @@
 }
 
 body {
-  @apply bg-gray-900 text-gray-900; /* Teste avec des classes Tailwind directement ici */
+  @apply bg-gray-800 text-gray-900; /* Teste addvec des classes Tailwind directement ici */
   font-family: Arial, Helvetica, sans-serif;
 }
