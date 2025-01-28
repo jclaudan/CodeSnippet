@@ -14,8 +14,6 @@ const categoryStyles = {
 };
 
 const SnippetList = ({ snippets, onEdit, onDelete }) => {
-  // Ajout de la prop onEdit
-  // État pour suivre quel snippet a été copié
   const [copiedSnippetId, setCopiedSnippetId] = useState(null);
 
   const handleCopy = (text, snippetId) => {
