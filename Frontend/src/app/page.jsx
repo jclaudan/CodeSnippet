@@ -6,6 +6,8 @@ import { Footer } from "./components/layouts/Footer";
 import { Navbar } from "./components/layouts/Navbar";
 import SearchBar from "./components/SearchBar";
 import { useRouter } from "next/navigation";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const HomePage = () => {
   const [snippets, setSnippets] = useState([]);
@@ -113,6 +115,7 @@ const HomePage = () => {
       >
         +
       </button>
+      <ToastContainer position="bottom-left" autoClose={5000} hideProgressBar />
     </div>
   );
 };

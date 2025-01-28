@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { toast } from "react-toastify";
 
 const categories = ["JavaScript", "Python", "React", "Node.js", "C"]; // Liste des catégories
 
@@ -36,24 +37,55 @@ const SnippetForm = ({ setSnippets, setMessage, closeModal, initialData }) => {
                 snippet.id === initialData.id ? updatedSnippet : snippet
               )
             );
-            setMessage("Snippet modifié avec succès !");
+            toast.success("Snippet modifié avec succès !", {
+              style: {
+                backgroundColor: "#9575CD", // Vert clair
+                color: "white",
+              },
+            });
           } else {
             // Ajout d'un nouveau snippet
             setSnippets((prevSnippets) => [...prevSnippets, updatedSnippet]);
-            setMessage("Snippet ajouté avec succès !");
+            toast.success("Snippet ajouté avec succès !", {
+              style: {
+                backgroundColor: "#81C784", // Vert moyen
+                color: "white",
+              },
+            });
           }
           closeModal();
         } else {
           setMessage("Erreur lors de la soumission du snippet.");
+          toast.error("Erreur lors de la soumission du snippet.", {
+            style: {
+              backgroundColor: "#F44336", // Rouge
+              color: "white",
+            },
+          });
         }
       } catch (error) {
         console.error("Erreur :", error);
         setMessage(
           "Une erreur s'est produite lors de la soumission du snippet."
         );
+        toast.error(
+          "Une erreur s'est produite lors de la soumission du snippet.",
+          {
+            style: {
+              backgroundColor: "#F44336", // Rouge
+              color: "white",
+            },
+          }
+        );
       }
     } else {
       setMessage("Veuillez remplir tous les champs.");
+      toast.error("Veuillez remplir tous les champs.", {
+        style: {
+          backgroundColor: "#FFEB3B", // Jaune pour l'avertissement
+          color: "black",
+        },
+      });
     }
   };
 

@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { IoTrashOutline } from "react-icons/io5";
+import { toast } from "react-toastify"; // Importer toast
 import ConfirmationDialog from "./ConfirmationDialog";
 
 const DeleteSnippetButton = ({ snippetId, onDelete }) => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [message, setMessage] = useState(null);
 
   const handleDelete = async () => {
     setIsDialogOpen(false); // Ferme la boîte de confirmation
@@ -23,15 +23,26 @@ const DeleteSnippetButton = ({ snippetId, onDelete }) => {
 
       if (response.ok) {
         onDelete(snippetId); // Appelle la fonction onDelete pour mettre à jour l'état parent
-        setMessage("Snippet supprimé avec succès !");
+        toast.success("Snippet supprimé avec succès !", {
+          style: {
+            position: "bottom-left",
+            backgroundColor: "#81C784", // Vert
+            color: "white",
+          },
+        }); // Affiche la notification de succès avec une couleur verte
       } else {
-        setMessage("Erreur lors de la suppression du snippet.");
+        toast.error("Erreur lors de la suppression du snippet.", {
+          style: {
+            backgroundColor: "#f44336", // Rouge
+            color: "white",
+          },
+        });
       }
     } catch (error) {
       console.error("Erreur :", error);
-      setMessage(
+      toast.error(
         "Une erreur s'est produite lors de la suppression du snippet."
-      );
+      ); // Notification d'erreur
     }
   };
 
@@ -51,13 +62,6 @@ const DeleteSnippetButton = ({ snippetId, onDelete }) => {
         onConfirm={handleDelete}
         message="Êtes-vous sûr de vouloir supprimer ce snippet ?"
       />
-
-      {/* Message de feedback */}
-      {message && (
-        <div className="fixed bottom-4 right-4 bg-gray-800 text-white p-4 rounded shadow-lg">
-          {message}
-        </div>
-      )}
     </>
   );
 };
