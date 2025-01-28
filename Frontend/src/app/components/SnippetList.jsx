@@ -30,15 +30,16 @@ const SnippetList = ({ snippets, onEdit, onDelete }) => {
   };
 
   return (
-    <div className="mt-8 w-full">
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {snippets.length === 0 ? (
-          <p className="text-gray-900 text-center">Aucun snippet ajouté.</p>
-        ) : (
-          snippets.map((snippet) => (
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {snippets.length === 0 ? (
+        <p className="text-gray-900 text-center">Aucun snippet ajouté.</p>
+      ) : (
+        [...snippets]
+          .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)) // Trie les snippets
+          .map((snippet) => (
             <div
               key={snippet.id}
-              className="bg-white p-4 rounded-lg shadow-lg transition-transform transform hover:scale-[1.01] max-w-xl max-h-80 overflow-auto border border-gray-300"
+              className="bg-white p-4 rounded-lg shadow-lg transition-transform transform hover:scale-[1.01] max-w-xl max-h-80 overflow-auto border border-gray-300 flex flex-col"
             >
               <div className="flex justify-between items-center mb-2">
                 <h3 className="text-gray-800 font-semibold text-lg">
@@ -55,13 +56,13 @@ const SnippetList = ({ snippets, onEdit, onDelete }) => {
                 )}
               </div>
               <SyntaxHighlighter
-                className="max-h-48 rounded-lg"
+                className="max-h-48 rounded-lg flex-grow"
                 language="javascript"
                 style={vscDarkPlus}
               >
                 {snippet.description}
               </SyntaxHighlighter>
-              <div className="flex gap-2 mt-4">
+              <div className="flex gap-2 mt-4 ">
                 <button
                   onClick={() => handleCopy(snippet.description, snippet.id)}
                   className="w-full bg-white border font-semibold text-black py-2 px-4 rounded transition hover:scale-[1.01] hover:bg-gray-50 focus:outline-none flex items-center justify-center"
@@ -76,12 +77,11 @@ const SnippetList = ({ snippets, onEdit, onDelete }) => {
                     </>
                   )}
                 </button>
-                {/* Bouton Modifier */}
                 <button
-                  onClick={() => onEdit(snippet)} // Appelle la fonction onEdit avec le snippet
+                  onClick={() => onEdit(snippet)}
                   className="bg-white border font-semibold text-black py-2 px-4 rounded transition hover:scale-[1.01] hover:bg-gray-50 focus:outline-none flex items-center justify-center"
                 >
-                  <IoPencil className="text-lg" /> {/* Icône de modification */}
+                  <IoPencil className="text-lg" />
                 </button>
                 <DeleteSnippetButton
                   snippetId={snippet.id}
@@ -90,8 +90,7 @@ const SnippetList = ({ snippets, onEdit, onDelete }) => {
               </div>
             </div>
           ))
-        )}
-      </div>
+      )}
     </div>
   );
 };

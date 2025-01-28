@@ -102,11 +102,9 @@ const HomePage = () => {
         </div>
         <div className="flex items-center mb-6">
           <div className="w-full pr-4">
-            {/* La barre de recherche prend 80% de la largeur avec un petit padding à droite */}
             <SearchBar setSearchTerm={setSearchTerm} />
           </div>
           <div className="w-1/4">
-            {/* Le filtre de catégorie prend 20% de la largeur */}
             <CategoryFilter onSelectCategory={setSelectedCategory} />
           </div>
         </div>
@@ -127,7 +125,7 @@ const HomePage = () => {
           onClick={closeModal}
         >
           <div
-            className="bg-white p-6 rounded-lg shadow-lg relative"
+            className="bg-white p-6 rounded-lg shadow-lg max-w-xl relative"
             onClick={(e) => e.stopPropagation()}
           >
             <SnippetForm

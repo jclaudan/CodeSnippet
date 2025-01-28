@@ -91,7 +91,7 @@ const SnippetForm = ({ setSnippets, setMessage, closeModal, initialData }) => {
 
   return (
     <div>
-      <div className="flex justify-between items-center mb-4">
+      <div className="flex justify-between items-center mb-4 ">
         <h2 className="text-black font-bold text-xl">
           {initialData ? "Modifier un Snippet" : "Ajouter un Snippet"}
         </h2>
