@@ -39,9 +39,14 @@ export const createSnippet = async (req, res) => {
 };
 
 export const updateSnippet = async (req, res) => {
+  console.log("Requête reçue :", req.body); // Vérifie les données reçues
   const { id } = req.params;
-  const { title, description } = req.body;
-  const updatedSnippet = await modifySnippet(id, { title, description });
+  const { title, description, category } = req.body;
+  const updatedSnippet = await modifySnippet(id, {
+    title,
+    description,
+    category,
+  });
   res.status(203).json(updatedSnippet);
 };
 

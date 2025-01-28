@@ -2,38 +2,55 @@ import React, { useState } from "react";
 
 const categories = ["JavaScript", "Python", "React", "Node.js", "C"]; // Liste des catégories
 
-const SnippetForm = ({ setSnippets, setMessage, closeModal }) => {
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
-  const [category, setCategory] = useState("");
+const SnippetForm = ({ setSnippets, setMessage, closeModal, initialData }) => {
+  const [title, setTitle] = useState(initialData?.title || "");
+  const [description, setDescription] = useState(
+    initialData?.description || ""
+  );
+  const [category, setCategory] = useState(initialData?.category || "");
 
-  // Fonction pour ajouter un nouveau snippet
-  const handleAddSnippet = async () => {
+  // Fonction pour ajouter ou mettre à jour un snippet
+  const handleSubmit = async () => {
     if (title && description) {
       try {
-        const response = await fetch("http://localhost:3000/snippets", {
-          method: "POST",
+        const method = initialData ? "PUT" : "POST"; // Utilise PUT pour la mise à jour, POST pour la création
+        const url = initialData
+          ? `http://localhost:3000/snippets/${initialData.id}`
+          : "http://localhost:3000/snippets";
+
+        const response = await fetch(url, {
+          method,
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
-          body: JSON.stringify({ title, description, category }), // Ajoute la catégorie ici
+          body: JSON.stringify({ title, description, category }),
         });
 
         if (response.ok) {
-          const newSnippet = await response.json();
-          setSnippets((prevSnippets) => [...prevSnippets, newSnippet]);
-          setTitle("");
-          setDescription("");
-          setCategory(""); // Réinitialise la catégorie
-          setMessage("Snippet ajouté avec succès !");
+          const updatedSnippet = await response.json();
+          if (initialData) {
+            // Mise à jour du snippet existant
+            setSnippets((prevSnippets) =>
+              prevSnippets.map((snippet) =>
+                snippet.id === initialData.id ? updatedSnippet : snippet
+              )
+            );
+            setMessage("Snippet modifié avec succès !");
+          } else {
+            // Ajout d'un nouveau snippet
+            setSnippets((prevSnippets) => [...prevSnippets, updatedSnippet]);
+            setMessage("Snippet ajouté avec succès !");
+          }
           closeModal();
         } else {
-          setMessage("Erreur lors de l'ajout du snippet.");
+          setMessage("Erreur lors de la soumission du snippet.");
         }
       } catch (error) {
         console.error("Erreur :", error);
-        setMessage("Une erreur s'est produite lors de l'ajout du snippet.");
+        setMessage(
+          "Une erreur s'est produite lors de la soumission du snippet."
+        );
       }
     } else {
       setMessage("Veuillez remplir tous les champs.");
@@ -43,7 +60,9 @@ const SnippetForm = ({ setSnippets, setMessage, closeModal }) => {
   return (
     <div>
       <div className="flex justify-between items-center mb-4">
-        <h2 className="text-black font-bold text-xl">Ajouter un Snippet</h2>
+        <h2 className="text-black font-bold text-xl">
+          {initialData ? "Modifier un Snippet" : "Ajouter un Snippet"}
+        </h2>
         <button
           onClick={closeModal}
           style={{
@@ -96,10 +115,10 @@ const SnippetForm = ({ setSnippets, setMessage, closeModal }) => {
       />
 
       <button
-        onClick={handleAddSnippet}
+        onClick={handleSubmit}
         className="w-full bg-black text-white p-2 rounded hover:bg-gray-900 transition duration-200 focus:outline-none focus:ring-2 focus:ring-black"
       >
-        Ajouter Snippet
+        {initialData ? "Modifier Snippet" : "Ajouter Snippet"}
       </button>
     </div>
   );

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { vscDarkPlus } from "react-syntax-highlighter/dist/esm/styles/prism";
-import { IoCopyOutline, IoCheckmark } from "react-icons/io5";
+import { IoCopyOutline, IoCheckmark, IoPencil } from "react-icons/io5"; // Ajout de IoPencil
 
 // Styles pour les catégories
 const categoryStyles = {
@@ -12,7 +12,8 @@ const categoryStyles = {
   C: "bg-red-200 text-red-800",
 };
 
-const SnippetList = ({ snippets }) => {
+const SnippetList = ({ snippets, onEdit }) => {
+  // Ajout de la prop onEdit
   // État pour suivre quel snippet a été copié
   const [copiedSnippetId, setCopiedSnippetId] = useState(null);
 
@@ -61,20 +62,29 @@ const SnippetList = ({ snippets }) => {
               >
                 {snippet.description}
               </SyntaxHighlighter>
-              <button
-                onClick={() => handleCopy(snippet.description, snippet.id)}
-                className="w-full mt-4 bg-white border font-semibold text-black py-2 px-4 rounded transition hover:scale-[1.01] hover:bg-gray-50 focus:outline-none flex items-center justify-center"
-              >
-                {copiedSnippetId === snippet.id ? (
-                  <>
-                    Copié ! <IoCheckmark className="ml-2" />
-                  </>
-                ) : (
-                  <>
-                    Copier <IoCopyOutline className="ml-2" />
-                  </>
-                )}
-              </button>
+              <div className="flex gap-2 mt-4">
+                <button
+                  onClick={() => handleCopy(snippet.description, snippet.id)}
+                  className="w-full bg-white border font-semibold text-black py-2 px-4 rounded transition hover:scale-[1.01] hover:bg-gray-50 focus:outline-none flex items-center justify-center"
+                >
+                  {copiedSnippetId === snippet.id ? (
+                    <>
+                      Copié ! <IoCheckmark className="ml-2" />
+                    </>
+                  ) : (
+                    <>
+                      Copier <IoCopyOutline className="ml-2" />
+                    </>
+                  )}
+                </button>
+                {/* Bouton Modifier */}
+                <button
+                  onClick={() => onEdit(snippet)} // Appelle la fonction onEdit avec le snippet
+                  className="bg-white border font-semibold text-black py-2 px-4 rounded transition hover:scale-[1.01] hover:bg-gray-50 focus:outline-none flex items-center justify-center"
+                >
+                  <IoPencil className="text-lg" /> {/* Icône de modification */}
+                </button>
+              </div>
             </div>
           ))
         )}
