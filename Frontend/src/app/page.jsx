@@ -5,6 +5,7 @@ import SnippetList from "./components/SnippetList";
 import { Footer } from "./components/layouts/Footer";
 import { Navbar } from "./components/layouts/Navbar";
 import SearchBar from "./components/SearchBar";
+import CategoryFilter from "./components/CategoryFilter"; // Importez le composant
 import { useRouter } from "next/navigation";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -13,11 +14,13 @@ const HomePage = () => {
   const [snippets, setSnippets] = useState([]);
   const [filteredSnippets, setFilteredSnippets] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState(""); // État pour la catégorie sélectionnée
   const [message, setMessage] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [editingSnippet, setEditingSnippet] = useState(null); // Ajout de l'état pour suivre le snippet à modifier
+  const [editingSnippet, setEditingSnippet] = useState(null);
   const router = useRouter();
 
+  // Récupérer les snippets de l'utilisateur
   useEffect(() => {
     const userId = localStorage.getItem("userId");
     const token = localStorage.getItem("token");
@@ -48,17 +51,30 @@ const HomePage = () => {
     }
   }, []);
 
+  // Filtrer les snippets par recherche et par catégorie
   useEffect(() => {
-    setFilteredSnippets(
-      snippets.filter((snippet) =>
+    let filtered = snippets;
+
+    // Filtre par recherche
+    if (searchTerm) {
+      filtered = filtered.filter((snippet) =>
         snippet.title.toLowerCase().includes(searchTerm.toLowerCase())
-      )
-    );
-  }, [searchTerm, snippets]);
+      );
+    }
+
+    // Filtre par catégorie
+    if (selectedCategory) {
+      filtered = filtered.filter(
+        (snippet) => snippet.category === selectedCategory
+      );
+    }
+
+    setFilteredSnippets(filtered);
+  }, [searchTerm, selectedCategory, snippets]);
 
   const handleEditSnippet = (snippet) => {
-    setEditingSnippet(snippet); // Prépare les données du snippet à modifier
-    setIsModalOpen(true); // Ouvre la modale
+    setEditingSnippet(snippet);
+    setIsModalOpen(true);
   };
 
   const handleDeleteSnippet = (snippetId) => {
@@ -68,8 +84,8 @@ const HomePage = () => {
   };
 
   const closeModal = () => {
-    setIsModalOpen(false); // Ferme la modale
-    setEditingSnippet(null); // Réinitialise les données
+    setIsModalOpen(false);
+    setEditingSnippet(null);
   };
 
   return (
@@ -81,7 +97,20 @@ const HomePage = () => {
         <Navbar />
       </header>
       <main className="flex flex-col flex-grow p-6 max-w-[1500px] mx-auto">
-        <SearchBar setSearchTerm={setSearchTerm} />
+        <div className="flex items-center mb-6">
+          <div className="w-full pr-4">
+            {" "}
+            {/* La barre de recherche prend 80% de la largeur avec un petit padding à droite */}
+            <SearchBar setSearchTerm={setSearchTerm} />
+          </div>
+          <div className="w-1/4">
+            {" "}
+            {/* Le filtre de catégorie prend 20% de la largeur */}
+            <CategoryFilter onSelectCategory={setSelectedCategory} />
+          </div>
+        </div>
+
+        {/* Ajoutez le filtre de catégorie */}
         <SnippetList
           snippets={filteredSnippets}
           onEdit={handleEditSnippet}
@@ -103,7 +132,7 @@ const HomePage = () => {
               setSnippets={setSnippets}
               setMessage={setMessage}
               closeModal={closeModal}
-              initialData={editingSnippet} // Passe le snippet en cours d'édition
+              initialData={editingSnippet}
             />
           </div>
         </div>
