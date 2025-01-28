@@ -39,7 +39,7 @@ const SnippetForm = ({ setSnippets, setMessage, closeModal, initialData }) => {
             );
             toast.success("Snippet modifié avec succès !", {
               style: {
-                backgroundColor: "", // Vert clair
+                backgroundColor: "#BB86FC",
                 color: "white",
               },
             });
@@ -112,7 +112,7 @@ const SnippetForm = ({ setSnippets, setMessage, closeModal, initialData }) => {
       <input
         id="title"
         type="text"
-        placeholder="(ex: Formulaire)"
+        placeholder="(ex: for loop)"
         value={title}
         onChange={(e) => setTitle(e.target.value)}
         className="w-full p-2 border border-gray-300 rounded mb-4 bg-white text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-black"
