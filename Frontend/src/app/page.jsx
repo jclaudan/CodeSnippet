@@ -59,6 +59,12 @@ const HomePage = () => {
     setIsModalOpen(true); // Ouvre la modale
   };
 
+  const handleDeleteSnippet = (snippetId) => {
+    setSnippets((prevSnippets) =>
+      prevSnippets.filter((snippet) => snippet.id !== snippetId)
+    );
+  };
+
   const closeModal = () => {
     setIsModalOpen(false); // Ferme la modale
     setEditingSnippet(null); // Réinitialise les données
@@ -74,7 +80,11 @@ const HomePage = () => {
       </header>
       <main className="flex flex-col flex-grow p-6 max-w-[1500px] mx-auto">
         <SearchBar setSearchTerm={setSearchTerm} />
-        <SnippetList snippets={filteredSnippets} onEdit={handleEditSnippet} />
+        <SnippetList
+          snippets={filteredSnippets}
+          onEdit={handleEditSnippet}
+          onDelete={handleDeleteSnippet}
+        />
       </main>
       <Footer />
 

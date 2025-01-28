@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { vscDarkPlus } from "react-syntax-highlighter/dist/esm/styles/prism";
 import { IoCopyOutline, IoCheckmark, IoPencil } from "react-icons/io5"; // Ajout de IoPencil
+import DeleteSnippetButton from "./DeleteSnippetButton";
 
 // Styles pour les catégories
 const categoryStyles = {
@@ -12,7 +13,7 @@ const categoryStyles = {
   C: "bg-red-200 text-red-800",
 };
 
-const SnippetList = ({ snippets, onEdit }) => {
+const SnippetList = ({ snippets, onEdit, onDelete }) => {
   // Ajout de la prop onEdit
   // État pour suivre quel snippet a été copié
   const [copiedSnippetId, setCopiedSnippetId] = useState(null);
@@ -84,6 +85,10 @@ const SnippetList = ({ snippets, onEdit }) => {
                 >
                   <IoPencil className="text-lg" /> {/* Icône de modification */}
                 </button>
+                <DeleteSnippetButton
+                  snippetId={snippet.id}
+                  onDelete={onDelete}
+                />
               </div>
             </div>
           ))
