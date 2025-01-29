@@ -14,18 +14,18 @@ datasource db {
 }
 
 model User {
-  id Int @id @default(autoincrement())
+  id        String   @id @default(uuid()) 
   username String @unique
   password String
   snippets Snippet[] //Relation avec les taches
 }
 
 model Snippet{
-  id Int @id @default(autoincrement())
+  id String @id @default(uuid())
   title String
   description String?
   category String?
-  userId Int
+  userId String
   user User @relation(fields: [userId], references: [id])
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
