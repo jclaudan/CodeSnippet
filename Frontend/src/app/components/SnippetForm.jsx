@@ -26,8 +26,8 @@ const SnippetForm = ({ setSnippets, setMessage, closeModal, initialData }) => {
       try {
         const method = initialData ? "PUT" : "POST"; // Utilise PUT pour la mise à jour, POST pour la création
         const url = initialData
-          ? `https://codesnippet-bffb.onrender.com/snippets/${initialData.id}`
-          : "https://codesnippet-bffb.onrender.com/snippets";
+          ? `https://codesnippet-cy4q.onrender.com/snippets/${initialData.id}`
+          : "https://codesnippet-cy4q.onrender.com/snippets";
 
         const response = await fetch(url, {
           method,

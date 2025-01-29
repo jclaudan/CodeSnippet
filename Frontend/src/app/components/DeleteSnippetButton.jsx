@@ -12,7 +12,7 @@ const DeleteSnippetButton = ({ snippetId, onDelete }) => {
     try {
       const token = localStorage.getItem("token");
       const response = await fetch(
-        `https://codesnippet-bffb.onrender.com/snippets/${snippetId}`,
+        `https://codesnippet-cy4q.onrender.com/snippets/${snippetId}`,
         {
           method: "DELETE",
           headers: {
