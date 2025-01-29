@@ -13,6 +13,10 @@ const router = express.Router();
 // Protéger toutes les routes avec l'authentification
 router.use(authenticateToken);
 
+app.get("/api/keep-alive", (req, res) => {
+  res.status(200).send("Server is alive");
+});
+
 router.get("/", getAllSnippets);
 router.post("/", createSnippet);
 router.put("/:id", updateSnippet);
