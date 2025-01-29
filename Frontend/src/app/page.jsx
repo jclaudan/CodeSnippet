@@ -30,7 +30,7 @@ const HomePage = () => {
     } else {
       const fetchSnippets = async () => {
         const response = await fetch(
-          `https://codesnippet-gjn2.onrender.com/snippets/user/${userId}`,
+          `https://codesnippet-bffb.onrender.com/snippets/user/${userId}`,
           {
             method: "GET",
             headers: {

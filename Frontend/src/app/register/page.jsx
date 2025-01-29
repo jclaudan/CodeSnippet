@@ -16,7 +16,7 @@ const Register = () => {
 
     try {
       const response = await fetch(
-        "https://codesnippet-gjn2.onrender.com/user",
+        "https://codesnippet-bffb.onrender.com/user",
         {
           method: "POST",
           headers: {

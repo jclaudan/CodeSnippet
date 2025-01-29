@@ -16,7 +16,7 @@ const Login = () => {
 
     try {
       const response = await fetch(
-        "https://codesnippet-gjn2.onrender.com/signin",
+        "https://codesnippet-bffb.onrender.com/signin",
         {
           method: "POST",
           headers: {
