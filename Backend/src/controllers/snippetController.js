@@ -75,7 +75,7 @@ export const deleteSnippet = async (req, res) => {
 export const getUserSnippets = async (req, res) => {
   const userId = req.params.userId; // Récupérer l'ID utilisateur depuis les paramètres de la requête
   const snippets = await prisma.snippet.findMany({
-    where: { userId: Number(userId) }, // Filtrer les snippets par userId
+    where: { userId: String(userId) }, // Filtrer les snippets par userId
   });
   res.json(snippets);
 };
