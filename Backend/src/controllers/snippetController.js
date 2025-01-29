@@ -54,7 +54,7 @@ export const deleteSnippet = async (req, res) => {
 
   // Récupérer la tâche pour vérifier l'utilisateur
   const snippet = await prisma.snippet.findUnique({
-    where: { id: Number(id) },
+    where: { id: id },
   });
 
   // Vérifier si la tâche existe et si l'utilisateur a le droit de la supprimer

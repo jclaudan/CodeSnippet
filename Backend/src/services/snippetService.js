@@ -17,13 +17,13 @@ export const addSnippet = async (snippetData, userId) => {
 
 export const modifySnippet = async (id, data) => {
   return await prisma.snippet.update({
-    where: { id: Number(id) },
+    where: { id: id },
     data,
   });
 };
 
 export const removeSnippet = async (id) => {
   return await prisma.snippet.delete({
-    where: { id: Number(id) },
+    where: { id: id },
   });
 };
