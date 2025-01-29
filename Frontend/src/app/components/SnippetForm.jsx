@@ -9,6 +9,7 @@ const categories = [
   "Vue",
   "Python",
   "NodeJS",
+  "NestJS",
   "Swift",
   "C",
 ]; // Liste des catégories

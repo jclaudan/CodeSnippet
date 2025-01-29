@@ -19,6 +19,11 @@ app.use(cors(corsOptions));
 
 app.use(express.json());
 
+// Route pour vérifier la disponibilité avec Uptime Robot
+app.get("/ping", (req, res) => {
+  res.status(200).send("OK");
+});
+
 app.post("/user", createNewUser);
 app.post("/signin", signin);
 app.use("/snippets", snippetRoutes);
