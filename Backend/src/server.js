@@ -1,13 +1,21 @@
 import express from "express";
-import dotenv from "dotenv";
 import cors from "cors";
+import dotenv from "dotenv";
 import snippetRoutes from "./routes/snippetRoutes.js";
 import { createNewUser, signin } from "./handlers/user.js";
 
 dotenv.config();
 const app = express();
 
-app.use(cors());
+// Configuration de CORS
+const corsOptions = {
+  origin: "https://code-snippet-mocha.vercel.app", // L'URL de ton frontend
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+};
+
+// Appliquer CORS à toutes les routes
+app.use(cors(corsOptions));
 
 app.use(express.json());
 
