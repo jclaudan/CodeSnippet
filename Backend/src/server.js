@@ -7,16 +7,7 @@ import { createNewUser, signin } from "./handlers/user.js";
 dotenv.config();
 const app = express();
 
-// Configuration CORS
-const corsOptions = {
-  origin: ["https://code-snippet-mocha.vercel.app"], // Ajoute ici les domaines autorisés
-  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"], // Méthodes autorisées
-  allowedHeaders: ["Content-Type", "Authorization"], // En-têtes autorisés
-  credentials: true, // Permet les cookies (si nécessaire)
-};
-
-// Appliquer CORS à toutes les routes
-app.use(cors(corsOptions));
+app.use(cors());
 
 app.use(express.json());
 
