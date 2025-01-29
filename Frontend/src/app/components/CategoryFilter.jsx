@@ -1,6 +1,16 @@
 import React, { useState } from "react";
 
-const categories = ["JavaScript", "Python", "React", "Node.js", "C"]; // Liste des catégories disponibles
+const categories = [
+  "JavaScript",
+  "Typescript",
+  "React",
+  "Angular",
+  "Vue",
+  "Python",
+  "NodeJS",
+  "NestJS",
+  "C",
+]; // Liste des catégories disponibles
 
 const CategoryFilter = ({ onSelectCategory }) => {
   const [isOpen, setIsOpen] = useState(false); // État pour gérer l'ouverture de la liste déroulante

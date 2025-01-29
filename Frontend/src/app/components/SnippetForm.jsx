@@ -1,7 +1,17 @@
 import React, { useState } from "react";
 import { toast } from "react-toastify";
 
-const categories = ["JavaScript", "Python", "React", "Node.js", "C"]; // Liste des catégories
+const categories = [
+  "JavaScript",
+  "Typescript",
+  "React",
+  "Angular",
+  "Vue",
+  "Python",
+  "NodeJS",
+  "NestJS",
+  "C",
+]; // Liste des catégories
 
 const SnippetForm = ({ setSnippets, setMessage, closeModal, initialData }) => {
   const [title, setTitle] = useState(initialData?.title || "");

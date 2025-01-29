@@ -7,10 +7,14 @@ import DeleteSnippetButton from "./DeleteSnippetButton";
 // Styles pour les catégories
 const categoryStyles = {
   JavaScript: "bg-yellow-200 text-yellow-800",
-  Python: "bg-blue-200 text-blue-800",
+  Typescript: "bg-blue-300 text-blue-900",
   React: "bg-purple-200 text-purple-800",
-  "Node.js": "bg-green-200 text-green-800",
-  C: "bg-red-200 text-red-800",
+  Angular: "bg-red-200 text-red-800",
+  Vue: "bg-green-200 text-green-800",
+  Python: "bg-blue-200 text-blue-800",
+  NodeJS: "bg-green-300 text-green-900",
+  NestJS: "bg-pink-200 text-pink-800",
+  C: "bg-gray-300 text-gray-900",
 };
 
 const SnippetList = ({ snippets, onEdit, onDelete }) => {
