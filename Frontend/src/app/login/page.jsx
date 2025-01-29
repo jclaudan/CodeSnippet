@@ -38,7 +38,6 @@ const Login = () => {
       setTimeout(() => {
         router.push("/");
       }, 2000);
-      console.log("Connexion réussie", data);
     } catch (err) {
       setError(err.message);
     }
