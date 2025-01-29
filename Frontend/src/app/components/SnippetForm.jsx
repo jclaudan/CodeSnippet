@@ -129,7 +129,7 @@ const SnippetForm = ({ setSnippets, setMessage, closeModal, initialData }) => {
         className="w-full p-2 border border-gray-300 rounded mb-4 bg-white text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-black"
       />
       <label htmlFor="category" className="text-black text-md font-semibold">
-        Catégorie
+        Language
       </label>
       <select
         id="category"
