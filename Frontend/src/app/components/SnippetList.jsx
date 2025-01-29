@@ -13,7 +13,7 @@ const categoryStyles = {
   Vue: "bg-green-200 text-green-800",
   Python: "bg-blue-200 text-blue-800",
   NodeJS: "bg-green-300 text-green-900",
-  NestJS: "bg-pink-200 text-pink-800",
+  Swift: "bg-orange-200 text-orange-800",
   C: "bg-gray-300 text-gray-900",
 };
 

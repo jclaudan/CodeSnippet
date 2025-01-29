@@ -9,6 +9,7 @@ const categories = [
   "Python",
   "NodeJS",
   "NestJS",
+  "Swift",
   "C",
 ]; // Liste des catégories disponibles
 
