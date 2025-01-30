@@ -8,6 +8,7 @@ import {
 } from "../controllers/snippetController.js";
 
 const router = express.Router();
+router.use(authenticateToken);
 router.get("/", getAllSnippets);
 router.post("/", createSnippet);
 router.put("/:id", updateSnippet);
