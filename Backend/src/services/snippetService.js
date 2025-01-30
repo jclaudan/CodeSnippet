@@ -1,9 +1,7 @@
 import prisma from "../prisma/index.js";
 
-export const getSnippets = async (userId) => {
-  return await prisma.snippet.findMany({
-    where: { userId: userId }, // Filtrer par userId
-  });
+export const getSnippets = async () => {
+  return await prisma.snippet.findMany();
 };
 
 export const addSnippet = async (snippetData, userId) => {
