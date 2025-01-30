@@ -1,12 +1,12 @@
 "use client";
-import { Suspense } from "react";
+import React, { useEffect, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 
 function AuthSuccessContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  React.useEffect(() => {
+  useEffect(() => {
     const token = searchParams.get("token");
     if (token) {
       localStorage.setItem("token", token);
