@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { toast } from "react-toastify";
+import MonacoEditor from "@monaco-editor/react";
 
 const categories = [
   "JavaScript",
@@ -22,7 +23,6 @@ const SnippetForm = ({ setSnippets, setMessage, closeModal, initialData }) => {
   );
   const [category, setCategory] = useState(initialData?.category || "");
 
-  // Fonction pour ajouter ou mettre à jour un snippet
   const handleSubmit = async () => {
     if (title && description) {
       try {
@@ -43,36 +43,25 @@ const SnippetForm = ({ setSnippets, setMessage, closeModal, initialData }) => {
         if (response.ok) {
           const updatedSnippet = await response.json();
           if (initialData) {
-            // Mise à jour du snippet existant
             setSnippets((prevSnippets) =>
               prevSnippets.map((snippet) =>
                 snippet.id === initialData.id ? updatedSnippet : snippet
               )
             );
             toast.success("Snippet modifié avec succès !", {
-              style: {
-                backgroundColor: "#BB86FC",
-                color: "white",
-              },
+              style: { backgroundColor: "#BB86FC", color: "white" },
             });
           } else {
-            // Ajout d'un nouveau snippet
             setSnippets((prevSnippets) => [...prevSnippets, updatedSnippet]);
             toast.success("Snippet ajouté avec succès !", {
-              style: {
-                backgroundColor: "#81C784", // Vert moyen
-                color: "white",
-              },
+              style: { backgroundColor: "#81C784", color: "white" },
             });
           }
           closeModal();
         } else {
           setMessage("Erreur lors de la soumission du snippet.");
           toast.error("Erreur lors de la soumission du snippet.", {
-            style: {
-              backgroundColor: "#F44336", // Rouge
-              color: "white",
-            },
+            style: { backgroundColor: "#F44336", color: "white" },
           });
         }
       } catch (error) {
@@ -83,41 +72,54 @@ const SnippetForm = ({ setSnippets, setMessage, closeModal, initialData }) => {
         toast.error(
           "Une erreur s'est produite lors de la soumission du snippet.",
           {
-            style: {
-              backgroundColor: "#F44336", // Rouge
-              color: "white",
-            },
+            style: { backgroundColor: "#F44336", color: "white" },
           }
         );
       }
     } else {
       setMessage("Veuillez remplir tous les champs.");
       toast.error("Veuillez remplir tous les champs.", {
-        style: {
-          backgroundColor: "#FFEB3B", // Jaune pour l'avertissement
-          color: "black",
-        },
+        style: { backgroundColor: "#FFEB3B", color: "black" },
       });
+    }
+  };
+
+  const getLanguage = () => {
+    switch (category) {
+      case "JavaScript":
+      case "Typescript":
+      case "NodeJS":
+      case "NestJS":
+        return "javascript";
+      case "React":
+        return "jsx";
+      case "Python":
+        return "python";
+      case "Swift":
+        return "swift";
+      case "Java":
+      case "C":
+        return "java";
+      default:
+        return "javascript";
     }
   };
 
   return (
     <div>
-      <div className="flex justify-between items-center mb-4 ">
+      <div className="flex justify-between items-center mb-4">
         <h2 className="text-black font-bold text-xl">
           {initialData ? "Modifier un Snippet" : "Ajouter un Snippet"}
         </h2>
         <button
           onClick={closeModal}
-          style={{
-            zIndex: 10,
-            backgroundColor: "white",
-          }}
+          style={{ zIndex: 10, backgroundColor: "white" }}
           className="absolute top-4 right-4 text-black text-xl"
         >
           &times;
         </button>
       </div>
+
       <label htmlFor="title" className="text-black text-md font-semibold">
         Titre
       </label>
@@ -129,6 +131,7 @@ const SnippetForm = ({ setSnippets, setMessage, closeModal, initialData }) => {
         onChange={(e) => setTitle(e.target.value)}
         className="w-full p-2 border border-gray-300 rounded mb-4 bg-white text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-black"
       />
+
       <label htmlFor="category" className="text-black text-md font-semibold">
         Language
       </label>
@@ -146,16 +149,24 @@ const SnippetForm = ({ setSnippets, setMessage, closeModal, initialData }) => {
           </option>
         ))}
       </select>
+
       <label htmlFor="description" className="text-black text-md font-semibold">
         Code
       </label>
-      <textarea
-        id="description"
-        placeholder="Votre code ici..."
+
+      {/* Monaco Editor */}
+      <MonacoEditor
+        height="200px"
+        language={getLanguage()}
+        theme="vs-dark" // ou "vs" pour un thème clair
         value={description}
-        onChange={(e) => setDescription(e.target.value)}
-        className="w-full p-2 border border-gray-300 rounded mb-4 bg-white text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-black"
-        rows="4"
+        onChange={(value) => setDescription(value)}
+        options={{
+          selectOnLineNumbers: true,
+          wordWrap: "on",
+          minimap: { enabled: false },
+        }}
+        className="w-full py-4 rounded-full"
       />
 
       <button
