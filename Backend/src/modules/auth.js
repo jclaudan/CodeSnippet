@@ -14,5 +14,5 @@ export const comparePasswords = async (password, hashedPassword) => {
 
 export const createJWT = (user) => {
   const payload = { userId: user.id, username: user.username };
-  return jwt.sign(payload, JWT_SECRET, { expiresIn: "1h" });
+  return jwt.sign(payload, JWT_SECRET, { expiresIn: "24h" });
 };
