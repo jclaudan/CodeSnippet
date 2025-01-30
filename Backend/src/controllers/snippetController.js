@@ -70,7 +70,6 @@ export const deleteSnippet = async (req, res) => {
 export const getUserSnippets = async (req, res) => {
   try {
     const userId = req.user.userId;
-    console.log("Récupération des snippets pour l'utilisateur :", userId);
     const snippets = await getSnippets(userId); // Passe l'userId ici
     res.status(200).json(snippets);
   } catch (error) {
