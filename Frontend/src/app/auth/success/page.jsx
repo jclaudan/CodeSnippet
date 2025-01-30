@@ -5,34 +5,34 @@ function AuthSuccessContent() {
   useEffect(() => {
     const handleAuth = () => {
       try {
-        // 1. Récupérer le token de l'URL
         const urlParams = new URLSearchParams(window.location.search);
         const token = urlParams.get("token");
-
-        console.log("Token reçu:", token ? "Oui" : "Non");
+        console.log("Token reçu dans success:", token ? "Oui" : "Non");
 
         if (!token) {
-          console.error("Token manquant");
-          window.location.href = "/login";
+          console.error("Token manquant dans success");
+          window.location.replace("/login");
           return;
         }
 
-        // 2. Stocker le token
+        // Nettoyer le localStorage avant de stocker le nouveau token
+        localStorage.clear();
         localStorage.setItem("token", token);
+        console.log("Token stocké avec succès dans success");
 
-        // 3. Vérifier le stockage
+        // Vérifier immédiatement que le token est bien stocké
         const storedToken = localStorage.getItem("token");
-        if (!storedToken) {
+        if (storedToken !== token) {
           throw new Error("Échec du stockage du token");
         }
 
-        console.log("Token stocké avec succès");
-
-        // 4. Redirection forcée
-        window.location.href = "/";
+        // Redirection avec un petit délai pour assurer le stockage
+        setTimeout(() => {
+          window.location.replace("/");
+        }, 500);
       } catch (error) {
-        console.error("Erreur d'authentification:", error);
-        window.location.href = "/login";
+        console.error("Erreur dans success:", error);
+        window.location.replace("/login");
       }
     };
 
