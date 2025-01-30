@@ -17,6 +17,58 @@ passport.deserializeUser(async (id, done) => {
   }
 });
 
+const handleOAuthUser = async (profile, provider) => {
+  try {
+    // 1. Chercher d'abord par email
+    let user = await prisma.user.findFirst({
+      where: {
+        email: profile.emails?.[0]?.value,
+      },
+    });
+
+    // 2. Si pas trouvé, chercher par providerId
+    if (!user) {
+      user = await prisma.user.findFirst({
+        where: {
+          providerId: profile.id.toString(),
+          provider: provider,
+        },
+      });
+    }
+
+    // 3. Si l'utilisateur existe, mettre à jour ses infos OAuth
+    if (user) {
+      user = await prisma.user.update({
+        where: { id: user.id },
+        data: {
+          provider: provider,
+          providerId: profile.id.toString(),
+        },
+      });
+    } else {
+      // 4. Créer un nouvel utilisateur
+      const username = `${
+        profile.username || profile.displayName || "user"
+      }_${Date.now()}`;
+      user = await prisma.user.create({
+        data: {
+          username: username,
+          email: profile.emails?.[0]?.value,
+          provider: provider,
+          providerId: profile.id.toString(),
+          password: null,
+        },
+      });
+    }
+
+    return user;
+  } catch (error) {
+    console.error("OAuth user handling error:", error);
+    throw error;
+  }
+};
+
+// Configuration Google Strategy
 passport.use(
   new GoogleStrategy(
     {
@@ -27,34 +79,18 @@ passport.use(
     },
     async (accessToken, refreshToken, profile, done) => {
       try {
-        let user = await prisma.user.findFirst({
-          where: {
-            provider: "google",
-            providerId: profile.id,
-          },
-        });
-
-        if (!user) {
-          user = await prisma.user.create({
-            data: {
-              username: profile.displayName,
-              email: profile.emails[0].value,
-              provider: "google",
-              providerId: profile.id,
-            },
-          });
-        }
-
+        const user = await handleOAuthUser(profile, "google");
         const token = createJWT(user);
         user.token = token;
-        done(null, user);
-      } catch (err) {
-        done(err, null);
+        return done(null, user);
+      } catch (error) {
+        return done(error, null);
       }
     }
   )
 );
 
+// Configuration GitHub Strategy
 passport.use(
   new GitHubStrategy(
     {
@@ -64,47 +100,12 @@ passport.use(
     },
     async (accessToken, refreshToken, profile, done) => {
       try {
-        console.log("Attempting GitHub authentication for:", profile.username);
-
-        // D'abord chercher par providerId
-        let user = await prisma.user.findUnique({
-          where: {
-            providerId: profile.id.toString(),
-          },
-        });
-
-        if (!user) {
-          console.log("Creating new user for:", profile.username);
-
-          // Générer un username unique
-          const baseUsername =
-            profile.username || profile.displayName || "user";
-          const uniqueUsername = `${baseUsername}_${Date.now()}`;
-
-          user = await prisma.user.create({
-            data: {
-              username: uniqueUsername,
-              email: profile.emails?.[0]?.value || null,
-              provider: "github",
-              providerId: profile.id.toString(),
-              password: null, // Les utilisateurs OAuth n'ont pas de mot de passe
-            },
-          });
-
-          console.log("New user created:", user.id);
-        } else {
-          console.log("Existing user found:", user.id);
-        }
-
-        // Générer le token JWT
+        const user = await handleOAuthUser(profile, "github");
         const token = createJWT(user);
         user.token = token;
-
-        console.log("Authentication successful, redirecting...");
         return done(null, user);
-      } catch (err) {
-        console.error("GitHub Strategy Error:", err);
-        return done(err, null);
+      } catch (error) {
+        return done(error, null);
       }
     }
   )
