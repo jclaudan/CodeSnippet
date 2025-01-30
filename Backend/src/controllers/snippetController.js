@@ -6,6 +6,10 @@ import {
 } from "../services/snippetService.js";
 import prisma from "../prisma/index.js";
 
+export const getAllSnippets = async (req, res) => {
+  const snippets = await getSnippets();
+  res.json(snippets);
+};
 export const createSnippet = async (req, res) => {
   try {
     const snippetData = req.body;
