@@ -12,23 +12,6 @@ if (!JWT_SECRET) {
   process.exit(1); // Arrêter le serveur si la clé secrète n'est pas définie
 }
 
-export const protect = (req, res, next) => {
-  const token = req.header("Authorization")?.replace("Bearer ", "");
-
-  if (!token) {
-    return res.status(401).json({ message: "No token, authorization denied" });
-  }
-
-  try {
-    const decoded = jwt.verify(token, JWT_SECRET);
-    req.user = decoded;
-    next();
-  } catch (error) {
-    console.error(error);
-    res.status(401).json({ message: "Token is not valid" });
-  }
-};
-
 export const authenticateToken = (req, res, next) => {
   try {
     const authHeader = req.headers["authorization"];

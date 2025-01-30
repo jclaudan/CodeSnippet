@@ -1,6 +1,6 @@
 import prisma from "../prisma/index.js";
 
-export const getSnippets = async () => {
+export const getSnippets = async (userId) => {
   return await prisma.snippet.findMany({
     where: {
       userId: userId,
