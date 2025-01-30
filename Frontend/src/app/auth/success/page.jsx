@@ -17,10 +17,12 @@ function AuthSuccessContent() {
   }, [router, searchParams]);
 
   return (
-    <div className="flex items-center justify-center min-h-screen">
+    <div className="bg-white flex items-center justify-center min-h-screen">
       <div className="text-center">
-        <h2 className="text-2xl font-bold mb-4">Authentification réussie</h2>
-        <p>Redirection en cours...</p>
+        <h2 className="text-2xl font-bold mb-4 text-black">
+          Authentification réussie
+        </h2>
+        <p className="text-black">Redirection en cours...</p>
       </div>
     </div>
   );
