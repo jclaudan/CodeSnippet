@@ -4,7 +4,7 @@
 ![GitHub forks](https://img.shields.io/github/forks/Spectrenard/CodeSnippet?style=for-the-badge)
 ![GitHub issues](https://img.shields.io/github/issues/Spectrenard/CodeSnippet?style=for-the-badge)
 ![GitHub last commit](https://img.shields.io/github/last-commit/Spectrenard/CodeSnippet?style=for-the-badge)
-![GitHub License](https://img.shields.io/github/license/Spectrenard/CodeSnippet?style=f
+![GitHub License](https://img.shields.io/github/license/Spectrenard/CodeSnippet?style=for-the-badge)
 
 Un gestionnaire d'extraits de code moderne et intuitif pour organiser, rechercher et partager vos snippets de code efficacement.
 
