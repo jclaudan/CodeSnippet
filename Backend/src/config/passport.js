@@ -4,22 +4,6 @@ import { Strategy as GitHubStrategy } from "passport-github2";
 import prisma from "../prisma/index.js";
 import { createJWT } from "../modules/auth.js";
 
-// Vérification des variables d'environnement requises
-const requiredEnvVars = [
-  "GOOGLE_CLIENT_ID",
-  "GOOGLE_CLIENT_SECRET",
-  "GITHUB_CLIENT_ID",
-  "GITHUB_CLIENT_SECRET",
-  "FRONTEND_URL",
-];
-
-requiredEnvVars.forEach((varName) => {
-  if (!process.env[varName]) {
-    console.error(`Error: Environment variable ${varName} is not set`);
-    process.exit(1);
-  }
-});
-
 passport.serializeUser((user, done) => {
   done(null, user.id);
 });

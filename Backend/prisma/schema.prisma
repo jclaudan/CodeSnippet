@@ -14,22 +14,22 @@ datasource db {
 }
 
 model User {
-  id        String   @id @default(uuid()) 
-  username  String   @unique
-  password  String?  // Optionnel maintenant car les utilisateurs OAuth n'auront pas de mot de passe
-  email     String?  @unique
-  provider  String?  // 'local', 'google', ou 'github'
-  providerId String? // ID externe de Google ou GitHub
-  snippets  Snippet[] //Relation avec les taches
+  id         String    @id @default(uuid())
+  username   String    @unique
+  password   String?   // Optional car les utilisateurs OAuth n'ont pas de mot de passe
+  email      String?   @unique
+  provider   String?   // 'local', 'google', ou 'github'
+  providerId String?   // ID externe de Google ou GitHub
+  snippets   Snippet[]
 }
 
-model Snippet{
-  id String @id @default(uuid())
-  title String
+model Snippet {
+  id          String   @id @default(uuid())
+  title       String
   description String?
-  category String?
-  userId String
-  user User @relation(fields: [userId], references: [id])
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  category    String?
+  userId      String
+  user        User     @relation(fields: [userId], references: [id])
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }
