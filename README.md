@@ -10,6 +10,11 @@ Un gestionnaire d'extraits de code moderne et intuitif pour organiser, recherche
 
 <img width="1680" alt="Capture d’écran 2025-01-30 à 15 19 14" src="https://github.com/user-attachments/assets/ff3de49e-5485-4f4a-b059-edaec6aa7e99" />
 
+## ⚙️ Stack Technique
+
+- **Frontend** : Next.js, Tailwind CSS
+- **Backend** : Node.js, Express, Prisma, PostgreSQL
+- **Authentification** : JWT (JSON Web Tokens)
 
 ## 🚀 Fonctionnalités
 
