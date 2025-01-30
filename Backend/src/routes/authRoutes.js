@@ -1,5 +1,6 @@
 import express from "express";
 import passport from "../config/passport.js";
+import { authenticateToken } from "../modules/authMiddleware.js";
 
 const router = express.Router();
 
@@ -30,6 +31,23 @@ const handleAuthCallback = (req, res) => {
     );
   }
 };
+
+// Ajouter la route de vérification du token
+router.get("/verify", authenticateToken, (req, res) => {
+  try {
+    // Si le middleware authenticateToken passe, le token est valide
+    res.status(200).json({
+      valid: true,
+      user: {
+        userId: req.user.userId,
+        username: req.user.username,
+      },
+    });
+  } catch (error) {
+    console.error("Erreur de vérification:", error);
+    res.status(401).json({ valid: false, message: "Token invalide" });
+  }
+});
 
 // Routes Google
 router.get(
