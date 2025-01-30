@@ -1,45 +1,40 @@
 "use client";
-import React, { useEffect, Suspense } from "react";
+import React, { useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 
-function AuthSuccessContent() {
+export default function AuthSuccess() {
   const router = useRouter();
   const searchParams = useSearchParams();
 
   useEffect(() => {
     const token = searchParams.get("token");
-    if (token) {
+    console.log("Received token:", token); // Debug log
+
+    if (!token) {
+      console.error("No token found in URL");
+      router.push("/login?error=no_token");
+      return;
+    }
+
+    try {
+      // Stockage du token
       localStorage.setItem("token", token);
+      console.log("Token stored successfully");
+
+      // Redirection vers la page d'accueil
       router.push("/");
-    } else {
-      router.push("/login");
+    } catch (error) {
+      console.error("Error handling token:", error);
+      router.push("/login?error=token_storage_failed");
     }
   }, [router, searchParams]);
 
   return (
-    <div className="bg-white flex items-center justify-center min-h-screen">
+    <div className="flex items-center justify-center min-h-screen">
       <div className="text-center">
-        <h2 className="text-2xl font-bold mb-4 text-black">
-          Authentification réussie
-        </h2>
-        <p className="text-black">Redirection en cours...</p>
+        <h2 className="text-2xl font-bold mb-4">Authentification réussie</h2>
+        <p>Redirection en cours...</p>
       </div>
     </div>
-  );
-}
-
-export default function AuthSuccess() {
-  return (
-    <Suspense
-      fallback={
-        <div className="flex items-center justify-center min-h-screen">
-          <div className="text-center">
-            <h2 className="text-2xl font-bold mb-4">Chargement...</h2>
-          </div>
-        </div>
-      }
-    >
-      <AuthSuccessContent />
-    </Suspense>
   );
 }
