@@ -1,6 +1,7 @@
 import express from "express";
 import { authenticateToken } from "../modules/authMiddleware.js";
 import {
+  getAllSnippets,
   createSnippet,
   updateSnippet,
   deleteSnippet,
