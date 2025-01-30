@@ -1,23 +1,36 @@
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
+import session from "express-session";
+import passport from "./config/passport.js";
 import snippetRoutes from "./routes/snippetRoutes.js";
 import { createNewUser, signin } from "./handlers/user.js";
+import authRoutes from "./routes/authRoutes.js";
 
 dotenv.config();
 const app = express();
 
-// Configuration de CORS
-const corsOptions = {
-  origin: "https://code-snippet-mocha.vercel.app", // L'URL de ton frontend
-  methods: ["GET", "POST", "PUT", "DELETE"],
-  allowedHeaders: ["Content-Type", "Authorization"],
-};
-
-// Appliquer CORS à toutes les routes
-app.use(cors(corsOptions));
+// Configuration CORS
+app.use(
+  cors({
+    origin: process.env.FRONTEND_URL,
+    credentials: true,
+  })
+);
 
 app.use(express.json());
+
+// Configuration de la session
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false,
+  })
+);
+
+// Initialisation de Passport
+app.use(passport.initialize());
 
 // Route pour vérifier la disponibilité avec Uptime Robot
 app.get("/ping", (req, res) => {
@@ -27,6 +40,7 @@ app.get("/ping", (req, res) => {
 app.post("/user", createNewUser);
 app.post("/signin", signin);
 app.use("/snippets", snippetRoutes);
+app.use("/auth", authRoutes);
 
 app.listen(3000, () => {
   console.log("Server running on http://localhost:3000");

@@ -1,6 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
+import { FaGoogle, FaGithub } from "react-icons/fa";
 
 const Login = () => {
   const [username, setUsername] = useState("");
@@ -43,6 +44,14 @@ const Login = () => {
     }
   };
 
+  const handleGoogleLogin = () => {
+    window.location.href = "https://codesnippet-cy4q.onrender.com/auth/google";
+  };
+
+  const handleGithubLogin = () => {
+    window.location.href = "https://codesnippet-cy4q.onrender.com/auth/github";
+  };
+
   return (
     <div className="flex items-center justify-center min-h-screen bg-white/95">
       <div className="bg-white p-8 rounded-lg shadow-lg w-96">
@@ -53,6 +62,33 @@ const Login = () => {
           <p className="text-green-500 text-center">{successMessage}</p>
         )}
         {error && <p className="text-red-500 text-center">{error}</p>}
+
+        <div className="flex flex-col gap-3 mb-4">
+          <button
+            onClick={handleGoogleLogin}
+            className="w-full bg-white text-black border border-gray-300 p-2 rounded flex items-center justify-center gap-2 hover:bg-gray-50 transition duration-200"
+          >
+            <FaGoogle className="text-red-500" />
+            Continuer avec Google
+          </button>
+          <button
+            onClick={handleGithubLogin}
+            className="w-full bg-white text-black border border-gray-300 p-2 rounded flex items-center justify-center gap-2 hover:bg-gray-50 transition duration-200"
+          >
+            <FaGithub />
+            Continuer avec GitHub
+          </button>
+
+          <div className="relative my-4">
+            <div className="absolute inset-0 flex items-center">
+              <div className="w-full border-t border-gray-300"></div>
+            </div>
+            <div className="relative flex justify-center text-sm">
+              <span className="px-2 bg-white text-gray-500">Ou</span>
+            </div>
+          </div>
+        </div>
+
         <form onSubmit={handleSubmit}>
           <input
             type="text"
