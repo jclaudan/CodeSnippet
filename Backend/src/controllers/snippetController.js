@@ -6,11 +6,6 @@ import {
 } from "../services/snippetService.js";
 import prisma from "../prisma/index.js";
 
-export const getAllSnippets = async (req, res) => {
-  const snippets = await getSnippets();
-  res.json(snippets);
-};
-
 export const createSnippet = async (req, res) => {
   try {
     const snippetData = req.body;
@@ -73,9 +68,18 @@ export const deleteSnippet = async (req, res) => {
 };
 
 export const getUserSnippets = async (req, res) => {
-  const userId = req.params.userId; // Récupérer l'ID utilisateur depuis les paramètres de la requête
-  const snippets = await prisma.snippet.findMany({
-    where: { userId: String(userId) }, // Filtrer les snippets par userId
-  });
-  res.json(snippets);
+  try {
+    const userIdFromToken = req.user.userId;
+
+    const snippets = await prisma.snippet.findMany({
+      where: {
+        userId: userIdFromToken, // Filtrage par userId
+      },
+    });
+
+    res.json(snippets);
+  } catch (error) {
+    console.error("Erreur lors de la récupération des snippets", error);
+    res.status(500).json({ error: "Erreur serveur" });
+  }
 };
