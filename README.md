@@ -1,15 +1,20 @@
 # 📌 Code Snippet
 
-![GitHub Repo stars](https://img.shields.io/github/stars/Spectrenard/CodeSnippet?style=for-the-badge)
-![GitHub forks](https://img.shields.io/github/forks/Spectrenard/CodeSnippet?style=for-the-badge)
-![GitHub issues](https://img.shields.io/github/issues/Spectrenard/CodeSnippet?style=for-the-badge)
-![GitHub last commit](https://img.shields.io/github/last-commit/Spectrenard/CodeSnippet?style=for-the-badge)
-![GitHub License](https://img.shields.io/github/license/Spectrenard/CodeSnippet?style=for-the-badge)
+![Stars](https://img.shields.io/github/stars/Spectrenard/CodeSnippet?style=flat-square&logo=github&color=blue)
+![Forks](https://img.shields.io/github/forks/Spectrenard/CodeSnippet?style=flat-square&logo=github&color=green)
+![Issues](https://img.shields.io/github/issues/Spectrenard/CodeSnippet?style=flat-square&logo=github&color=red)
+![Last Commit](https://img.shields.io/github/last-commit/Spectrenard/CodeSnippet?style=flat-square&logo=github&color=orange)
+![License](https://img.shields.io/github/license/Spectrenard/CodeSnippet?style=flat-square&logo=github&color=purple)
 
 Un gestionnaire d'extraits de code moderne et intuitif pour organiser, rechercher et partager vos snippets de code efficacement.
 
 <img width="1680" alt="Capture d’écran 2025-01-30 à 15 19 14" src="https://github.com/user-attachments/assets/ff3de49e-5485-4f4a-b059-edaec6aa7e99" />
 
+## ⚙️ Stack Technique
+
+- **Frontend** : Next.js, Tailwind CSS
+- **Backend** : Node.js, Express, Prisma, PostgreSQL
+- **Authentification** : JWT (JSON Web Tokens)
 
 ## 🚀 Fonctionnalités
 
@@ -24,8 +29,8 @@ Un gestionnaire d'extraits de code moderne et intuitif pour organiser, recherche
 
 ### 1️⃣ Cloner le projet
 ```sh
-git clone https://github.com/tonpseudo/snippet-manager.git
-cd snippet-manager
+git clone [https://github.com/tonpseudo/snippet-manager.git](https://github.com/Spectrenard/CodeSnippet.git)
+cd CodeSnippet
 ```
 
 ### 2️⃣ Configurer les variables d'environnement
