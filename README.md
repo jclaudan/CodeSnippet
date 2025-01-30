@@ -24,8 +24,8 @@ Un gestionnaire d'extraits de code moderne et intuitif pour organiser, recherche
 
 ### 1️⃣ Cloner le projet
 ```sh
-git clone https://github.com/tonpseudo/snippet-manager.git
-cd snippet-manager
+git clone [https://github.com/tonpseudo/snippet-manager.git](https://github.com/Spectrenard/CodeSnippet.git)
+cd CodeSnippet
 ```
 
 ### 2️⃣ Configurer les variables d'environnement
