@@ -17,58 +17,6 @@ passport.deserializeUser(async (id, done) => {
   }
 });
 
-const handleOAuthUser = async (profile, provider) => {
-  try {
-    // 1. Chercher d'abord par email
-    let user = await prisma.user.findFirst({
-      where: {
-        email: profile.emails?.[0]?.value,
-      },
-    });
-
-    // 2. Si pas trouvé, chercher par providerId
-    if (!user) {
-      user = await prisma.user.findFirst({
-        where: {
-          providerId: profile.id.toString(),
-          provider: provider,
-        },
-      });
-    }
-
-    // 3. Si l'utilisateur existe, mettre à jour ses infos OAuth
-    if (user) {
-      user = await prisma.user.update({
-        where: { id: user.id },
-        data: {
-          provider: provider,
-          providerId: profile.id.toString(),
-        },
-      });
-    } else {
-      // 4. Créer un nouvel utilisateur
-      const username = `${
-        profile.username || profile.displayName || "user"
-      }_${Date.now()}`;
-      user = await prisma.user.create({
-        data: {
-          username: username,
-          email: profile.emails?.[0]?.value,
-          provider: provider,
-          providerId: profile.id.toString(),
-          password: null,
-        },
-      });
-    }
-
-    return user;
-  } catch (error) {
-    console.error("OAuth user handling error:", error);
-    throw error;
-  }
-};
-
-// Configuration Google Strategy
 passport.use(
   new GoogleStrategy(
     {
@@ -79,18 +27,34 @@ passport.use(
     },
     async (accessToken, refreshToken, profile, done) => {
       try {
-        const user = await handleOAuthUser(profile, "google");
+        let user = await prisma.user.findFirst({
+          where: {
+            provider: "google",
+            providerId: profile.id,
+          },
+        });
+
+        if (!user) {
+          user = await prisma.user.create({
+            data: {
+              username: profile.displayName,
+              email: profile.emails[0].value,
+              provider: "google",
+              providerId: profile.id,
+            },
+          });
+        }
+
         const token = createJWT(user);
         user.token = token;
-        return done(null, user);
-      } catch (error) {
-        return done(error, null);
+        done(null, user);
+      } catch (err) {
+        done(err, null);
       }
     }
   )
 );
 
-// Configuration GitHub Strategy
 passport.use(
   new GitHubStrategy(
     {
@@ -100,12 +64,77 @@ passport.use(
     },
     async (accessToken, refreshToken, profile, done) => {
       try {
+        console.log("Attempting GitHub authentication for:", profile.username);
+
+        const handleOAuthUser = async (profile, provider) => {
+          try {
+            console.log(
+              `Tentative d'authentification ${provider} pour:`,
+              profile.id
+            );
+
+            // 1. Chercher l'utilisateur par providerId
+            let user = await prisma.user.findFirst({
+              where: {
+                OR: [
+                  { providerId: profile.id.toString() },
+                  { email: profile.emails?.[0]?.value },
+                ],
+              },
+            });
+
+            if (user) {
+              console.log("Utilisateur existant trouvé:", user.id);
+
+              // Vérifier si une mise à jour est nécessaire
+              if (
+                user.providerId !== profile.id.toString() ||
+                user.provider !== provider
+              ) {
+                user = await prisma.user.update({
+                  where: { id: user.id },
+                  data: {
+                    provider: provider,
+                    providerId: profile.id.toString(),
+                    email: profile.emails?.[0]?.value || user.email,
+                  },
+                });
+                console.log("Informations utilisateur mises à jour");
+              }
+            } else {
+              console.log("Création d'un nouvel utilisateur");
+              // 2. Créer un nouvel utilisateur si non trouvé
+              const username = `${profile.displayName || "user"}_${Date.now()}`;
+              user = await prisma.user.create({
+                data: {
+                  username: username,
+                  email: profile.emails?.[0]?.value,
+                  provider: provider,
+                  providerId: profile.id.toString(),
+                  password: null,
+                },
+              });
+              console.log("Nouvel utilisateur créé:", user.id);
+            }
+
+            return user;
+          } catch (error) {
+            console.error("Erreur handleOAuthUser:", error);
+            throw error;
+          }
+        };
+
         const user = await handleOAuthUser(profile, "github");
+
+        // Générer le token JWT
         const token = createJWT(user);
         user.token = token;
+
+        console.log("Authentication successful, redirecting...");
         return done(null, user);
-      } catch (error) {
-        return done(error, null);
+      } catch (err) {
+        console.error("GitHub Strategy Error:", err);
+        return done(err, null);
       }
     }
   )
