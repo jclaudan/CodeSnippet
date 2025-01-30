@@ -19,7 +19,7 @@ model User {
   password   String?
   email      String?   @unique
   provider   String?
-  providerId String?
+  providerId String?   @unique
   snippets   Snippet[]
 }
 

@@ -64,33 +64,47 @@ passport.use(
     },
     async (accessToken, refreshToken, profile, done) => {
       try {
-        console.log("GitHub Profile:", profile);
+        console.log("Attempting GitHub authentication for:", profile.username);
 
-        let user = await prisma.user.findFirst({
+        // D'abord chercher par providerId
+        let user = await prisma.user.findUnique({
           where: {
-            email: profile.emails?.[0]?.value,
+            providerId: profile.id.toString(),
           },
         });
 
         if (!user) {
-          console.log("Creating new user for GitHub");
+          console.log("Creating new user for:", profile.username);
+
+          // Générer un username unique
+          const baseUsername =
+            profile.username || profile.displayName || "user";
+          const uniqueUsername = `${baseUsername}_${Date.now()}`;
+
           user = await prisma.user.create({
             data: {
-              username: `${profile.username}_${Date.now()}`,
-              email: profile.emails?.[0]?.value,
+              username: uniqueUsername,
+              email: profile.emails?.[0]?.value || null,
               provider: "github",
               providerId: profile.id.toString(),
+              password: null, // Les utilisateurs OAuth n'ont pas de mot de passe
             },
           });
+
+          console.log("New user created:", user.id);
+        } else {
+          console.log("Existing user found:", user.id);
         }
 
+        // Générer le token JWT
         const token = createJWT(user);
         user.token = token;
-        console.log("Authentication successful, returning user");
-        done(null, user);
+
+        console.log("Authentication successful, redirecting...");
+        return done(null, user);
       } catch (err) {
         console.error("GitHub Strategy Error:", err);
-        done(err, null);
+        return done(err, null);
       }
     }
   )
