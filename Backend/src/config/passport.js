@@ -61,21 +61,22 @@ passport.use(
       clientID: process.env.GITHUB_CLIENT_ID,
       clientSecret: process.env.GITHUB_CLIENT_SECRET,
       callbackURL: "https://codesnippet-cy4q.onrender.com/auth/github/callback",
-      proxy: true,
     },
     async (accessToken, refreshToken, profile, done) => {
       try {
+        console.log("GitHub Profile:", profile);
+
         let user = await prisma.user.findFirst({
           where: {
-            provider: "github",
-            providerId: profile.id.toString(),
+            email: profile.emails?.[0]?.value,
           },
         });
 
         if (!user) {
+          console.log("Creating new user for GitHub");
           user = await prisma.user.create({
             data: {
-              username: profile.username,
+              username: `${profile.username}_${Date.now()}`,
               email: profile.emails?.[0]?.value,
               provider: "github",
               providerId: profile.id.toString(),
@@ -85,8 +86,10 @@ passport.use(
 
         const token = createJWT(user);
         user.token = token;
+        console.log("Authentication successful, returning user");
         done(null, user);
       } catch (err) {
+        console.error("GitHub Strategy Error:", err);
         done(err, null);
       }
     }

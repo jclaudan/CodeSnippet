@@ -16,10 +16,10 @@ datasource db {
 model User {
   id         String    @id @default(uuid())
   username   String    @unique
-  password   String?   // Optional car les utilisateurs OAuth n'ont pas de mot de passe
+  password   String?
   email      String?   @unique
-  provider   String?   // 'local', 'google', ou 'github'
-  providerId String?   // ID externe de Google ou GitHub
+  provider   String?
+  providerId String?
   snippets   Snippet[]
 }
 
