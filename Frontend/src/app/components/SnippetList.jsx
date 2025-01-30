@@ -14,6 +14,7 @@ const categoryStyles = {
   Python: "bg-blue-200 text-blue-800",
   NodeJS: "bg-green-300 text-green-900",
   Swift: "bg-orange-200 text-orange-800",
+  Java: "bg-red-200 text-red-800",
   C: "bg-gray-300 text-gray-900",
 };
 

@@ -11,6 +11,7 @@ const categories = [
   "NodeJS",
   "NestJS",
   "Swift",
+  "Java",
   "C",
 ]; // Liste des catégories
 
