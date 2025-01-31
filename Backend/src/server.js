@@ -29,7 +29,7 @@ app.use(
   })
 );
 
-// Initialisation de Passport
+// Initialisation de Passpo rt
 app.use(passport.initialize());
 
 // Route pour vérifier la disponibilité avec Uptime Robot
