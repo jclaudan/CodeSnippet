@@ -46,45 +46,50 @@ const Register = () => {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-white/95">
-      <div className="bg-white p-8 rounded-lg shadow-lg w-96">
-        <h2 className="text-3xl font-bold text-center text-black mb-4">
-          Inscription
-        </h2>
-        {successMessage && (
-          <p className="text-green-500 text-center">{successMessage}</p>
-        )}
-        {error && <p className="text-red-500 text-center">{error}</p>}
-        <form onSubmit={handleSubmit}>
-          <input
-            type="text"
-            placeholder="Nom d'utilisateur"
-            required
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            className="w-full p-2 border border-gray-400 rounded mt-4  text-black placeholder-gray-400  outline-none focus:ring-1 focus:ring-black"
-          />
-          <input
-            type="password"
-            placeholder="Mot de passe"
-            required
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className="w-full p-2 border border-gray-400 rounded mt-4 text-black placeholder-gray-400  outline-none focus:ring-1 focus:ring-black"
-          />
-          <button
-            type="submit"
-            className="w-full bg-black text-white p-2 rounded mt-4 hover:scale-[1.01] transition duration-200"
-          >
-            S'inscrire
-          </button>
-        </form>
-        <p className="text-center text-gray-600 mt-4">
-          Vous avez déjà un compte ?{" "}
-          <a href="/login" className="text-gray-400 hover:underline">
-            Connectez-vous ici
-          </a>
-        </p>
+    <div className="flex items-center justify-center min-h-screen bg-white py-12">
+      <div className="container mx-auto px-4 flex flex-col md:flex-row items-start justify-center gap-20">
+        <div className="bg-white p-6 rounded-lg shadow-xl w-[400px] border border-gray-200">
+          <h2 className="text-2xl font-bold text-center text-gray-900 mb-6">
+            Inscription
+          </h2>
+          {successMessage && (
+            <p className="text-green-500 text-center text-sm">
+              {successMessage}
+            </p>
+          )}
+          {error && <p className="text-red-500 text-center text-sm">{error}</p>}
+
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <input
+              type="text"
+              placeholder="Nom d'utilisateur"
+              required
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              className="w-full p-2.5 border border-gray-300 rounded-lg bg-white text-gray-900 placeholder-gray-400 outline-none focus:ring-1 focus:ring-black/20"
+            />
+            <input
+              type="password"
+              placeholder="Mot de passe"
+              required
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="w-full p-2.5 border border-gray-300 rounded-lg bg-white text-gray-900 placeholder-gray-400 outline-none focus:ring-1 focus:ring-black/20"
+            />
+            <button
+              type="submit"
+              className="w-full bg-black text-white p-2.5 rounded-lg hover:bg-gray-800 transition duration-200"
+            >
+              S'inscrire
+            </button>
+          </form>
+          <p className="text-center text-gray-500 text-sm mt-6">
+            Vous avez déjà un compte ?{" "}
+            <a href="/login" className="text-black hover:underline">
+              Connectez-vous ici
+            </a>
+          </p>
+        </div>
       </div>
     </div>
   );
