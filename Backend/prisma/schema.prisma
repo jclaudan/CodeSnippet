@@ -26,7 +26,6 @@ model User {
   createdAt    DateTime  @default(now())
   updatedAt    DateTime  @default(now()) @updatedAt
   snippets     Snippet[]
-  likedSnippets SnippetLike[]
 }
 
 model Snippet {
@@ -36,20 +35,8 @@ model Snippet {
   category    String?
   userId      String
   isPublic    Boolean  @default(false)
-  likes       Int      @default(0)
   user        User     @relation(fields: [userId], references: [id])
-  likedBy     SnippetLike[]
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }
 
-model SnippetLike {
-  id        String   @id @default(uuid())
-  userId    String
-  snippetId String
-  user      User     @relation(fields: [userId], references: [id])
-  snippet   Snippet  @relation(fields: [snippetId], references: [id])
-  createdAt DateTime @default(now())
-
-  @@unique([userId, snippetId])
-}

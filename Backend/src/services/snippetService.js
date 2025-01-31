@@ -57,24 +57,22 @@ export const modifySnippet = async (id, data) => {
 
 export const removeSnippet = async (snippetId, userId) => {
   try {
-    // D'abord, supprimer tous les likes associés au snippet
+    // Supprimer d'abord tous les likes associés
     await prisma.snippetLike.deleteMany({
       where: {
         snippetId: snippetId,
       },
     });
 
-    // Ensuite, supprimer le snippet
-    const deletedSnippet = await prisma.snippet.delete({
+    // Ensuite supprimer le snippet
+    return await prisma.snippet.delete({
       where: {
         id: snippetId,
-        userId: userId, // Vérification que l'utilisateur est bien le propriétaire
+        userId: userId,
       },
     });
-
-    return deletedSnippet;
   } catch (error) {
-    console.error("Erreur lors de la suppression du snippet:", error);
+    console.error("Erreur lors de la suppression:", error);
     throw error;
   }
 };

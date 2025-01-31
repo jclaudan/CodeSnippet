@@ -95,40 +95,26 @@ export const deleteSnippet = async (req, res) => {
 export const getUserSnippets = async (req, res) => {
   try {
     const userId = req.user.userId;
-
     const snippets = await prisma.snippet.findMany({
       where: {
         userId: userId,
       },
-      // Spécifions explicitement tous les champs
       select: {
         id: true,
         title: true,
         description: true,
         category: true,
-        isPublic: true, // Important !
-        likes: true,
+        isPublic: true,
         createdAt: true,
         updatedAt: true,
         userId: true,
+        user: true,
       },
     });
-
-    // Log pour déboguer
-    console.log(
-      "Snippets envoyés au frontend:",
-      snippets.map((s) => ({
-        id: s.id,
-        title: s.title,
-        isPublic: s.isPublic,
-      }))
-    );
 
     res.json(snippets);
   } catch (error) {
     console.error("Erreur lors de la récupération des snippets:", error);
-    res
-      .status(500)
-      .json({ error: "Erreur lors de la récupération des snippets" });
+    res.status(500).json({ message: "Erreur serveur" });
   }
 };

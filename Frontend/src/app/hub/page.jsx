@@ -4,17 +4,11 @@ import { Navbar } from "../components/layouts/Navbar";
 import { Footer } from "../components/layouts/Footer";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { vscDarkPlus } from "react-syntax-highlighter/dist/esm/styles/prism";
-import {
-  IoCopyOutline,
-  IoCheckmark,
-  IoThumbsUpOutline,
-  IoPersonCircleOutline,
-} from "react-icons/io5";
+import { IoCopyOutline, IoCheckmark } from "react-icons/io5";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import SearchBar from "../components/SearchBar";
 import CategoryFilter from "../components/CategoryFilter";
-import Image from "next/image";
 
 const HubPage = () => {
   const categoryStyles = {
@@ -29,6 +23,7 @@ const HubPage = () => {
     Java: "bg-red-200 text-red-800",
     C: "bg-gray-300 text-gray-900",
   };
+
   const [publicSnippets, setPublicSnippets] = useState([]);
   const [filteredSnippets, setFilteredSnippets] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -43,14 +38,12 @@ const HubPage = () => {
   useEffect(() => {
     let filtered = publicSnippets;
 
-    // Filtre par recherche
     if (searchTerm) {
       filtered = filtered.filter((snippet) =>
         snippet.title.toLowerCase().includes(searchTerm.toLowerCase())
       );
     }
 
-    // Filtre par catégorie
     if (selectedCategory) {
       filtered = filtered.filter(
         (snippet) => snippet.category === selectedCategory
@@ -65,7 +58,6 @@ const HubPage = () => {
       const response = await fetch("http://localhost:3000/hub/public");
       if (response.ok) {
         const data = await response.json();
-        console.log("Données reçues:", data);
         setPublicSnippets(data);
       } else {
         console.error("Erreur de réponse:", response.status);
@@ -86,58 +78,6 @@ const HubPage = () => {
         setTimeout(() => setCopiedSnippetId(null), 2000);
       })
       .catch((err) => toast.error("Erreur lors de la copie"));
-  };
-
-  const handleLike = async (snippetId) => {
-    try {
-      const token = localStorage.getItem("token");
-      console.log("Tentative de like pour le snippet:", snippetId);
-
-      const response = await fetch(
-        `http://localhost:3000/hub/${snippetId}/like`,
-        {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
-        }
-      );
-
-      if (response.ok) {
-        const updatedSnippet = await response.json();
-        console.log("Réponse du serveur:", updatedSnippet);
-
-        setPublicSnippets((prevSnippets) => {
-          const newSnippets = prevSnippets.map((snippet) =>
-            snippet.id === snippetId
-              ? {
-                  ...snippet,
-                  likes: updatedSnippet.likes,
-                  isLiked: updatedSnippet.isLiked,
-                }
-              : snippet
-          );
-          console.log("Nouveaux snippets:", newSnippets);
-          return newSnippets;
-        });
-
-        toast.success(
-          updatedSnippet.isLiked ? "Snippet liké !" : "Like retiré !",
-          {
-            style: {
-              backgroundColor: updatedSnippet.isLiked ? "#81C784" : "#FF9800",
-              color: "white",
-            },
-          }
-        );
-      }
-    } catch (error) {
-      console.error("Erreur lors du like:", error);
-      toast.error("Erreur lors de la modification du like", {
-        style: { backgroundColor: "#F44336", color: "white" },
-      });
-    }
   };
 
   return (
@@ -171,7 +111,7 @@ const HubPage = () => {
                 <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
               </div>
             ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <div className="grid grid-cols-1 gap-6">
                 {filteredSnippets.map((snippet) => (
                   <div
                     key={snippet.id}
@@ -182,11 +122,6 @@ const HubPage = () => {
                         {snippet.title}
                       </h3>
                       <div className="flex items-center gap-2">
-                        {snippet.isPublic && (
-                          <span className="px-2 py-1 rounded-full text-xs font-semibold bg-green-100 text-green-800">
-                            Public
-                          </span>
-                        )}
                         {snippet.category && (
                           <span
                             className={`px-2 py-1 rounded-full text-sm font-semibold ${
@@ -198,13 +133,35 @@ const HubPage = () => {
                         )}
                       </div>
                     </div>
-                    <p className="text-sm text-gray-500">
-                      {new Date(snippet.createdAt).toLocaleDateString("fr-FR", {
-                        day: "numeric",
-                        month: "long",
-                        year: "numeric",
-                      })}
-                    </p>
+
+                    {/* Ajout des informations de l'utilisateur */}
+                    <div className="flex items-center gap-2 mb-4">
+                      <img
+                        src={
+                          snippet.user?.avatar ||
+                          snippet.user?.googleAvatar ||
+                          snippet.user?.githubAvatar ||
+                          "/default-avatar.png"
+                        }
+                        alt={`Avatar de ${snippet.user?.username}`}
+                        className="w-8 h-8 rounded-full object-cover"
+                      />
+                      <span className="text-sm text-gray-600">
+                        {snippet.user?.username}
+                      </span>
+                      <span className="text-sm text-gray-400">•</span>
+                      <span className="text-sm text-gray-500">
+                        {new Date(snippet.createdAt).toLocaleDateString(
+                          "fr-FR",
+                          {
+                            day: "numeric",
+                            month: "long",
+                            year: "numeric",
+                          }
+                        )}
+                      </span>
+                    </div>
+
                     <div className="mt-4">
                       <SyntaxHighlighter
                         language="javascript"
@@ -282,6 +239,7 @@ const HubPage = () => {
       </main>
 
       <Footer />
+      <ToastContainer />
     </div>
   );
 };
