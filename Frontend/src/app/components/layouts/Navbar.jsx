@@ -1,5 +1,5 @@
-import { IoCode } from "react-icons/io5";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 export const Navbar = () => {
   const router = useRouter();
@@ -12,8 +12,14 @@ export const Navbar = () => {
   return (
     <div className="flex items-center justify-between gap-2 px-6">
       <div className="flex items-center justify-center gap-2">
-        <IoCode className="text-2xl text-black" />
-        <h1 className="text-xl  text-black font-semibold">CodeSnippet</h1>
+        <Image
+          src="/favicon.png"
+          alt="CodeSnippet Logo"
+          width={32}
+          height={32}
+          className="w-10 h-10"
+        />
+        <h1 className="text-xl text-black font-semibold">CodeSnippet</h1>
       </div>
 
       <button
