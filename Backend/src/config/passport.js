@@ -54,46 +54,52 @@ const handleOAuthUser = async (profile, provider) => {
   }
 };
 
-// Utiliser la même fonction pour Google et GitHub
-passport.use(
-  new GoogleStrategy(
-    {
-      clientID: process.env.GOOGLE_CLIENT_ID,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      callbackURL: "https://codesnippet-cy4q.onrender.com/auth/google/callback",
-      proxy: true,
-    },
-    async (accessToken, refreshToken, profile, done) => {
-      try {
-        const user = await handleOAuthUser(profile, "google");
-        const token = createJWT(user);
-        user.token = token;
-        return done(null, user);
-      } catch (err) {
-        return done(err, null);
-      }
-    }
-  )
-);
+// Configure OAuth strategies only if credentials are provided
+const baseUrl = process.env.BASE_URL || 'http://localhost:5000';
 
-passport.use(
-  new GitHubStrategy(
-    {
-      clientID: process.env.GITHUB_CLIENT_ID,
-      clientSecret: process.env.GITHUB_CLIENT_SECRET,
-      callbackURL: "https://codesnippet-cy4q.onrender.com/auth/github/callback",
-    },
-    async (accessToken, refreshToken, profile, done) => {
-      try {
-        const user = await handleOAuthUser(profile, "github");
-        const token = createJWT(user);
-        user.token = token;
-        return done(null, user);
-      } catch (err) {
-        return done(err, null);
+if (process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET) {
+  passport.use(
+    new GoogleStrategy(
+      {
+        clientID: process.env.GOOGLE_CLIENT_ID,
+        clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+        callbackURL: `${baseUrl}/auth/google/callback`,
+        proxy: true,
+      },
+      async (accessToken, refreshToken, profile, done) => {
+        try {
+          const user = await handleOAuthUser(profile, "google");
+          const token = createJWT(user);
+          user.token = token;
+          return done(null, user);
+        } catch (err) {
+          return done(err, null);
+        }
       }
-    }
-  )
-);
+    )
+  );
+}
+
+if (process.env.GITHUB_CLIENT_ID && process.env.GITHUB_CLIENT_SECRET) {
+  passport.use(
+    new GitHubStrategy(
+      {
+        clientID: process.env.GITHUB_CLIENT_ID,
+        clientSecret: process.env.GITHUB_CLIENT_SECRET,
+        callbackURL: `${baseUrl}/auth/github/callback`,
+      },
+      async (accessToken, refreshToken, profile, done) => {
+        try {
+          const user = await handleOAuthUser(profile, "github");
+          const token = createJWT(user);
+          user.token = token;
+          return done(null, user);
+        } catch (err) {
+          return done(err, null);
+        }
+      }
+    )
+  );
+}
 
 export default passport;

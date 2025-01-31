@@ -15,8 +15,9 @@ const Register = () => {
     setSuccessMessage("");
 
     try {
+      console.log('API URL:', process.env.NEXT_PUBLIC_API_URL); // Debug log
       const response = await fetch(
-        "https://codesnippet-cy4q.onrender.com/user",
+        `${process.env.NEXT_PUBLIC_API_URL}/user`,
         {
           method: "POST",
           headers: {

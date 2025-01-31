@@ -36,7 +36,7 @@ const HomePage = () => {
 
         // Charger directement les snippets avec le token
         const snippetsResponse = await fetch(
-          "https://codesnippet-cy4q.onrender.com/snippets",
+          `${process.env.NEXT_PUBLIC_API_URL}/snippets`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
