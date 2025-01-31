@@ -8,40 +8,65 @@ import prisma from "../prisma/index.js";
 
 export const createSnippet = async (req, res) => {
   try {
-    const snippetData = req.body;
-
-    if (!req.user || !req.user.userId) {
-      console.error("User not authenticated");
-      return res.status(401).json({ error: "Utilisateur non authentifié" });
-    }
-
-    if (!snippetData.title) {
-      return res.status(400).json({ error: "Le titre est requis" });
-    }
-
+    const { title, description, category, isPublic } = req.body;
     const userId = req.user.userId;
-    console.log("Creating snippet for user:", userId);
 
-    const snippet = await addSnippet(snippetData, userId);
+    console.log("Création snippet avec données:", {
+      title,
+      description,
+      category,
+      isPublic,
+      userId,
+    });
+
+    const snippet = await prisma.snippet.create({
+      data: {
+        title,
+        description,
+        category,
+        isPublic: Boolean(isPublic),
+        userId,
+        likes: 0,
+      },
+      select: {
+        id: true,
+        title: true,
+        description: true,
+        category: true,
+        isPublic: true,
+        likes: true,
+        userId: true,
+        createdAt: true,
+        updatedAt: true,
+      },
+    });
+
+    console.log("Snippet créé:", snippet);
     res.status(201).json(snippet);
   } catch (error) {
-    console.error("Error creating task:", error);
-    res.status(500).json({
-      error: "Error creating task",
-      details: error.message,
-    });
+    console.error("Erreur création snippet:", error);
+    res.status(500).json({ error: "Erreur lors de la création du snippet" });
   }
 };
 
 export const updateSnippet = async (req, res) => {
   const { id } = req.params;
-  const { title, description, category } = req.body;
-  const updatedSnippet = await modifySnippet(id, {
-    title,
-    description,
-    category,
-  });
-  res.status(203).json(updatedSnippet);
+  const { title, description, category, isPublic } = req.body;
+  try {
+    const updatedSnippet = await prisma.snippet.update({
+      where: { id },
+      data: {
+        title,
+        description,
+        category,
+        isPublic: Boolean(isPublic),
+      },
+    });
+    res.status(200).json(updatedSnippet);
+  } catch (error) {
+    console.error("Erreur mise à jour snippet:", error);
+    res.status(500).json({ error: "Erreur lors de la mise à jour du snippet" });
+  }
 };
 
 export const deleteSnippet = async (req, res) => {
@@ -70,10 +95,38 @@ export const deleteSnippet = async (req, res) => {
 export const getUserSnippets = async (req, res) => {
   try {
     const userId = req.user.userId;
-    const snippets = await getSnippets(userId); // Passe l'userId ici
-    res.status(200).json(snippets);
+
+    const snippets = await prisma.snippet.findMany({
+      where: {
+        userId: userId,
+      },
+      // Spécifions explicitement tous les champs
+      select: {
+        id: true,
+        title: true,
+        description: true,
+        category: true,
+        isPublic: true, // Important !
+        likes: true,
+        createdAt: true,
+        updatedAt: true,
+        userId: true,
+      },
+    });
+
+    // Log pour déboguer
+    console.log(
+      "Snippets envoyés au frontend:",
+      snippets.map((s) => ({
+        id: s.id,
+        title: s.title,
+        isPublic: s.isPublic,
+      }))
+    );
+
+    res.json(snippets);
   } catch (error) {
-    console.error(error);
+    console.error("Erreur lors de la récupération des snippets:", error);
     res
       .status(500)
       .json({ error: "Erreur lors de la récupération des snippets" });

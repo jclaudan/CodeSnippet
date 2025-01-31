@@ -22,14 +22,26 @@ const SnippetForm = ({ setSnippets, setMessage, closeModal, initialData }) => {
     initialData?.description || ""
   );
   const [category, setCategory] = useState(initialData?.category || "");
+  const [isPublic, setIsPublic] = useState(initialData?.isPublic || false);
 
   const handleSubmit = async () => {
     if (title && description) {
       try {
-        const method = initialData ? "PUT" : "POST"; // Utilise PUT pour la mise à jour, POST pour la création
+        console.log("État isPublic avant envoi:", isPublic);
+
+        const method = initialData ? "PUT" : "POST";
         const url = initialData
-          ? `https://codesnippet-cy4q.onrender.com/snippets/${initialData.id}`
-          : "https://codesnippet-cy4q.onrender.com/snippets";
+          ? `http://localhost:3000/snippets/${initialData.id}`
+          : "http://localhost:3000/snippets";
+
+        const snippetData = {
+          title,
+          description,
+          category,
+          isPublic: isPublic,
+        };
+
+        console.log("Données envoyées:", snippetData);
 
         const response = await fetch(url, {
           method,
@@ -37,11 +49,13 @@ const SnippetForm = ({ setSnippets, setMessage, closeModal, initialData }) => {
             "Content-Type": "application/json",
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
-          body: JSON.stringify({ title, description, category }),
+          body: JSON.stringify(snippetData),
         });
 
         if (response.ok) {
           const updatedSnippet = await response.json();
+          console.log("Snippet créé/modifié:", updatedSnippet);
+
           if (initialData) {
             setSnippets((prevSnippets) =>
               prevSnippets.map((snippet) =>
@@ -168,6 +182,25 @@ const SnippetForm = ({ setSnippets, setMessage, closeModal, initialData }) => {
         }}
         className="w-full py-4 rounded-full"
       />
+
+      <div className="flex items-center gap-2 my-4">
+        <label
+          htmlFor="isPublic"
+          className="text-black text-md font-semibold flex items-center cursor-pointer"
+        >
+          <input
+            id="isPublic"
+            type="checkbox"
+            checked={isPublic}
+            onChange={(e) => {
+              console.log("Changement isPublic:", e.target.checked);
+              setIsPublic(e.target.checked);
+            }}
+            className="w-4 h-4 text-black rounded focus:ring-black mr-2"
+          />
+          Rendre public
+        </label>
+      </div>
 
       <button
         onClick={handleSubmit}

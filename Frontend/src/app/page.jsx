@@ -35,14 +35,11 @@ const HomePage = () => {
         }
 
         // Charger directement les snippets avec le token
-        const snippetsResponse = await fetch(
-          "https://codesnippet-cy4q.onrender.com/snippets",
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+        const snippetsResponse = await fetch("http://localhost:3000/snippets", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
 
         if (!snippetsResponse.ok) {
           // Si la requête échoue à cause du token
@@ -109,7 +106,7 @@ const HomePage = () => {
       style={{ position: "relative", minHeight: "100vh" }}
       className="flex flex-col min-h-screen bg-gray-100 text-gray-200"
     >
-      <header className="bg-gray-50 p-4">
+      <header className="bg-gray-50">
         <Navbar />
       </header>
       <main className="flex flex-col flex-grow p-6 max-w-[1500px] mx-auto w-full">

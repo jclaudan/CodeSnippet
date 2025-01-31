@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { vscDarkPlus } from "react-syntax-highlighter/dist/esm/styles/prism";
 import { IoCopyOutline, IoCheckmark, IoPencil } from "react-icons/io5"; // Ajout de IoPencil
@@ -21,6 +21,24 @@ const categoryStyles = {
 const SnippetList = ({ snippets, onEdit, onDelete }) => {
   const [copiedSnippetId, setCopiedSnippetId] = useState(null);
 
+  // Ajout de logs pour déboguer
+  useEffect(() => {
+    console.log("Snippets reçus:", snippets);
+    snippets.forEach((snippet) => {
+      console.log(`Snippet ${snippet.id}:`, {
+        title: snippet.title,
+        isPublic: snippet.isPublic,
+        typeOf: typeof snippet.isPublic,
+        rawValue: JSON.stringify(snippet.isPublic),
+      });
+    });
+  }, [snippets]);
+
+  // Fonction utilitaire pour vérifier isPublic
+  const isSnippetPublic = (snippet) => {
+    return Boolean(snippet.isPublic);
+  };
+
   const handleCopy = (text, snippetId) => {
     navigator.clipboard
       .writeText(text)
@@ -41,60 +59,73 @@ const SnippetList = ({ snippets, onEdit, onDelete }) => {
       ) : (
         [...snippets]
           .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)) // Trie les snippets
-          .map((snippet) => (
-            <div
-              key={snippet.id}
-              className="bg-white p-4 rounded-lg shadow-lg transition-transform transform hover:scale-[1.01] max-w-xl max-h-80 overflow-auto border border-gray-300 flex flex-col"
-            >
-              <div className="flex justify-between items-center mb-2">
-                <h3 className="text-gray-800 font-semibold text-lg">
-                  {snippet.title}
-                </h3>
-                {snippet.category && (
-                  <span
-                    className={`px-2 py-1 rounded-full text-sm font-semibold ${
-                      categoryStyles[snippet.category]
-                    }`}
-                  >
-                    {snippet.category}
-                  </span>
-                )}
-              </div>
-              <SyntaxHighlighter
-                className="max-h-48 rounded-lg flex-grow"
-                language="javascript"
-                style={vscDarkPlus}
+          .map((snippet) => {
+            console.log(
+              `Rendu du snippet ${snippet.id}, isPublic:`,
+              snippet.isPublic
+            );
+            return (
+              <div
+                key={snippet.id}
+                className="bg-white p-4 rounded-lg shadow-lg transition-transform transform hover:scale-[1.01] max-w-xl max-h-80 overflow-auto border border-gray-300 flex flex-col"
               >
-                {snippet.description}
-              </SyntaxHighlighter>
-              <div className="flex gap-2 mt-4 ">
-                <button
-                  onClick={() => handleCopy(snippet.description, snippet.id)}
-                  className="w-full bg-white border font-semibold text-black py-2 px-4 rounded transition hover:scale-[1.01] hover:bg-gray-50 focus:outline-none flex items-center justify-center"
+                <div className="flex justify-between items-center mb-2">
+                  <h3 className="text-gray-800 font-semibold text-lg">
+                    {snippet.title}
+                  </h3>
+                  <div className="flex items-center gap-2">
+                    {isSnippetPublic(snippet) && (
+                      <span className="px-2 py-1 rounded-full text-xs font-semibold bg-green-100 text-green-800">
+                        Public
+                      </span>
+                    )}
+                    {snippet.category && (
+                      <span
+                        className={`px-2 py-1 rounded-full text-sm font-semibold ${
+                          categoryStyles[snippet.category]
+                        }`}
+                      >
+                        {snippet.category}
+                      </span>
+                    )}
+                  </div>
+                </div>
+                <SyntaxHighlighter
+                  className="max-h-48 rounded-lg flex-grow"
+                  language="javascript"
+                  style={vscDarkPlus}
                 >
-                  {copiedSnippetId === snippet.id ? (
-                    <>
-                      Copié ! <IoCheckmark className="ml-2" />
-                    </>
-                  ) : (
-                    <>
-                      Copier <IoCopyOutline className="ml-2" />
-                    </>
-                  )}
-                </button>
-                <button
-                  onClick={() => onEdit(snippet)}
-                  className="bg-white border font-semibold text-black py-2 px-4 rounded transition hover:scale-[1.01] hover:bg-gray-50 focus:outline-none flex items-center justify-center"
-                >
-                  <IoPencil className="text-lg" />
-                </button>
-                <DeleteSnippetButton
-                  snippetId={snippet.id}
-                  onDelete={onDelete}
-                />
+                  {snippet.description}
+                </SyntaxHighlighter>
+                <div className="flex gap-2 mt-4 ">
+                  <button
+                    onClick={() => handleCopy(snippet.description, snippet.id)}
+                    className="w-full bg-white border font-semibold text-black py-2 px-4 rounded transition hover:scale-[1.01] hover:bg-gray-50 focus:outline-none flex items-center justify-center"
+                  >
+                    {copiedSnippetId === snippet.id ? (
+                      <>
+                        Copié ! <IoCheckmark className="ml-2" />
+                      </>
+                    ) : (
+                      <>
+                        Copier <IoCopyOutline className="ml-2" />
+                      </>
+                    )}
+                  </button>
+                  <button
+                    onClick={() => onEdit(snippet)}
+                    className="bg-white border font-semibold text-black py-2 px-4 rounded transition hover:scale-[1.01] hover:bg-gray-50 focus:outline-none flex items-center justify-center"
+                  >
+                    <IoPencil className="text-lg" />
+                  </button>
+                  <DeleteSnippetButton
+                    snippetId={snippet.id}
+                    onDelete={onDelete}
+                  />
+                </div>
               </div>
-            </div>
-          ))
+            );
+          })
       )}
     </div>
   );

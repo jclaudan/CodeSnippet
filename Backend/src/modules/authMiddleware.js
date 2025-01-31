@@ -18,13 +18,21 @@ export const authenticateToken = (req, res, next) => {
     const token = authHeader && authHeader.split(" ")[1];
 
     if (!token) {
+      console.log("Pas de token fourni");
       return res.status(401).json({ message: "Token manquant" });
     }
 
-    const decoded = jwt.verify(token, JWT_SECRET);
-    req.user = decoded;
-    next();
+    jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
+      if (err) {
+        console.log("Erreur de vérification du token:", err);
+        return res.status(403).json({ message: "Token invalide" });
+      }
+
+      req.user = user;
+      next();
+    });
   } catch (error) {
-    res.status(401).json({ message: "Token is not valid" });
+    console.log("Erreur d'authentification:", error);
+    res.status(401).json({ message: "Erreur d'authentification" });
   }
 };
