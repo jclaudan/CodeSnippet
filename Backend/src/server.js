@@ -65,7 +65,7 @@ app.post("/signin", signin);
 app.use("/snippets", snippetRoutes);
 app.use("/auth", authRoutes);
 app.use("/hub", hubRoutes);
-app.use("/user", userRoutes);
+app.use("/users", userRoutes);
 
 // Gestion des erreurs globale
 app.use((err, req, res, next) => {

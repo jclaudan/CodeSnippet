@@ -9,6 +9,7 @@ import CategoryFilter from "./components/CategoryFilter"; // Importez le composa
 import { useRouter } from "next/navigation";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { FiPlus } from "react-icons/fi";
 
 const HomePage = () => {
   const [snippets, setSnippets] = useState([]);
@@ -114,20 +115,44 @@ const HomePage = () => {
           <h1 className="text-2xl font-bold text-gray-800">Mes snippets</h1>
         </div>
         <div className="flex items-center mb-6">
-          <div className="w-full pr-4">
+          <div className="w-full mr-4 bg-white p-4 rounded-lg shadow">
             <SearchBar setSearchTerm={setSearchTerm} />
           </div>
-          <div className="w-1/4">
+          <div className="w-1/4 bg-white p-4 rounded-lg shadow">
             <CategoryFilter onSelectCategory={setSelectedCategory} />
           </div>
         </div>
 
-        {/* Ajoutez le filtre de catégorie */}
-        <SnippetList
-          snippets={filteredSnippets}
-          onEdit={handleEditSnippet}
-          onDelete={handleDeleteSnippet}
-        />
+        {isLoading ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {[...Array(6)].map((_, index) => (
+              <div key={index} className="bg-white rounded-lg shadow-md p-6">
+                {/* En-tête du snippet */}
+                <div className="flex justify-between items-center mb-4">
+                  <div className="animate-pulse h-6 w-48 bg-gray-200 rounded"></div>
+                  <div className="animate-pulse h-6 w-24 bg-gray-200 rounded-full"></div>
+                </div>
+
+                {/* Corps du snippet */}
+                <div className="mt-4">
+                  <div className="animate-pulse h-32 bg-gray-200 rounded"></div>
+                </div>
+
+                {/* Boutons d'action */}
+                <div className="mt-4 flex justify-end space-x-2">
+                  <div className="animate-pulse h-8 w-20 bg-gray-200 rounded"></div>
+                  <div className="animate-pulse h-8 w-20 bg-gray-200 rounded"></div>
+                </div>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <SnippetList
+            snippets={filteredSnippets}
+            onEdit={handleEditSnippet}
+            onDelete={handleDeleteSnippet}
+          />
+        )}
       </main>
 
       <Footer />
@@ -152,10 +177,10 @@ const HomePage = () => {
       )}
 
       <button
-        className="rounded-full bg-black h-20 w-20 flex items-center justify-center text-white fixed bottom-10 right-10 transition-transform duration-100 ease-in-out hover:scale-110"
+        className="rounded-full bg-indigo-500 h-20 w-20 flex items-center justify-center text-white fixed bottom-10 right-10 transition-transform duration-200 ease-in-out hover:scale-110 "
         onClick={() => setIsModalOpen(true)}
       >
-        +
+        <FiPlus className="w-4 h-4" />
       </button>
       <ToastContainer position="bottom-left" autoClose={5000} hideProgressBar />
     </div>

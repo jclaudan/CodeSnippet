@@ -15,7 +15,6 @@ export const addSnippet = async (snippetData, userId) => {
       description: snippetData.description,
       category: snippetData.category,
       isPublic: snippetData.isPublic || false,
-      likes: 0,
       userId: userId,
     },
     select: {
@@ -25,7 +24,6 @@ export const addSnippet = async (snippetData, userId) => {
       category: true,
       userId: true,
       isPublic: true,
-      likes: true,
       createdAt: true,
       updatedAt: true,
     },
@@ -48,7 +46,6 @@ export const modifySnippet = async (id, data) => {
       category: true,
       userId: true,
       isPublic: true,
-      likes: true,
       createdAt: true,
       updatedAt: true,
     },
@@ -57,13 +54,6 @@ export const modifySnippet = async (id, data) => {
 
 export const removeSnippet = async (snippetId, userId) => {
   try {
-    // Supprimer d'abord tous les likes associés
-    await prisma.snippetLike.deleteMany({
-      where: {
-        snippetId: snippetId,
-      },
-    });
-
     // Ensuite supprimer le snippet
     return await prisma.snippet.delete({
       where: {

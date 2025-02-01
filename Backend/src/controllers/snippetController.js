@@ -26,7 +26,6 @@ export const createSnippet = async (req, res) => {
         category,
         isPublic: Boolean(isPublic),
         userId,
-        likes: 0,
       },
       select: {
         id: true,
@@ -34,7 +33,6 @@ export const createSnippet = async (req, res) => {
         description: true,
         category: true,
         isPublic: true,
-        likes: true,
         userId: true,
         createdAt: true,
         updatedAt: true,

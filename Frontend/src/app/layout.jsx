@@ -10,7 +10,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="fr">
       <Analytics />
-      <body>{children}</body>
+      <body className="bg-zinc-900">{children}</body>
     </html>
   );
 }

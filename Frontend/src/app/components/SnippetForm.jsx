@@ -143,7 +143,7 @@ const SnippetForm = ({ setSnippets, setMessage, closeModal, initialData }) => {
         placeholder="(ex: for loop)"
         value={title}
         onChange={(e) => setTitle(e.target.value)}
-        className="w-full p-2 border border-gray-300 rounded mb-4 bg-white text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-black"
+        className="w-full p-2 border border-gray-300 rounded mb-4 bg-white text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-black/20"
       />
 
       <label htmlFor="category" className="text-black text-md font-semibold">
@@ -153,7 +153,7 @@ const SnippetForm = ({ setSnippets, setMessage, closeModal, initialData }) => {
         id="category"
         value={category}
         onChange={(e) => setCategory(e.target.value)}
-        className="w-full p-2 border border-gray-300 rounded mb-4 bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-black"
+        className="w-full p-2 border border-gray-300 rounded mb-4 bg-white text-gray-700 focus:outline-none focus:ring-1 focus:ring-black/20"
         required
       >
         <option value="">Sélectionnez une catégorie</option>
@@ -198,7 +198,9 @@ const SnippetForm = ({ setSnippets, setMessage, closeModal, initialData }) => {
             }}
             className="w-4 h-4 text-black rounded focus:ring-black mr-2"
           />
-          Rendre public
+          {isPublic
+            ? "Supprimer de la communauté"
+            : "Partager avec la communauté"}
         </label>
       </div>
 

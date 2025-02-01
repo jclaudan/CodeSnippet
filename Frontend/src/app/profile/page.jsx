@@ -4,14 +4,11 @@ import { Navbar } from "../components/layouts/Navbar";
 import { Footer } from "../components/layouts/Footer";
 import { IoCamera } from "react-icons/io5";
 import { toast } from "react-toastify";
-import { useRouter } from "next/navigation";
 
 const ProfilePage = () => {
-  const router = useRouter();
   const [user, setUser] = useState(null);
   const [avatar, setAvatar] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
-  const API_URL = "http://localhost:3000"; // Définir l'URL de base
 
   useEffect(() => {
     fetchUserProfile();
@@ -20,15 +17,12 @@ const ProfilePage = () => {
   const fetchUserProfile = async () => {
     try {
       const token = localStorage.getItem("token");
-      if (!token) {
-        toast.error("Veuillez vous connecter");
-        router.push("/login");
-        return;
-      }
-
-      const response = await fetch(`${API_URL}/users/profile`, {
+      const response = await fetch("http://localhost:3000/users/profile", {
+        method: "GET",
+        credentials: "include",
         headers: {
           Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
         },
       });
 
@@ -37,8 +31,8 @@ const ProfilePage = () => {
         setUser(data);
         setAvatar(data.avatar || data.googleAvatar || data.githubAvatar);
       } else if (response.status === 401) {
-        toast.error("Session expirée, veuillez vous reconnecter");
-        router.push("/login");
+        toast.error("Veuillez vous reconnecter");
+        window.location.href = "/login";
       }
     } catch (error) {
       console.error("Erreur:", error);
@@ -58,18 +52,13 @@ const ProfilePage = () => {
     }
 
     const token = localStorage.getItem("token");
-    if (!token) {
-      toast.error("Veuillez vous connecter");
-      router.push("/login");
-      return;
-    }
-
     const formData = new FormData();
     formData.append("avatar", file);
 
     try {
-      const response = await fetch(`${API_URL}/users/avatar`, {
+      const response = await fetch("http://localhost:3000/users/avatar", {
         method: "POST",
+        credentials: "include",
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -80,11 +69,6 @@ const ProfilePage = () => {
         const data = await response.json();
         setAvatar(data.avatar);
         toast.success("Avatar mis à jour avec succès !");
-      } else if (response.status === 401) {
-        toast.error("Session expirée, veuillez vous reconnecter");
-        router.push("/login");
-      } else {
-        throw new Error("Erreur lors de la mise à jour");
       }
     } catch (error) {
       console.error("Erreur:", error);
@@ -104,13 +88,15 @@ const ProfilePage = () => {
     <div className="min-h-screen bg-gray-100">
       <Navbar />
 
-      <main className="max-w-4xl mx-auto p-6">
-        <div className="bg-white rounded-xl shadow-lg p-8">
-          <h1 className="text-3xl font-bold text-gray-800 mb-8">Mon Profil</h1>
+      <main className="max-w-4xl mx-auto py-16 flex-grow">
+        <div className="bg-white rounded-xl shadow-lg p-10 px-24 transform  transition-all duration-300">
+          <h1 className="text-3xl font-bold text-gray-800 mb-8 border-b pb-4 text-center">
+            Mon Profil
+          </h1>
 
           <div className="flex flex-col items-center mb-8">
             <div className="relative group">
-              <div className="w-32 h-32 rounded-full overflow-hidden border-4 border-gray-200">
+              <div className="w-32 h-32 rounded-full overflow-hidden border-4 border-gray-200 transition-transform duration-300 transform hover:scale-105 hover:border-indigo-500">
                 {avatar ? (
                   <img
                     src={avatar}
@@ -126,7 +112,7 @@ const ProfilePage = () => {
                 )}
               </div>
 
-              <label className="absolute bottom-0 right-0 bg-blue-600 p-2 rounded-full cursor-pointer hover:bg-blue-700 transition group-hover:scale-110">
+              <label className="absolute bottom-0 right-0 bg-indigo-600 p-2 rounded-full cursor-pointer hover:bg-indigo-700 transition-all duration-300 group-hover:scale-110 hover:shadow-lg">
                 <IoCamera className="text-white text-xl" />
                 <input
                   type="file"
@@ -137,20 +123,24 @@ const ProfilePage = () => {
               </label>
             </div>
 
-            <h2 className="text-xl font-semibold mt-4">{user?.username}</h2>
-            <p className="text-gray-600">{user?.email}</p>
+            <h2 className="text-2xl font-semibold mt-6 text-gray-800">
+              {user?.username}
+            </h2>
+            <p className="text-gray-600 mt-2 font-medium">{user?.email}</p>
           </div>
 
           <div className="border-t border-gray-200 pt-6">
-            <h3 className="text-lg font-semibold mb-4">
-              Informations de connexion
+            <h3 className="text-xl font-semibold mb-6 text-gray-800 flex items-center">
+              <span className="bg-indigo-100 rounded-lg px-4 py-2">
+                Informations de connexion
+              </span>
             </h3>
-            <div className="space-y-4">
-              <div className="flex items-center">
-                <span className="text-gray-600 w-40">
+            <div className="space-y-6 bg-gray-50 rounded-lg p-6">
+              <div className="flex items-center hover:bg-white p-3 rounded-lg transition-all duration-300">
+                <span className="text-gray-600 w-40 font-medium">
                   Méthode de connexion:
                 </span>
-                <span className="font-medium">
+                <span className="font-medium text-indigo-600">
                   {user?.googleId
                     ? "Google"
                     : user?.githubId
@@ -158,9 +148,11 @@ const ProfilePage = () => {
                     : "Email"}
                 </span>
               </div>
-              <div className="flex items-center">
-                <span className="text-gray-600 w-40">Membre depuis:</span>
-                <span className="font-medium">
+              <div className="flex items-center hover:bg-white p-3 rounded-lg transition-all duration-300">
+                <span className="text-gray-600 w-40 font-medium">
+                  Membre depuis:
+                </span>
+                <span className="font-medium text-indigo-600">
                   {new Date(user?.createdAt).toLocaleDateString()}
                 </span>
               </div>

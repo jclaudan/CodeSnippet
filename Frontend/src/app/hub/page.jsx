@@ -4,9 +4,14 @@ import { Navbar } from "../components/layouts/Navbar";
 import { Footer } from "../components/layouts/Footer";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { vscDarkPlus } from "react-syntax-highlighter/dist/esm/styles/prism";
-import { IoCopyOutline, IoCheckmark } from "react-icons/io5";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import {
+  IoCopyOutline,
+  IoCheckmark,
+  IoHeart,
+  IoHeartOutline,
+  IoBookmark,
+  IoBookmarkOutline,
+} from "react-icons/io5";
 import SearchBar from "../components/SearchBar";
 import CategoryFilter from "../components/CategoryFilter";
 
@@ -70,23 +75,27 @@ const HubPage = () => {
   };
 
   const handleCopy = (text, snippetId) => {
-    navigator.clipboard
-      .writeText(text)
-      .then(() => {
-        setCopiedSnippetId(snippetId);
-        toast.success("Code copié !");
-        setTimeout(() => setCopiedSnippetId(null), 2000);
-      })
-      .catch((err) => toast.error("Erreur lors de la copie"));
+    navigator.clipboard.writeText(text).then(() => {
+      setCopiedSnippetId(snippetId);
+      setTimeout(() => setCopiedSnippetId(null), 2000);
+    });
+  };
+
+  const handleLike = (snippetId) => {
+    // Implementation of handleLike function
+  };
+
+  const handleSave = (snippetId) => {
+    // Implementation of handleSave function
   };
 
   return (
-    <div className="min-h-screen bg-gray-100">
+    <div className="min-h-screen bg-gray-100 flex flex-col">
       <header className="bg-gray-50">
         <Navbar />
       </header>
 
-      <main className="container mx-auto px-4 py-8">
+      <main className="container mx-auto px-4 py-8 flex-grow">
         <div className="flex gap-8">
           {/* Sidebar gauche */}
           <div className="hidden lg:block w-64 space-y-6">
@@ -107,15 +116,42 @@ const HubPage = () => {
 
             {/* Liste des snippets */}
             {isLoading ? (
-              <div className="flex justify-center items-center h-64">
-                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
+              <div className="grid grid-cols-1 gap-6">
+                {[...Array(3)].map((_, index) => (
+                  <div
+                    key={index}
+                    className="bg-white rounded-lg shadow-md p-6"
+                  >
+                    {/* En-tête du snippet */}
+                    <div className="flex justify-between items-center mb-2">
+                      <div className="animate-pulse h-6 w-48 bg-gray-200 rounded"></div>
+                      <div className="animate-pulse h-6 w-24 bg-gray-200 rounded-full"></div>
+                    </div>
+
+                    {/* Info utilisateur */}
+                    <div className="flex items-center gap-2 mb-4">
+                      <div className="animate-pulse w-8 h-8 bg-gray-200 rounded-full"></div>
+                      <div className="animate-pulse h-4 w-32 bg-gray-200 rounded"></div>
+                    </div>
+
+                    {/* Corps du snippet */}
+                    <div className="mt-4">
+                      <div className="animate-pulse h-40 bg-gray-200 rounded"></div>
+                    </div>
+
+                    {/* Bouton copier */}
+                    <div className="mt-4">
+                      <div className="animate-pulse h-10 w-24 bg-gray-200 rounded-full"></div>
+                    </div>
+                  </div>
+                ))}
               </div>
             ) : (
               <div className="grid grid-cols-1 gap-6">
                 {filteredSnippets.map((snippet) => (
                   <div
                     key={snippet.id}
-                    className="bg-white rounded-lg shadow-md p-6"
+                    className="bg-white rounded-lg shadow-md p-6 transition-transform transform hover:scale-[1.01] hover:shadow-lg"
                   >
                     <div className="flex justify-between items-center mb-2">
                       <h3 className="text-gray-800 font-semibold text-lg">
@@ -135,7 +171,7 @@ const HubPage = () => {
                     </div>
 
                     {/* Ajout des informations de l'utilisateur */}
-                    <div className="flex items-center gap-2 mb-4">
+                    <div className="flex items-center gap-2 mb-4 ">
                       <img
                         src={
                           snippet.user?.avatar ||
@@ -159,29 +195,62 @@ const HubPage = () => {
                             year: "numeric",
                           }
                         )}
+                        {" à "}
+                        {new Date(snippet.createdAt).toLocaleTimeString(
+                          "fr-FR",
+                          {
+                            hour: "2-digit",
+                            minute: "2-digit",
+                          }
+                        )}
                       </span>
                     </div>
 
-                    <div className="mt-4">
+                    <div className="mt-4 relative">
                       <SyntaxHighlighter
                         language="javascript"
+                        className="rounded-lg flex-grow overflow-auto"
                         style={vscDarkPlus}
                         customStyle={{
                           borderRadius: "0.5rem",
                           padding: "1rem",
                           fontSize: "0.9rem",
-                          maxHeight: "400px",
+                          maxHeight: "12rem",
+                          overflow: "auto",
                         }}
                       >
                         {snippet.description}
                       </SyntaxHighlighter>
                     </div>
                     <div className="mt-4 flex justify-between items-center">
+                      <div className="flex gap-4">
+                        <button
+                          onClick={() => handleLike(snippet.id)}
+                          className="flex items-center space-x-2 text-gray-500 hover:text-red-600 transition"
+                        >
+                          {snippet.isLiked ? (
+                            <IoHeart className="text-xl text-red-600" />
+                          ) : (
+                            <IoHeartOutline className="text-xl" />
+                          )}
+                          <span>{snippet.likesCount}</span>
+                        </button>
+                        <button
+                          onClick={() => handleSave(snippet.id)}
+                          className="flex items-center space-x-2 text-gray-500 hover:text-yellow-600 transition"
+                        >
+                          {snippet.isSaved ? (
+                            <IoBookmark className="text-xl text-yellow-600" />
+                          ) : (
+                            <IoBookmarkOutline className="text-xl" />
+                          )}
+                        </button>
+                      </div>
                       <button
                         onClick={() =>
                           handleCopy(snippet.description, snippet.id)
                         }
-                        className="flex items-center space-x-2 text-gray-500 hover:text-blue-600 transition px-4 py-2 rounded-full border border-gray-200 hover:border-blue-600"
+                        className="flex items-center space-x-2 text-gray-500 hover:text-indigo-500 transition px-4 py-2 rounded-full border border-gray-200 hover:borderindigo-500"
                       >
                         {copiedSnippetId === snippet.id ? (
                           <>
@@ -239,7 +308,6 @@ const HubPage = () => {
       </main>
 
       <Footer />
-      <ToastContainer />
     </div>
   );
 };
