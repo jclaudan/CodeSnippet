@@ -6,7 +6,7 @@ const SearchBar = ({ setSearchTerm }) => {
       type="text"
       placeholder="Rechercher un snippet..."
       onChange={(e) => setSearchTerm(e.target.value)}
-      className="p-2 text-black border rounded-lg border-gray-300 outline-none w-full ease-in-out duration-200 focus:ring-black focus:ring-1"
+      className="p-2 text-black border rounded-lg border-gray-300 outline-none w-full ease-in-out duration-200 outline-none focus:ring-1 focus:ring-black/20"
     />
   );
 };

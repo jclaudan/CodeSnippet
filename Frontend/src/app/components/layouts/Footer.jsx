@@ -1,4 +1,4 @@
-export const Footer = () => {
+export default function Footer() {
   return (
     <footer className="bg-zinc-900 text-center p-6 border-t border-zinc-800">
       <div className="text-zinc-100 font-medium">
@@ -28,4 +28,4 @@ export const Footer = () => {
       </div>
     </footer>
   );
-};
+}
