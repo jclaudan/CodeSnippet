@@ -1,10 +1,19 @@
 import { useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { IoPersonCircleOutline } from "react-icons/io5";
+import { Syne } from "next/font/google";
+
+const syne = Syne({
+  subsets: ["latin"],
+  display: "swap",
+  weight: ["700"],
+});
 
 export const Navbar = () => {
   const router = useRouter();
+  const pathname = usePathname();
 
   const handleLogout = () => {
     localStorage.removeItem("token");
@@ -27,7 +36,9 @@ export const Navbar = () => {
                 height={36}
                 className="w-9 h-9"
               />
-              <span className="text-xl text-zinc-100 font-bold">
+              <span
+                className={`text-xl  text-zinc-100 font-bold ${syne.className}`}
+              >
                 CodeSnippet
               </span>
             </Link>
@@ -35,17 +46,37 @@ export const Navbar = () => {
             <div className="hidden md:flex items-center space-x-8">
               <Link
                 href="/"
-                className="text-zinc-400 hover:text-zinc-100 font-medium transition-colors relative group"
+                className={`relative px-3 py-2 text-zinc-400 font-medium group transition-colors duration-300
+                  ${pathname === "/" ? "text-zinc-100" : "hover:text-zinc-100"}
+                `}
               >
-                Mes Snippets
-                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-indigo-500 transition-all duration-300 group-hover:w-full"></span>
+                <span className="relative z-10">Mes Snippets</span>
+                <div
+                  className={`absolute inset-0 bg-zinc-800 rounded-lg transform scale-95 opacity-0 transition-all duration-300
+                  ${
+                    pathname === "/" ? "opacity-100" : "group-hover:opacity-100"
+                  }`}
+                />
               </Link>
               <Link
                 href="/hub"
-                className="text-zinc-400 hover:text-zinc-100 font-medium transition-colors relative group"
+                className={`relative px-3 py-2 text-zinc-400 font-medium group transition-colors duration-300
+                  ${
+                    pathname === "/hub"
+                      ? "text-zinc-100"
+                      : "hover:text-zinc-100"
+                  }
+                `}
               >
-                Hub
-                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-indigo-500 transition-all duration-300 group-hover:w-full"></span>
+                <span className="relative z-10">Hub</span>
+                <div
+                  className={`absolute inset-0 bg-zinc-800 rounded-lg transform scale-95 opacity-0 transition-all duration-300
+                  ${
+                    pathname === "/hub"
+                      ? "opacity-100"
+                      : "group-hover:opacity-100"
+                  }`}
+                />
               </Link>
             </div>
           </div>

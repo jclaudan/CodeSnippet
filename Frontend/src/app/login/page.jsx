@@ -2,6 +2,13 @@
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import { FaGoogle, FaGithub } from "react-icons/fa";
+import { Syne } from "next/font/google";
+
+const syne = Syne({
+  subsets: ["latin"],
+  display: "swap",
+  weight: ["700"],
+});
 
 const Login = () => {
   const [username, setUsername] = useState("");
@@ -45,7 +52,7 @@ const Login = () => {
   };
 
   const handleGoogleLogin = () => {
-    window.location.href = "https://codesnippet-cy4q.onrender.com/auth/google";
+    window.location.href = "http://localhost:3000/auth/google";
   };
 
   const handleGithubLogin = () => {
@@ -57,8 +64,17 @@ const Login = () => {
       <div className="flex items-center justify-center py-12 flex-grow">
         <div className="container mx-auto px-4 flex flex-col md:flex-row items-start justify-center gap-20">
           <div className="md:w-1/2 max-w-lg self-center">
-            <h1 className="text-4xl font-bold mb-4 text-gray-800">
-              Rejoignez la communauté des développeurs
+            <h1
+              className={`text-4xl font-bold mb-4 text-gray-800 ${syne.className} relative`}
+            >
+              CodeSnippet
+              <span
+                className="absolute -bottom-1 left-0 w-32 h-1 bg-indigo-500"
+                style={{
+                  clipPath: "polygon(0 0, 100% 0, 90% 100%, 10% 100%)",
+                  transform: "skewX(-15deg)",
+                }}
+              ></span>
             </h1>
             <p className="text-gray-600 text-base mb-6">
               Partagez vos snippets, découvrez ceux des autres et enrichissez

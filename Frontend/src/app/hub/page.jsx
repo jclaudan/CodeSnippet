@@ -34,7 +34,9 @@ const HubPage = () => {
   }, []);
 
   useEffect(() => {
-    let filtered = publicSnippets;
+    if (!publicSnippets) return;
+
+    let filtered = [...publicSnippets];
 
     if (searchTerm) {
       filtered = filtered.filter((snippet) =>
@@ -112,23 +114,25 @@ const HubPage = () => {
               </div>
             ) : (
               <div className="grid grid-cols-1 gap-6">
-                {filteredSnippets.map((snippet) => (
-                  <SnippetCard
-                    key={snippet.id}
-                    snippet={snippet}
-                    categoryStyles={categoryStyles}
-                    copiedSnippetId={copiedSnippetId}
-                    onCopy={handleCopy}
-                    onLike={handleLike}
-                    onSave={handleSave}
-                  />
-                ))}
-              </div>
-            )}
-
-            {!isLoading && filteredSnippets.length === 0 && (
-              <div className="text-center py-12 bg-white rounded-lg shadow">
-                <p className="text-gray-600 text-lg">Aucun snippet trouvé</p>
+                {filteredSnippets && filteredSnippets.length > 0 ? (
+                  filteredSnippets.map((snippet) => (
+                    <SnippetCard
+                      key={snippet.id}
+                      snippet={snippet}
+                      categoryStyles={categoryStyles}
+                      copiedSnippetId={copiedSnippetId}
+                      onCopy={handleCopy}
+                      onLike={handleLike}
+                      onSave={handleSave}
+                    />
+                  ))
+                ) : (
+                  <div className="text-center py-12 bg-white rounded-lg shadow">
+                    <p className="text-gray-600 text-lg">
+                      Aucun snippet trouvé
+                    </p>
+                  </div>
+                )}
               </div>
             )}
           </div>

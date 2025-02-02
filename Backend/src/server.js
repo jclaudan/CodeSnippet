@@ -32,7 +32,7 @@ app.use(
   })
 );
 
-// Initialisation de Passport
+// Initialisation de Passpo rt
 app.use(passport.initialize());
 
 // Logger personnalisé pour la production
