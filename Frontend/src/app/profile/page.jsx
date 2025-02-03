@@ -8,6 +8,8 @@ import { getUserProfile, updateUserAvatar } from "../../api/users";
 import { toast } from "react-toastify";
 import LoadingProfile from "../components/ui/Loading/LoadingProfile";
 import { useTheme } from "../context/ThemeContext";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const ProfilePage = () => {
   const { darkMode } = useTheme();
@@ -121,10 +123,20 @@ const ProfilePage = () => {
             </p>
           </div>
 
-          <UserInfo user={user} />
+          <UserInfo user={user} setUser={setUser} />
         </div>
       </main>
       <Footer />
+
+      <ToastContainer
+        position="bottom-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        closeOnClick
+        pauseOnHover
+        draggable
+        theme={darkMode ? "dark" : "light"}
+      />
     </div>
   );
 };
