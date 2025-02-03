@@ -28,7 +28,7 @@ const HubPage = () => {
   const [copiedSnippetId, setCopiedSnippetId] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
-  const [sortBy, setSortBy] = useState("recent");
+  const [sortBy, setSortBy] = useState("popular");
 
   const sortOptions = [
     { value: "recent", label: "Plus récents" },
@@ -47,9 +47,9 @@ const HubPage = () => {
       });
 
       if (response.ok) {
-        const data = await response.json();
-        console.log("Données reçues:", data);
-        setPublicSnippets(data.snippets);
+        const snippets = await response.json();
+        console.log("Données reçues:", snippets);
+        setPublicSnippets(snippets);
       }
     } catch (error) {
       console.error("Erreur lors de la récupération:", error);
