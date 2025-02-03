@@ -26,6 +26,8 @@ model User {
   createdAt    DateTime  @default(now())
   updatedAt    DateTime  @default(now()) @updatedAt
   snippets     Snippet[]
+  likes        SnippetLike[]
+  bookmarks    SnippetBookmark[]
 }
 
 model Snippet {
@@ -38,5 +40,29 @@ model Snippet {
   user        User     @relation(fields: [userId], references: [id])
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+  likes       SnippetLike[]
+  bookmarks   SnippetBookmark[]
+}
+
+model SnippetLike {
+  id        String   @id @default(uuid())
+  userId    String
+  snippetId String
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id])
+  snippet   Snippet  @relation(fields: [snippetId], references: [id])
+
+  @@unique([userId, snippetId])
+}
+
+model SnippetBookmark {
+  id        String   @id @default(uuid())
+  userId    String
+  snippetId String
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id])
+  snippet   Snippet  @relation(fields: [snippetId], references: [id])
+
+  @@unique([userId, snippetId])
 }
 

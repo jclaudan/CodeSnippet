@@ -2,17 +2,17 @@ import React, { useState } from "react";
 import { IoTrashOutline } from "react-icons/io5";
 import { toast } from "react-toastify"; // Importer toast
 import ConfirmationDialog from "./ConfirmationDialog";
-
+import { useTheme } from "@/app/context/ThemeContext";
 const DeleteSnippetButton = ({ snippetId, onDelete }) => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-
+  const { darkMode } = useTheme();
   const handleDelete = async () => {
     setIsDialogOpen(false); // Ferme la boîte de confirmation
 
     try {
       const token = localStorage.getItem("token");
       const response = await fetch(
-        `https://codesnippet-cy4q.onrender.com/snippets/${snippetId}`,
+        `http://localhost:3000/snippets/${snippetId}`,
         {
           method: "DELETE",
           headers: {
@@ -50,7 +50,11 @@ const DeleteSnippetButton = ({ snippetId, onDelete }) => {
     <>
       <button
         onClick={() => setIsDialogOpen(true)}
-        className="bg-white border font-semibold text-black py-2 px-4 rounded transition hover:scale-[1.01] hover:bg-gray-50 focus:outline-none flex items-center justify-center"
+        className={`${
+          darkMode
+            ? "bg-zinc-700 text-gray-300 border-zinc-600 py-2 px-4 rounded transition hover:scale-[1.01] hover:bg-zinc-600 flex items-center justify-center"
+            : "bg-white border font-semibold text-black py-2 px-4 rounded transition hover:scale-[1.01] hover:bg-gray-50 focus:outline-none flex items-center justify-center"
+        }`}
       >
         <IoTrashOutline className="text-lg" />
       </button>

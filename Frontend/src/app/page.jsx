@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useTheme } from "./context/ThemeContext";
 
 import Navbar from "./components/layouts/Navbar";
 import Footer from "./components/layouts/Footer";
@@ -13,7 +14,9 @@ import SearchAndFilter from "./components/ui/SearchAndFilter";
 import SnippetModal from "./components/snippets/SnippetModal";
 import AddSnippetButton from "./components/ui/AddSnippetButton";
 import LoadingHome from "./components/ui/Loading/LoadingHome";
+
 const HomePage = () => {
+  const { darkMode } = useTheme();
   const [snippets, setSnippets] = useState([]);
   const [filteredSnippets, setFilteredSnippets] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
@@ -105,14 +108,24 @@ const HomePage = () => {
   };
 
   return (
-    <div className="flex flex-col min-h-screen bg-gray-100 text-gray-200">
-      <header className="bg-gray-50">
+    <div
+      className={`flex flex-col min-h-screen ${
+        darkMode ? "bg-zinc-900 text-gray-200" : "bg-gray-100 text-gray-800"
+      }`}
+    >
+      <header>
         <Navbar />
       </header>
 
       <main className="flex flex-col flex-grow p-6 max-w-[1500px] mx-auto w-full">
         <div className="mb-6">
-          <h1 className="text-2xl font-bold text-gray-800">Mes snippets</h1>
+          <h1
+            className={`text-2xl font-bold ${
+              darkMode ? "text-gray-100" : "text-gray-800"
+            }`}
+          >
+            Mes snippets
+          </h1>
         </div>
 
         <SearchAndFilter
@@ -144,7 +157,12 @@ const HomePage = () => {
 
       <AddSnippetButton onClick={() => setIsModalOpen(true)} />
 
-      <ToastContainer position="bottom-left" autoClose={5000} hideProgressBar />
+      <ToastContainer
+        position="bottom-left"
+        autoClose={5000}
+        hideProgressBar
+        theme={darkMode ? "dark" : "light"}
+      />
     </div>
   );
 };

@@ -14,16 +14,13 @@ const Register = () => {
     setError("");
     setSuccessMessage("");
     try {
-      const response = await fetch(
-        "https://codesnippet-cy4q.onrender.com/user",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ username, password }),
-        }
-      );
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/user`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ username, password }),
+      });
 
       if (!response.ok) {
         const errorData = await response.json();

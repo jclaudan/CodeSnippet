@@ -68,26 +68,47 @@ export const updateSnippet = async (req, res) => {
 };
 
 export const deleteSnippet = async (req, res) => {
-  const { id } = req.params;
+  try {
+    const { id } = req.params;
+    const userId = req.user.userId;
 
-  // Récupérer la tâche pour vérifier l'utilisateur
-  const snippet = await prisma.snippet.findUnique({
-    where: { id: id },
-  });
+    // Vérifier si le snippet existe et appartient à l'utilisateur
+    const snippet = await prisma.snippet.findUnique({
+      where: { id },
+      include: { likes: true },
+    });
 
-  // Vérifier si la tâche existe et si l'utilisateur a le droit de la supprimer
-  if (!snippet) {
-    return res.status(404).json({ error: "Snippet non trouvée" });
-  }
+    if (!snippet) {
+      return res.status(404).json({ error: "Snippet non trouvé" });
+    }
 
-  if (snippet.userId !== req.user.userId) {
-    return res.status(403).json({
-      error: "Accès refusé : vous ne pouvez pas supprimer ce snippet",
+    if (snippet.userId !== userId) {
+      return res.status(403).json({
+        error: "Accès refusé : vous ne pouvez pas supprimer ce snippet",
+      });
+    }
+
+    // D'abord supprimer tous les likes associés
+    await prisma.snippetLike.deleteMany({
+      where: {
+        snippetId: id,
+      },
+    });
+
+    // Ensuite supprimer le snippet
+    await prisma.snippet.delete({
+      where: { id },
+    });
+
+    res.status(204).send();
+  } catch (error) {
+    console.error("Erreur lors de la suppression:", error);
+    res.status(500).json({
+      error: "Erreur lors de la suppression du snippet",
+      details:
+        process.env.NODE_ENV === "development" ? error.message : undefined,
     });
   }
-
-  await removeSnippet(id);
-  res.status(204).send();
 };
 
 export const getUserSnippets = async (req, res) => {

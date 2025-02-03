@@ -7,7 +7,7 @@ import CategoryFilter from "../components/ui/CategoryFilter";
 import SnippetCard from "../components/hub/SnippetCard";
 import LoadingHub from "../components/ui/Loading/LoadingHub";
 import TrendingSidebar from "../components/hub/TrendingSidebar";
-
+import { useTheme } from "../context/ThemeContext";
 const HubPage = () => {
   const categoryStyles = {
     JavaScript: "bg-yellow-200 text-yellow-800",
@@ -28,13 +28,61 @@ const HubPage = () => {
   const [copiedSnippetId, setCopiedSnippetId] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
+  const [sortBy, setSortBy] = useState("recent");
+
+  const sortOptions = [
+    { value: "recent", label: "Plus récents" },
+    { value: "popular", label: "Plus populaires" },
+    { value: "oldest", label: "Plus anciens" },
+  ];
+
+  const fetchPublicSnippets = async () => {
+    try {
+      setIsLoading(true);
+      const token = localStorage.getItem("token");
+      const response = await fetch("http://localhost:3000/hub/public", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        console.log("Données reçues:", data);
+        setPublicSnippets(data.snippets);
+      }
+    } catch (error) {
+      console.error("Erreur lors de la récupération:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const sortSnippets = (snippets) => {
+    if (!snippets) return [];
+
+    switch (sortBy) {
+      case "recent":
+        return [...snippets].sort(
+          (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+        );
+      case "popular":
+        return [...snippets].sort((a, b) => b.likesCount - a.likesCount);
+      case "oldest":
+        return [...snippets].sort(
+          (a, b) => new Date(a.createdAt) - new Date(b.createdAt)
+        );
+      default:
+        return snippets;
+    }
+  };
 
   useEffect(() => {
     fetchPublicSnippets();
   }, []);
 
   useEffect(() => {
-    if (!publicSnippets) return;
+    if (!Array.isArray(publicSnippets)) return;
 
     let filtered = [...publicSnippets];
 
@@ -50,24 +98,9 @@ const HubPage = () => {
       );
     }
 
+    filtered = sortSnippets(filtered);
     setFilteredSnippets(filtered);
-  }, [searchTerm, selectedCategory, publicSnippets]);
-
-  const fetchPublicSnippets = async () => {
-    try {
-      const response = await fetch("http://localhost:3000/hub/public");
-      if (response.ok) {
-        const data = await response.json();
-        setPublicSnippets(data);
-      } else {
-        console.error("Erreur de réponse:", response.status);
-      }
-    } catch (error) {
-      console.error("Erreur lors de la récupération:", error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  }, [searchTerm, selectedCategory, publicSnippets, sortBy]);
 
   const handleCopy = (text, snippetId) => {
     navigator.clipboard.writeText(text).then(() => {
@@ -76,16 +109,30 @@ const HubPage = () => {
     });
   };
 
-  const handleLike = (snippetId) => {
-    // Implementation of handleLike function
+  const handleLike = (snippetId, isLiked, likesCount) => {
+    setPublicSnippets((prevSnippets) =>
+      prevSnippets.map((snippet) =>
+        snippet.id === snippetId ? { ...snippet, isLiked, likesCount } : snippet
+      )
+    );
   };
 
-  const handleSave = (snippetId) => {
-    // Implementation of handleSave function
+  const handleBookmark = (snippetId, isBookmarked) => {
+    setPublicSnippets((prevSnippets) =>
+      prevSnippets.map((snippet) =>
+        snippet.id === snippetId ? { ...snippet, isBookmarked } : snippet
+      )
+    );
   };
+
+  const { darkMode } = useTheme();
 
   return (
-    <div className="min-h-screen bg-gray-100 flex flex-col">
+    <div
+      className={`min-h-screen ${
+        darkMode ? "bg-zinc-900" : "bg-gray-100"
+      } flex flex-col`}
+    >
       <header className="bg-gray-50">
         <Navbar />
       </header>
@@ -93,17 +140,76 @@ const HubPage = () => {
       <main className="container mx-auto px-4 py-8 flex-grow">
         <div className="flex gap-8">
           <div className="hidden lg:block w-64 space-y-6">
-            <div className="bg-white p-4 rounded-lg shadow">
-              <h2 className="font-bold text-lg text-gray-800 mb-4">
+            <div
+              className={`${
+                darkMode ? "bg-zinc-800" : "bg-white"
+              } p-4 rounded-lg shadow`}
+            >
+              <h2
+                className={`font-bold text-lg ${
+                  darkMode ? "text-gray-200" : "text-gray-800"
+                } mb-4`}
+              >
                 Catégories
               </h2>
               <CategoryFilter onSelectCategory={setSelectedCategory} />
             </div>
+
+            <div
+              className={`${
+                darkMode ? "bg-zinc-800" : "bg-white"
+              } p-4 rounded-lg shadow`}
+            >
+              <h2
+                className={`font-bold text-lg ${
+                  darkMode ? "text-gray-200" : "text-gray-800"
+                } mb-4`}
+              >
+                Trier par
+              </h2>
+              <div className="space-y-2">
+                {sortOptions.map((option) => (
+                  <button
+                    key={option.value}
+                    onClick={() => setSortBy(option.value)}
+                    className={`w-full text-left px-3 py-2 rounded-md transition-colors ${
+                      sortBy === option.value
+                        ? "bg-zinc-900 text-white"
+                        : darkMode
+                        ? "text-gray-300 hover:bg-zinc-700"
+                        : "text-gray-600 hover:bg-gray-100"
+                    }`}
+                  >
+                    {option.label}
+                  </button>
+                ))}
+              </div>
+            </div>
           </div>
 
           <div className="flex-1 max-w-3xl">
-            <div className="bg-white p-4 rounded-lg shadow mb-6">
+            <div
+              className={`${
+                darkMode ? "bg-zinc-800" : "bg-white"
+              } p-4 rounded-lg shadow mb-6`}
+            >
               <SearchBar setSearchTerm={setSearchTerm} />
+            </div>
+
+            <div className="lg:hidden p-4 rounded-lg shadow sticky top-4">
+              <select
+                value={sortBy}
+                onChange={(e) => setSortBy(e.target.value)}
+                className={`${
+                  darkMode ? "bg-zinc-100" : "bg-white"
+                } w-full p-2 border border-gray-300 rounded-md`}
+              >
+                {sortOptions.map((option) => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
+                ))}
+              </select>
             </div>
 
             {isLoading ? (
@@ -123,15 +229,13 @@ const HubPage = () => {
                       copiedSnippetId={copiedSnippetId}
                       onCopy={handleCopy}
                       onLike={handleLike}
-                      onSave={handleSave}
+                      onBookmark={handleBookmark}
                     />
                   ))
                 ) : (
-                  <div className="text-center py-12 bg-white rounded-lg shadow">
-                    <p className="text-gray-600 text-lg">
-                      Aucun snippet trouvé
-                    </p>
-                  </div>
+                  <p className="text-center text-gray-500">
+                    Aucun snippet trouvé
+                  </p>
                 )}
               </div>
             )}

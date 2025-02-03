@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { toast } from "react-toastify";
 import MonacoEditor from "@monaco-editor/react";
-
+import { useTheme } from "@/app/context/ThemeContext";
 const categories = [
   "JavaScript",
   "Typescript",
@@ -17,6 +17,7 @@ const categories = [
 ]; // Liste des catégories
 
 const SnippetForm = ({ setSnippets, setMessage, closeModal, initialData }) => {
+  const { darkMode } = useTheme();
   const [title, setTitle] = useState(initialData?.title || "");
   const [description, setDescription] = useState(
     initialData?.description || ""
@@ -122,19 +123,30 @@ const SnippetForm = ({ setSnippets, setMessage, closeModal, initialData }) => {
   return (
     <div>
       <div className="flex justify-between items-center mb-4">
-        <h2 className="text-black font-bold text-xl">
+        <h2
+          className={`${
+            darkMode ? "text-gray-300" : "text-gray-800"
+          } font-bold text-xl`}
+        >
           {initialData ? "Modifier un Snippet" : "Ajouter un Snippet"}
         </h2>
         <button
           onClick={closeModal}
-          style={{ zIndex: 10, backgroundColor: "white" }}
-          className="absolute top-4 right-4 text-black text-xl"
+          style={{ zIndex: 10 }}
+          className={`${
+            darkMode ? "text-gray-300 bg-zinc-900" : "text-gray-800"
+          } absolute top-4 right-4 text-xl`}
         >
           &times;
         </button>
       </div>
 
-      <label htmlFor="title" className="text-black text-md font-semibold">
+      <label
+        htmlFor="title"
+        className={`${
+          darkMode ? "text-gray-300" : "text-gray-800"
+        } text-md font-semibold`}
+      >
         Titre
       </label>
       <input
@@ -143,17 +155,30 @@ const SnippetForm = ({ setSnippets, setMessage, closeModal, initialData }) => {
         placeholder="(ex: for loop)"
         value={title}
         onChange={(e) => setTitle(e.target.value)}
-        className="w-full p-2 border border-gray-300 rounded mb-4 bg-white text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-black/20"
+        className={`${
+          darkMode
+            ? "bg-zinc-800 border-zinc-700 text-gray-300 w-full p-2 rounded mb-4 outline-none focus:ring-1 focus:ring-black/20"
+            : "w-full p-2 border border-gray-300 rounded mb-4 bg-white text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-black/20"
+        }`}
       />
 
-      <label htmlFor="category" className="text-black text-md font-semibold">
+      <label
+        htmlFor="category"
+        className={`${
+          darkMode ? "text-gray-300" : "text-gray-800"
+        } text-md font-semibold`}
+      >
         Language
       </label>
       <select
         id="category"
         value={category}
         onChange={(e) => setCategory(e.target.value)}
-        className="w-full p-2 border border-gray-300 rounded mb-4 bg-white text-gray-700 focus:outline-none focus:ring-1 focus:ring-black/20"
+        className={`${
+          darkMode
+            ? "bg-zinc-800 border-zinc-700 text-gray-400 w-full p-2 rounded mb-4 outline-none focus:ring-1 focus:ring-black/20"
+            : "w-full p-2 border border-gray-300 rounded mb-4 bg-white text-gray-700 focus:outline-none focus:ring-1 focus:ring-black/20"
+        }`}
         required
       >
         <option value="">Sélectionnez une catégorie</option>
@@ -164,7 +189,12 @@ const SnippetForm = ({ setSnippets, setMessage, closeModal, initialData }) => {
         ))}
       </select>
 
-      <label htmlFor="description" className="text-black text-md font-semibold">
+      <label
+        htmlFor="description"
+        className={`${
+          darkMode ? "text-gray-300" : "text-gray-800"
+        } text-md font-semibold`}
+      >
         Code
       </label>
 
@@ -172,7 +202,7 @@ const SnippetForm = ({ setSnippets, setMessage, closeModal, initialData }) => {
       <MonacoEditor
         height="200px"
         language={getLanguage()}
-        theme="vs-dark" // ou "vs" pour un thème clair
+        theme={"vs-dark"}
         value={description}
         onChange={(value) => setDescription(value)}
         options={{
@@ -186,7 +216,9 @@ const SnippetForm = ({ setSnippets, setMessage, closeModal, initialData }) => {
       <div className="flex items-center gap-2 my-4">
         <label
           htmlFor="isPublic"
-          className="text-black text-md font-semibold flex items-center cursor-pointer"
+          className={`${
+            darkMode ? "text-gray-300" : "text-gray-800"
+          } text-md font-semibold flex items-center cursor-pointer`}
         >
           <input
             id="isPublic"
@@ -196,7 +228,9 @@ const SnippetForm = ({ setSnippets, setMessage, closeModal, initialData }) => {
               console.log("Changement isPublic:", e.target.checked);
               setIsPublic(e.target.checked);
             }}
-            className="w-4 h-4 text-black rounded focus:ring-black mr-2"
+            className={`${
+              darkMode ? "text-gray-400" : "text-gray-800"
+            } w-4 h-4 rounded focus:ring-black mr-2`}
           />
           {isPublic
             ? "Supprimer de la communauté"
@@ -206,7 +240,11 @@ const SnippetForm = ({ setSnippets, setMessage, closeModal, initialData }) => {
 
       <button
         onClick={handleSubmit}
-        className="w-full bg-black text-white p-2 rounded hover:bg-gray-900 transition duration-200 focus:outline-none focus:ring-2 focus:ring-black"
+        className={`${
+          darkMode
+            ? "bg-zinc-800 border-zinc-700 text-gray-300 w-full p-2 rounded mb-4 outline-none focus:ring-1 focus:ring-black/20"
+            : "w-full p-2 border border-gray-300 rounded mb-4 bg-zinc-900 text-gray-200 placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-black/20"
+        }`}
       >
         {initialData ? "Modifier Snippet" : "Ajouter Snippet"}
       </button>

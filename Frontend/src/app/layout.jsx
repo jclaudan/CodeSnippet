@@ -1,5 +1,6 @@
 import "./globals.css";
 import { Analytics } from "@vercel/analytics/react";
+import { ThemeProvider } from "./context/ThemeContext";
 
 export const metadata = {
   title: "Code Snippet",
@@ -8,9 +9,11 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="fr">
+    <html lang="fr" suppressHydrationWarning>
       <Analytics />
-      <body className="bg-zinc-900">{children}</body>
+      <body suppressHydrationWarning className="bg-zinc-900">
+        <ThemeProvider>{children}</ThemeProvider>
+      </body>
     </html>
   );
 }

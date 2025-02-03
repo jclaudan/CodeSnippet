@@ -1,4 +1,8 @@
+import { useTheme } from "@/app/context/ThemeContext";
+
 const SnippetModal = ({ isOpen, onClose, children }) => {
+  const { darkMode } = useTheme();
+
   if (!isOpen) return null;
 
   return (
@@ -7,7 +11,9 @@ const SnippetModal = ({ isOpen, onClose, children }) => {
       onClick={onClose}
     >
       <div
-        className="bg-white p-6 rounded-lg shadow-lg max-w-xl relative"
+        className={`${
+          darkMode ? "bg-zinc-900" : "bg-white"
+        } p-6 rounded-lg shadow-lg max-w-xl relative`}
         onClick={(e) => e.stopPropagation()}
       >
         {children}

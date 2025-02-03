@@ -24,7 +24,7 @@ const Login = () => {
 
     try {
       const response = await fetch(
-        "https://codesnippet-cy4q.onrender.com/signin",
+        `${process.env.NEXT_PUBLIC_API_URL}/signin`,
         {
           method: "POST",
           headers: {
@@ -52,11 +52,11 @@ const Login = () => {
   };
 
   const handleGoogleLogin = () => {
-    window.location.href = "http://localhost:3000/auth/google";
+    window.location.href = `${process.env.NEXT_PUBLIC_API_URL}/auth/google`;
   };
 
   const handleGithubLogin = () => {
-    window.location.href = "https://codesnippet-cy4q.onrender.com/auth/github";
+    window.location.href = `${process.env.NEXT_PUBLIC_API_URL}/auth/github`;
   };
 
   return (

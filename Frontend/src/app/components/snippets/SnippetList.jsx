@@ -3,6 +3,7 @@ import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { vscDarkPlus } from "react-syntax-highlighter/dist/esm/styles/prism";
 import { IoCopyOutline, IoCheckmark, IoPencil } from "react-icons/io5"; // Ajout de IoPencil
 import DeleteSnippetButton from "./DeleteSnippetButton";
+import { useTheme } from "@/app/context/ThemeContext";
 
 // Styles pour les catégories
 const categoryStyles = {
@@ -20,6 +21,7 @@ const categoryStyles = {
 
 const SnippetList = ({ snippets, onEdit, onDelete }) => {
   const [copiedSnippetId, setCopiedSnippetId] = useState(null);
+  const { darkMode } = useTheme();
 
   // Ajout de logs pour déboguer
   useEffect(() => {
@@ -55,7 +57,15 @@ const SnippetList = ({ snippets, onEdit, onDelete }) => {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       {snippets.length === 0 ? (
-        <p className="text-gray-900 text-center">Aucun snippet ajouté.</p>
+        <div className="flex items-center justify-center h-[50vh] col-span-1 md:col-span-2 lg:col-span-3">
+          <p
+            className={`${
+              darkMode ? "text-gray-400" : "text-gray-600"
+            } text-center text-lg`}
+          >
+            Aucun snippet trouvé
+          </p>
+        </div>
       ) : (
         [...snippets]
           .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)) // Trie les snippets
@@ -67,10 +77,16 @@ const SnippetList = ({ snippets, onEdit, onDelete }) => {
             return (
               <div
                 key={snippet.id}
-                className="bg-white p-4 rounded-lg shadow-lg transition-transform transform hover:scale-[1.01] max-w-xl max-h-80 overflow-auto border border-gray-300 flex flex-col"
+                className={`${
+                  darkMode ? "bg-zinc-800" : "bg-white"
+                } rounded-lg shadow-md p-6 transition-transform flex flex-col hover:scale-[1.01]`}
               >
                 <div className="flex justify-between items-center mb-2">
-                  <h3 className="text-gray-800 font-semibold text-lg">
+                  <h3
+                    className={`${
+                      darkMode ? "text-gray-200" : "text-gray-800"
+                    } font-semibold text-lg`}
+                  >
                     {snippet.title}
                   </h3>
                   <div className="flex items-center gap-2">
@@ -91,7 +107,7 @@ const SnippetList = ({ snippets, onEdit, onDelete }) => {
                   </div>
                 </div>
                 <SyntaxHighlighter
-                  className="max-h-48 rounded-lg flex-grow"
+                  className="max-h-36 rounded-lg flex-grow"
                   language="javascript"
                   style={vscDarkPlus}
                 >
@@ -100,7 +116,11 @@ const SnippetList = ({ snippets, onEdit, onDelete }) => {
                 <div className="flex gap-2 mt-4 ">
                   <button
                     onClick={() => handleCopy(snippet.description, snippet.id)}
-                    className="w-full bg-white border font-semibold text-black py-2 px-4 rounded transition hover:scale-[1.01] hover:bg-gray-50 focus:outline-none flex items-center justify-center"
+                    className={`w-full ${
+                      darkMode
+                        ? "bg-zinc-700 text-gray-300 border-zinc-600 hover:bg-zinc-600"
+                        : "bg-white border-gray-200 border"
+                    } font-semibold text-black py-2 px-4 rounded transition hover:scale-[1.01] hover:bg-gray-50 focus:outline-none flex items-center justify-center`}
                   >
                     {copiedSnippetId === snippet.id ? (
                       <>
@@ -114,7 +134,11 @@ const SnippetList = ({ snippets, onEdit, onDelete }) => {
                   </button>
                   <button
                     onClick={() => onEdit(snippet)}
-                    className="bg-white border font-semibold text-black py-2 px-4 rounded transition hover:scale-[1.01] hover:bg-gray-50 focus:outline-none flex items-center justify-center"
+                    className={`${
+                      darkMode
+                        ? "bg-zinc-700 text-gray-300 border-zinc-600 hover:bg-zinc-600"
+                        : "bg-white border-gray-200 border"
+                    } font-semibold text-black py-2 px-4 rounded transition hover:scale-[1.01] hover:bg-gray-50 focus:outline-none flex items-center justify-center`}
                   >
                     <IoPencil className="text-lg" />
                   </button>

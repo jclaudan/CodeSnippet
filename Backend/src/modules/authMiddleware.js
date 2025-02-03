@@ -36,3 +36,23 @@ export const authenticateToken = (req, res, next) => {
     res.status(401).json({ message: "Erreur d'authentification" });
   }
 };
+export const optionalAuth = async (req, res, next) => {
+  try {
+    const bearer = req.headers.authorization;
+
+    if (!bearer || !bearer.startsWith("Bearer ")) {
+      req.user = null;
+      return next();
+    }
+
+    const token = bearer.split("Bearer ")[1].trim();
+    const payload = jwt.verify(token, process.env.JWT_SECRET);
+
+    req.user = payload;
+    next();
+  } catch (error) {
+    console.error("Erreur d'authentification optionnelle:", error);
+    req.user = null;
+    next();
+  }
+};

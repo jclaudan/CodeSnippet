@@ -7,7 +7,10 @@ import UserInfo from "../components/profile/UserInfo";
 import { getUserProfile, updateUserAvatar } from "../../api/users";
 import { toast } from "react-toastify";
 import LoadingProfile from "../components/ui/Loading/LoadingProfile";
+import { useTheme } from "../context/ThemeContext";
+
 const ProfilePage = () => {
+  const { darkMode } = useTheme();
   const [user, setUser] = useState(null);
   const [avatar, setAvatar] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -67,7 +70,7 @@ const ProfilePage = () => {
     return (
       <div className="min-h-screen bg-gray-100 flex flex-col">
         <Navbar />
-        <main className="flex-grow max-w-4xl mx-auto py-16 w-full">
+        <main className="flex-grow  max-w-4xl mx-auto py-16 w-full">
           <LoadingProfile />
         </main>
         <Footer />
@@ -76,11 +79,23 @@ const ProfilePage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-100 flex flex-col">
+    <div
+      className={`${darkMode ? "bg-zinc-900" : "bg-gray-100"} flex flex-col`}
+    >
       <Navbar />
       <main className="flex-grow max-w-4xl mx-auto py-16 w-full">
-        <div className="bg-white rounded-xl shadow-lg p-10 px-24 transform transition-all duration-300">
-          <h1 className="text-3xl font-bold text-gray-800 mb-8 border-b pb-4 text-center">
+        <div
+          className={`${
+            darkMode ? "bg-zinc-800" : "bg-white"
+          } rounded-xl shadow-lg p-10 px-24 transform transition-all duration-300`}
+        >
+          <h1
+            className={`${
+              darkMode
+                ? "text-gray-200 border-b border-zinc-700"
+                : "text-gray-800 border-b border-gray-200"
+            } text-3xl font-bold mb-8 border-b pb-4 text-center`}
+          >
             Mon Profil
           </h1>
 
@@ -90,10 +105,20 @@ const ProfilePage = () => {
               username={user?.username}
               onAvatarChange={handleAvatarChange}
             />
-            <h2 className="text-2xl font-semibold mt-6 text-gray-800">
+            <h2
+              className={`${
+                darkMode ? "text-gray-200" : "text-gray-800"
+              } text-2xl font-semibold mt-6`}
+            >
               {user?.username}
             </h2>
-            <p className="text-gray-600 mt-2 font-medium">{user?.email}</p>
+            <p
+              className={`${
+                darkMode ? "text-gray-400" : "text-gray-600"
+              } mt-2 font-medium`}
+            >
+              {user?.email}
+            </p>
           </div>
 
           <UserInfo user={user} />
