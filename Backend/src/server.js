@@ -8,6 +8,7 @@ import { createNewUser, signin } from "./handlers/user.js";
 import authRoutes from "./routes/authRoutes.js";
 import hubRoutes from "./routes/hubRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
+import { authenticateToken } from "./middlewares/authMiddleware.js";
 dotenv.config();
 const app = express();
 
@@ -57,15 +58,17 @@ const logger = (req, res, next) => {
 // Appliquer le logger avant les routes
 app.use(logger);
 
-// Route pour vérifier la disponibilité avec Uptime Robot
-app.get("/ping", (req, res) => {
-  res.status(200).send("OK");
-});
-
+// Routes publiques (non protégées)
 app.post("/user", createNewUser);
 app.post("/signin", signin);
-app.use("/snippets", snippetRoutes);
 app.use("/auth", authRoutes);
+app.get("/ping", (req, res) => res.status(200).send("OK"));
+
+// Middleware d'authentification global pour toutes les routes suivantes
+app.use(authenticateToken);
+
+// Routes protégées
+app.use("/snippets", snippetRoutes);
 app.use("/hub", hubRoutes);
 app.use("/users", userRoutes);
 

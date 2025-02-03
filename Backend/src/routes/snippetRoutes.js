@@ -1,5 +1,4 @@
 import express from "express";
-import { authenticateToken } from "../modules/authMiddleware.js";
 import {
   createSnippet,
   updateSnippet,
@@ -9,7 +8,6 @@ import {
 
 const router = express.Router();
 
-router.use(authenticateToken);
 router.get("/", getUserSnippets);
 router.post("/", createSnippet);
 router.put("/:id", updateSnippet);

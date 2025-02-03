@@ -1,5 +1,4 @@
 import express from "express";
-import { authenticateToken } from "../modules/authMiddleware.js";
 import {
   getUserProfile,
   updateUserAvatar,
@@ -14,13 +13,7 @@ const upload = multer({
 
 const router = express.Router();
 
-router.use(authenticateToken);
-router.get("/profile", authenticateToken, getUserProfile);
-router.post(
-  "/avatar",
-  authenticateToken,
-  upload.single("avatar"),
-  updateUserAvatar
-);
+router.get("/profile", getUserProfile);
+router.post("/avatar", upload.single("avatar"), updateUserAvatar);
 
 export default router;
