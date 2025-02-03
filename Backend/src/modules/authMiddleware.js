@@ -13,46 +13,20 @@ if (!JWT_SECRET) {
 }
 
 export const authenticateToken = (req, res, next) => {
-  try {
-    const authHeader = req.headers["authorization"];
-    const token = authHeader && authHeader.split(" ")[1];
+  const authHeader = req.headers["authorization"];
+  const token = authHeader && authHeader.split(" ")[1];
 
-    if (!token) {
-      console.log("Pas de token fourni");
-      return res.status(401).json({ message: "Token manquant" });
-    }
-
-    jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
-      if (err) {
-        console.log("Erreur de vérification du token:", err);
-        return res.status(403).json({ message: "Token invalide" });
-      }
-
-      req.user = user;
-      next();
-    });
-  } catch (error) {
-    console.log("Erreur d'authentification:", error);
-    res.status(401).json({ message: "Erreur d'authentification" });
+  if (!token) {
+    return res
+      .status(401)
+      .json({ message: "Accès non autorisé. Token manquant." });
   }
-};
-export const optionalAuth = async (req, res, next) => {
+
   try {
-    const bearer = req.headers.authorization;
-
-    if (!bearer || !bearer.startsWith("Bearer ")) {
-      req.user = null;
-      return next();
-    }
-
-    const token = bearer.split("Bearer ")[1].trim();
-    const payload = jwt.verify(token, process.env.JWT_SECRET);
-
-    req.user = payload;
+    const user = jwt.verify(token, process.env.JWT_SECRET);
+    req.user = user;
     next();
   } catch (error) {
-    console.error("Erreur d'authentification optionnelle:", error);
-    req.user = null;
-    next();
+    return res.status(403).json({ message: "Token invalide ou expiré" });
   }
 };
