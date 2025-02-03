@@ -41,11 +41,14 @@ const HomePage = () => {
         }
 
         // Charger directement les snippets avec le token
-        const snippetsResponse = await fetch("http://localhost:3000/snippets", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        const snippetsResponse = await fetch(
+          `${process.env.NEXT_PUBLIC_API_URL}/snippets`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
 
         if (!snippetsResponse.ok) {
           // Si la requête échoue à cause du token

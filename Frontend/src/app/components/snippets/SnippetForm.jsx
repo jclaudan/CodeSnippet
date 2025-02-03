@@ -32,8 +32,8 @@ const SnippetForm = ({ setSnippets, setMessage, closeModal, initialData }) => {
 
         const method = initialData ? "PUT" : "POST";
         const url = initialData
-          ? `http://localhost:3000/snippets/${initialData.id}`
-          : "http://localhost:3000/snippets";
+          ? `${process.env.NEXT_PUBLIC_API_URL}/snippets/${initialData.id}`
+          : `${process.env.NEXT_PUBLIC_API_URL}/snippets`;
 
         const snippetData = {
           title,

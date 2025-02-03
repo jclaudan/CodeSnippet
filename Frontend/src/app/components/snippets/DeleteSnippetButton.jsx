@@ -12,7 +12,7 @@ const DeleteSnippetButton = ({ snippetId, onDelete }) => {
     try {
       const token = localStorage.getItem("token");
       const response = await fetch(
-        `http://localhost:3000/snippets/${snippetId}`,
+        `${process.env.NEXT_PUBLIC_API_URL}/snippets/${snippetId}`,
         {
           method: "DELETE",
           headers: {

@@ -41,7 +41,7 @@ const SnippetCard = ({
       }
 
       const response = await fetch(
-        `http://localhost:3000/hub/snippets/${snippetId}/like`,
+        `${process.env.NEXT_PUBLIC_API_URL}/hub/snippets/${snippetId}/like`,
         {
           method: "POST",
           headers: {
@@ -73,7 +73,7 @@ const SnippetCard = ({
       }
 
       const response = await fetch(
-        `http://localhost:3000/hub/snippets/${snippet.id}/bookmark`,
+        `${process.env.NEXT_PUBLIC_API_URL}/hub/snippets/${snippet.id}/bookmark`,
         {
           method: "POST",
           headers: {
