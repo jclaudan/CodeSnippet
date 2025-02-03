@@ -8,11 +8,11 @@ import { createNewUser, signin } from "./handlers/user.js";
 import authRoutes from "./routes/authRoutes.js";
 import hubRoutes from "./routes/hubRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
-import { authenticateToken } from "./middlewares/authMiddleware.js";
+import { authenticateToken } from "./modules/authMiddleware.js";
 dotenv.config();
 const app = express();
 
-// Configuration CORS
+// Configuration CORS et autres middlewares de base
 app.use(
   cors({
     origin: process.env.FRONTEND_URL,
@@ -67,7 +67,7 @@ app.get("/ping", (req, res) => res.status(200).send("OK"));
 // Middleware d'authentification global pour toutes les routes suivantes
 app.use(authenticateToken);
 
-// Routes protégées
+// Routes protégées (APRÈS le middleware d'authentification)
 app.use("/snippets", snippetRoutes);
 app.use("/hub", hubRoutes);
 app.use("/users", userRoutes);
