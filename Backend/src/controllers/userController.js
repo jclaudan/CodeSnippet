@@ -81,3 +81,55 @@ export const updateUserAvatar = async (req, res) => {
     });
   }
 };
+
+export const updateUsername = async (req, res) => {
+  try {
+    const { username } = req.body;
+
+    if (!username) {
+      return res
+        .status(400)
+        .json({ message: "Le nom d'utilisateur est requis" });
+    }
+
+    // Vérifier si le nom d'utilisateur est déjà pris
+    const existingUser = await prisma.user.findFirst({
+      where: {
+        username: username,
+        NOT: {
+          id: req.user.userId,
+        },
+      },
+    });
+
+    if (existingUser) {
+      return res
+        .status(400)
+        .json({ message: "Ce nom d'utilisateur est déjà pris" });
+    }
+
+    // Mettre à jour le nom d'utilisateur
+    const updatedUser = await prisma.user.update({
+      where: { id: req.user.userId },
+      data: { username },
+      select: {
+        id: true,
+        username: true,
+        email: true,
+        avatar: true,
+        googleAvatar: true,
+        githubAvatar: true,
+        provider: true,
+        createdAt: true,
+      },
+    });
+
+    res.json(updatedUser);
+  } catch (error) {
+    console.error("Erreur mise à jour username:", error);
+    res.status(500).json({
+      message: "Erreur lors de la mise à jour du nom d'utilisateur",
+      error: error.message,
+    });
+  }
+};
