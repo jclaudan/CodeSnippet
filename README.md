@@ -36,8 +36,29 @@ cd CodeSnippet
 ### 2️⃣ Configurer les variables d'environnement
 Créez un fichier `.env` à la racine du backend avec :
 ```env
-JWT_SECRET="votre_secret"
-DATABASE_URL="votre_url_postgresql"
+# JWT
+JWT_SECRET=your_jwt_secret_here
+
+# Database
+DATABASE_URL=your_database_url_here
+
+# OAuth
+GOOGLE_CLIENT_ID=your_google_client_id_here
+GOOGLE_CLIENT_SECRET=your_google_client_secret_here
+GITHUB_CLIENT_ID=your_github_client_id_here
+GITHUB_CLIENT_SECRET=your_github_client_secret_here
+
+# App
+FRONTEND_URL=your_frontend_url_here
+SESSION_SECRET=your_session_secret_here
+
+# Cloudinary
+CLOUDINARY_CLOUD_NAME=your_cloud_name_here
+CLOUDINARY_API_KEY=your_api_key_here
+CLOUDINARY_API_SECRET=your_api_secret_here
+
+# Environment
+NODE_ENV=development 
 ```
 
 ### 3️⃣ Installer les dépendances
