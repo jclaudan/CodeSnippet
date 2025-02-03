@@ -9,6 +9,7 @@ import {
 
 const router = express.Router();
 
+router.use(authenticateToken);
 router.get("/public", authenticateToken, getPublicSnippets);
 router.post("/snippets/:snippetId/like", authenticateToken, toggleLike);
 router.post("/snippets/:snippetId/bookmark", authenticateToken, toggleBookmark);

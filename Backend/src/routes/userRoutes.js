@@ -14,6 +14,7 @@ const upload = multer({
 
 const router = express.Router();
 
+router.use(authenticateToken);
 router.get("/profile", authenticateToken, getUserProfile);
 router.post(
   "/avatar",
