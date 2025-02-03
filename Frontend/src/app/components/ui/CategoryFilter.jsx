@@ -1,80 +1,183 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useTheme } from "@/app/context/ThemeContext";
+
 const categories = [
-  "JavaScript",
-  "Typescript",
-  "React",
-  "Angular",
-  "Vue",
-  "Python",
-  "NodeJS",
-  "NestJS",
-  "Swift",
-  "Java",
-  "C",
-]; // Liste des catégories disponibles
+  // Web Frontend
+  {
+    group: "Frontend",
+    items: [
+      "JavaScript",
+      "TypeScript",
+      "HTML",
+      "CSS",
+      "SCSS",
+      "React",
+      "Angular",
+      "Vue",
+      "Svelte",
+      "NextJS",
+    ],
+  },
+
+  // Backend
+  {
+    group: "Backend",
+    items: [
+      "NodeJS",
+      "Python",
+      "Java",
+      "PHP",
+      "Ruby",
+      "Go",
+      "Rust",
+      "Express",
+      "NestJS",
+      "Django",
+      "Laravel",
+    ],
+  },
+
+  // Mobile & Desktop
+  {
+    group: "Mobile & Desktop",
+    items: ["Swift", "Kotlin", "Flutter", "ReactNative", "C", "C++", "C#"],
+  },
+
+  // Base de données & Autres
+  {
+    group: "Autres",
+    items: [
+      "SQL",
+      "MongoDB",
+      "PostgreSQL",
+      "Shell",
+      "Markdown",
+      "JSON",
+      "GraphQL",
+    ],
+  },
+];
 
 const CategoryFilter = ({ onSelectCategory }) => {
   const { darkMode } = useTheme();
-  const [isOpen, setIsOpen] = useState(false); // État pour gérer l'ouverture de la liste déroulante
-  const [selectedCategory, setSelectedCategory] = useState(""); // Catégorie sélectionnée
+  const [isOpen, setIsOpen] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("");
+  const dropdownRef = useRef(null);
 
-  // Fonction pour gérer la sélection d'une catégorie
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
   const handleSelectCategory = (category) => {
     setSelectedCategory(category);
-    onSelectCategory(category); // Appeler le parent pour gérer la catégorie sélectionnée
-    setIsOpen(false); // Fermer la liste après sélection
+    onSelectCategory(category);
+    setIsOpen(false);
+    setSearchTerm("");
   };
 
+  const filteredCategories = categories
+    .map((group) => ({
+      group: group.group,
+      items: group.items.filter((item) =>
+        item.toLowerCase().includes(searchTerm.toLowerCase())
+      ),
+    }))
+    .filter((group) => group.items.length > 0);
+
   return (
-    <div className="relative">
-      {/* Zone d'affichage de la catégorie sélectionnée */}
+    <div className="relative" ref={dropdownRef}>
       <div
+        onClick={() => setIsOpen(!isOpen)}
         className={`${
           darkMode
             ? "bg-zinc-800 border-zinc-700 text-gray-300"
             : "bg-white border-gray-200"
-        } custom-select p-2 text-black border rounded-lg cursor-pointer flex justify-between items-center`}
-        onClick={() => setIsOpen(!isOpen)}
+        } custom-select p-2 border rounded-lg cursor-pointer flex justify-between items-center`}
       >
         <span className={`${darkMode ? "text-gray-400" : "text-gray-800"}`}>
-          {selectedCategory || "Sélectionner une catégorie"}
+          {selectedCategory || "Toutes les catégories"}
         </span>
-        <span className="ml-2">&#9662;</span> {/* Icône de flèche */}
+        <span className="ml-2">▼</span>
       </div>
 
-      {/* Liste déroulante personnalisée */}
       {isOpen && (
         <div
-          className={`${
+          className={`absolute z-50 w-full mt-1 rounded-lg shadow-lg ${
             darkMode
-              ? "bg-zinc-800 border-zinc-700 text-gray-300"
+              ? "bg-zinc-800 border-zinc-700"
               : "bg-white border-gray-200"
-          } absolute top-full z-10 left-0 right-0 mt-1 rounded-lg shadow-lg`}
+          } border`}
         >
-          <div
-            className={`${
-              darkMode
-                ? "p-2 cursor-pointer text-gray-300 hover:bg-zinc-700"
-                : "p-2 cursor-pointer text-black hover:bg-gray-100"
-            }`}
-            onClick={() => handleSelectCategory("")}
-          >
-            Tous
+          <div className="p-2">
+            <input
+              type="text"
+              placeholder="Rechercher une catégorie..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className={`w-full p-2 rounded border ${
+                darkMode ? "bg-zinc-700 text-gray-200" : "bg-gray-50"
+              } focus:outline-none focus:ring-2 focus:ring-indigo-500`}
+              onClick={(e) => e.stopPropagation()}
+            />
           </div>
-          {categories.map((category) => (
+
+          <div className="max-h-60 overflow-y-auto">
             <div
-              key={category}
-              className={`${
+              className={`px-4 py-2 cursor-pointer ${
                 darkMode
-                  ? "p-2 cursor-pointer text-gray-300 hover:bg-zinc-700"
-                  : "p-2 cursor-pointer text-black hover:bg-gray-100"
+                  ? "hover:bg-zinc-700 text-gray-300"
+                  : "hover:bg-gray-100"
+              } ${
+                !selectedCategory
+                  ? darkMode
+                    ? "bg-zinc-600"
+                    : "bg-blue-50"
+                  : ""
               }`}
-              onClick={() => handleSelectCategory(category)}
+              onClick={() => handleSelectCategory("")}
             >
-              {category}
+              Toutes les catégories
             </div>
-          ))}
+
+            {filteredCategories.map((group) => (
+              <div key={group.group}>
+                <div
+                  className={`px-3 py-1 font-semibold ${
+                    darkMode ? "bg-zinc-700 text-gray-300" : "bg-gray-100"
+                  }`}
+                >
+                  {group.group}
+                </div>
+                {group.items.map((item) => (
+                  <div
+                    key={item}
+                    onClick={() => handleSelectCategory(item)}
+                    className={`px-4 py-2 cursor-pointer ${
+                      darkMode
+                        ? "hover:bg-zinc-700 text-gray-300"
+                        : "hover:bg-gray-100"
+                    } ${
+                      selectedCategory === item
+                        ? darkMode
+                          ? "bg-zinc-600"
+                          : "bg-blue-50"
+                        : ""
+                    }`}
+                  >
+                    {item}
+                  </div>
+                ))}
+              </div>
+            ))}
+          </div>
         </div>
       )}
     </div>

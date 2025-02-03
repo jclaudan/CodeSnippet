@@ -1,20 +1,165 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { toast } from "react-toastify";
 import MonacoEditor from "@monaco-editor/react";
 import { useTheme } from "@/app/context/ThemeContext";
+
 const categories = [
-  "JavaScript",
-  "Typescript",
-  "React",
-  "Angular",
-  "Vue",
-  "Python",
-  "NodeJS",
-  "NestJS",
-  "Swift",
-  "Java",
-  "C",
-]; // Liste des catégories
+  // Web Frontend
+  {
+    group: "Frontend",
+    items: [
+      "JavaScript",
+      "TypeScript",
+      "HTML",
+      "CSS",
+      "SCSS",
+      "React",
+      "Angular",
+      "Vue",
+      "Svelte",
+      "NextJS",
+    ],
+  },
+
+  // Backend
+  {
+    group: "Backend",
+    items: [
+      "NodeJS",
+      "Python",
+      "Java",
+      "PHP",
+      "Ruby",
+      "Go",
+      "Rust",
+      "Express",
+      "NestJS",
+      "Django",
+      "Laravel",
+    ],
+  },
+
+  // Mobile & Desktop
+  {
+    group: "Mobile & Desktop",
+    items: ["Swift", "Kotlin", "Flutter", "ReactNative", "C", "C++", "C#"],
+  },
+
+  // Base de données & Autres
+  {
+    group: "Autres",
+    items: [
+      "SQL",
+      "MongoDB",
+      "PostgreSQL",
+      "Shell",
+      "Markdown",
+      "JSON",
+      "GraphQL",
+    ],
+  },
+];
+
+const CategorySelect = ({ value, onChange }) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
+  const { darkMode } = useTheme();
+  const dropdownRef = useRef(null);
+
+  // Fermer le dropdown si on clique en dehors
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  // Filtrer les catégories en fonction de la recherche
+  const filteredCategories = categories
+    .map((group) => ({
+      group: group.group,
+      items: group.items.filter((item) =>
+        item.toLowerCase().includes(searchTerm.toLowerCase())
+      ),
+    }))
+    .filter((group) => group.items.length > 0);
+
+  return (
+    <div className="relative" ref={dropdownRef}>
+      <div
+        onClick={() => setIsOpen(!isOpen)}
+        className={`${
+          darkMode ? "bg-zinc-800 text-gray-200" : "bg-white text-gray-800"
+        } p-2 rounded border cursor-pointer flex justify-between items-center`}
+      >
+        <span>{value || "Sélectionner une catégorie"}</span>
+        <span className="ml-2">▼</span>
+      </div>
+
+      {isOpen && (
+        <div
+          className={`absolute z-50 w-full mt-1 rounded-md shadow-lg ${
+            darkMode ? "bg-zinc-800" : "bg-white"
+          } border`}
+        >
+          <div className="p-2">
+            <input
+              type="text"
+              placeholder="Rechercher..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className={`w-full p-2 rounded border ${
+                darkMode ? "bg-zinc-700 text-gray-200" : "bg-gray-50"
+              }`}
+              onClick={(e) => e.stopPropagation()}
+            />
+          </div>
+
+          <div className="max-h-60 overflow-y-auto">
+            {filteredCategories.map((group) => (
+              <div key={group.group}>
+                <div
+                  className={`px-3 py-1 font-semibold ${
+                    darkMode ? "bg-zinc-700 text-gray-300" : "bg-gray-100"
+                  }`}
+                >
+                  {group.group}
+                </div>
+                {group.items.map((item) => (
+                  <div
+                    key={item}
+                    onClick={() => {
+                      onChange(item);
+                      setIsOpen(false);
+                      setSearchTerm("");
+                    }}
+                    className={`px-4 py-2 cursor-pointer ${
+                      darkMode
+                        ? "hover:bg-zinc-700 text-gray-200"
+                        : "hover:bg-gray-100"
+                    } ${
+                      value === item
+                        ? darkMode
+                          ? "bg-zinc-600"
+                          : "bg-blue-50"
+                        : ""
+                    }`}
+                  >
+                    {item}
+                  </div>
+                ))}
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
 
 const SnippetForm = ({ setSnippets, setMessage, closeModal, initialData }) => {
   const { darkMode } = useTheme();
@@ -102,7 +247,7 @@ const SnippetForm = ({ setSnippets, setMessage, closeModal, initialData }) => {
   const getLanguage = () => {
     switch (category) {
       case "JavaScript":
-      case "Typescript":
+      case "TypeScript":
       case "NodeJS":
       case "NestJS":
         return "javascript";
@@ -162,32 +307,16 @@ const SnippetForm = ({ setSnippets, setMessage, closeModal, initialData }) => {
         }`}
       />
 
-      <label
-        htmlFor="category"
-        className={`${
-          darkMode ? "text-gray-300" : "text-gray-800"
-        } text-md font-semibold`}
-      >
-        Language
-      </label>
-      <select
-        id="category"
-        value={category}
-        onChange={(e) => setCategory(e.target.value)}
-        className={`${
-          darkMode
-            ? "bg-zinc-800 border-zinc-700 text-gray-400 w-full p-2 rounded mb-4 outline-none focus:ring-1 focus:ring-black/20"
-            : "w-full p-2 border border-gray-300 rounded mb-4 bg-white text-gray-700 focus:outline-none focus:ring-1 focus:ring-black/20"
-        }`}
-        required
-      >
-        <option value="">Sélectionnez une catégorie</option>
-        {categories.map((cat) => (
-          <option key={cat} value={cat}>
-            {cat}
-          </option>
-        ))}
-      </select>
+      <div className="mb-4">
+        <label
+          className={`block ${
+            darkMode ? "text-gray-200" : "text-gray-700"
+          } text-sm font-bold mb-2`}
+        >
+          Catégorie
+        </label>
+        <CategorySelect value={category} onChange={setCategory} />
+      </div>
 
       <label
         htmlFor="description"
