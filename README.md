@@ -8,7 +8,9 @@
 
 Un gestionnaire d'extraits de code moderne et intuitif pour organiser, rechercher et partager vos snippets de code efficacement.
 
-<img width="1680" alt="Capture d’écran 2025-01-30 à 15 19 14" src="https://github.com/user-attachments/assets/ff3de49e-5485-4f4a-b059-edaec6aa7e99" />
+![Capture d’écran 2025-02-04 à 16 12 05](https://github.com/user-attachments/assets/f8cf2f14-cb7d-49e8-8784-954b6409df81)
+
+
 
 ## ⚙️ Stack Technique
 
