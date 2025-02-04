@@ -13,7 +13,7 @@ const SnippetModal = ({ isOpen, onClose, children }) => {
       <div
         className={`${
           darkMode ? "bg-zinc-900" : "bg-white"
-        } p-6 rounded-lg shadow-lg max-w-xl relative`}
+        } p-6 rounded-lg shadow-lg w-[600px] max-w-xl relative`}
         onClick={(e) => e.stopPropagation()}
       >
         {children}

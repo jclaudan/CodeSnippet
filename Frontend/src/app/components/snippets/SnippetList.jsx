@@ -10,9 +10,6 @@ const categoryStyles = {
   // Web Frontend
   JavaScript: "bg-yellow-200 text-yellow-800",
   TypeScript: "bg-blue-300 text-blue-900",
-  HTML: "bg-orange-200 text-orange-800",
-  CSS: "bg-pink-200 text-pink-800",
-  SCSS: "bg-pink-300 text-pink-900",
 
   // Frontend Frameworks
   React: "bg-cyan-200 text-cyan-800",

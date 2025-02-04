@@ -10,9 +10,6 @@ const categories = [
     items: [
       "JavaScript",
       "TypeScript",
-      "HTML",
-      "CSS",
-      "SCSS",
       "React",
       "Angular",
       "Vue",
@@ -48,15 +45,7 @@ const categories = [
   // Base de données & Autres
   {
     group: "Autres",
-    items: [
-      "SQL",
-      "MongoDB",
-      "PostgreSQL",
-      "Shell",
-      "Markdown",
-      "JSON",
-      "GraphQL",
-    ],
+    items: ["SQL", "MongoDB", "PostgreSQL", "Redis", "JSON", "Regex"],
   },
 ];
 
@@ -93,8 +82,10 @@ const CategorySelect = ({ value, onChange }) => {
       <div
         onClick={() => setIsOpen(!isOpen)}
         className={`${
-          darkMode ? "bg-zinc-800 text-gray-200" : "bg-white text-gray-800"
-        } p-2 rounded border cursor-pointer flex justify-between items-center`}
+          darkMode
+            ? "bg-zinc-800 text-gray-200 outline-none border-none focus:ring-1 focus:ring-zinc-700"
+            : "bg-white text-gray-800 outline-none ring-0"
+        } p-2 rounded border cursor-pointer outline-none flex justify-between items-center`}
       >
         <span>{value || "Sélectionner une catégorie"}</span>
         <span className="ml-2">▼</span>
@@ -103,7 +94,9 @@ const CategorySelect = ({ value, onChange }) => {
       {isOpen && (
         <div
           className={`absolute z-50 w-full mt-1 rounded-md shadow-lg ${
-            darkMode ? "bg-zinc-800" : "bg-white"
+            darkMode
+              ? "bg-zinc-800 border-zinc-700"
+              : "bg-white border-gray-300"
           } border`}
         >
           <div className="p-2">
@@ -112,8 +105,10 @@ const CategorySelect = ({ value, onChange }) => {
               placeholder="Rechercher..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className={`w-full p-2 rounded border ${
-                darkMode ? "bg-zinc-700 text-gray-200" : "bg-gray-50"
+              className={`w-full p-2 rounded border outline-none f ${
+                darkMode
+                  ? "bg-zinc-700 text-gray-200 border-zinc-600 focus:ring-1 focus:ring-zinc-700"
+                  : "bg-gray-50 border-gray-300 focus:ring-1 focus:ring-gray-400"
               }`}
               onClick={(e) => e.stopPropagation()}
             />

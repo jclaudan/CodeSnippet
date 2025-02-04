@@ -8,9 +8,6 @@ const categories = [
     items: [
       "JavaScript",
       "TypeScript",
-      "HTML",
-      "CSS",
-      "SCSS",
       "React",
       "Angular",
       "Vue",
@@ -46,15 +43,7 @@ const categories = [
   // Base de données & Autres
   {
     group: "Autres",
-    items: [
-      "SQL",
-      "MongoDB",
-      "PostgreSQL",
-      "Shell",
-      "Markdown",
-      "JSON",
-      "GraphQL",
-    ],
+    items: ["SQL", "MongoDB", "PostgreSQL", "Redis", "JSON", "Regex"],
   },
 ];
 
@@ -122,9 +111,11 @@ const CategoryFilter = ({ onSelectCategory }) => {
               placeholder="Rechercher une catégorie..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className={`w-full p-2 rounded border ${
-                darkMode ? "bg-zinc-700 text-gray-200" : "bg-gray-50"
-              } focus:outline-none focus:ring-2 focus:ring-indigo-500`}
+              className={`w-full p-2 rounded border outline-none ${
+                darkMode
+                  ? "bg-zinc-700 text-gray-200 border-zinc-600 focus:ring-1 focus:ring-zinc-700"
+                  : "bg-gray-50 border-gray-300 focus:ring-1 focus:ring-gray-400"
+              }`}
               onClick={(e) => e.stopPropagation()}
             />
           </div>
