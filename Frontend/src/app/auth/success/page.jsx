@@ -43,10 +43,12 @@ function AuthSuccessContent() {
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
       <div className="bg-zinc-900 p-8 rounded-lg shadow-md text-center max-w-md w-full mx-4">
-        <h2 className="text-2xl font-bold mb-6">Authentication successful !</h2>
+        <h2 className="text-2xl text-gray-100 font-bold mb-6">
+          Authentication successful !
+        </h2>
         <div className="flex flex-col items-center gap-4">
           <div className="animate-spin rounded-full h-10 w-10 border-4 border-gray-200 border-t-indigo-600"></div>
-          <p className="text-gray-600">Redirecting...</p>
+          <p className="text-gray-100">Redirecting...</p>
         </div>
       </div>
     </div>
