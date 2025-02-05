@@ -144,13 +144,13 @@ const SnippetCard = ({
         <span
           className={`${darkMode ? "text-gray-500" : "text-gray-400"} text-sm`}
         >
-          {new Date(snippet.createdAt).toLocaleDateString("fr-FR", {
+          {new Date(snippet.createdAt).toLocaleDateString("en-US", {
             day: "numeric",
             month: "long",
             year: "numeric",
           })}
-          {" à "}
-          {new Date(snippet.createdAt).toLocaleTimeString("fr-FR", {
+          {" at "}
+          {new Date(snippet.createdAt).toLocaleTimeString("en-US", {
             hour: "2-digit",
             minute: "2-digit",
           })}
@@ -221,7 +221,7 @@ const SnippetCard = ({
             className={`${
               darkMode ? "text-gray-300" : "text-gray-800"
             } flex items-center space-x-2 transition group`}
-            title={isBookmarked ? "Retirer des favoris" : "Sauvegarder"}
+            title={isBookmarked ? "Remove from bookmarks" : "Bookmark"}
           >
             <div className="relative">
               {isBookmarked ? (
@@ -258,12 +258,12 @@ const SnippetCard = ({
           {copiedSnippetId === snippet.id ? (
             <>
               <IoCheckmark className="text-xl text-green-600" />
-              <span>Copié</span>
+              <span>Copied</span>
             </>
           ) : (
             <>
               <IoCopyOutline className="text-xl" />
-              <span>Copier</span>
+              <span>Copy</span>
             </>
           )}
         </button>

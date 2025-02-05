@@ -31,7 +31,7 @@ const ProfilePage = () => {
         setUser(data);
         setAvatar(data.avatar || data.googleAvatar || data.githubAvatar);
       } else if (response.status === 401) {
-        toast.error("Veuillez vous reconnecter");
+        toast.error("Please login again");
         window.location.href = "/login";
       }
     } catch (error) {
@@ -47,7 +47,7 @@ const ProfilePage = () => {
     if (!file) return;
 
     if (file.size > 5 * 1024 * 1024) {
-      toast.error("L'image ne doit pas dépasser 5MB");
+      toast.error("The image must not exceed 5MB");
       return;
     }
 
@@ -60,11 +60,11 @@ const ProfilePage = () => {
       if (response.ok) {
         const data = await response.json();
         setAvatar(data.avatar);
-        toast.success("Avatar mis à jour avec succès !");
+        toast.success("Avatar updated successfully !");
       }
     } catch (error) {
-      console.error("Erreur:", error);
-      toast.error("Erreur lors de la mise à jour de l'avatar");
+      console.error("Error:", error);
+      toast.error("Error updating avatar");
     }
   };
 
@@ -98,7 +98,7 @@ const ProfilePage = () => {
                 : "text-gray-800 border-b border-gray-200"
             } text-3xl font-bold mb-8 border-b pb-4 text-center`}
           >
-            Mon Profil
+            My Profile
           </h1>
 
           <div className="flex flex-col items-center mb-8">

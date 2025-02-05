@@ -31,9 +31,9 @@ const BookmarksPage = () => {
   };
 
   const sortOptions = [
-    { value: "recent", label: "Plus récents" },
-    { value: "popular", label: "Plus populaires" },
-    { value: "oldest", label: "Plus anciens" },
+    { value: "recent", label: "Most recent" },
+    { value: "popular", label: "Most popular" },
+    { value: "oldest", label: "Oldest" },
   ];
 
   const fetchBookmarkedSnippets = async () => {
@@ -145,7 +145,7 @@ const BookmarksPage = () => {
               darkMode ? "text-gray-200" : "text-gray-800"
             } text-2xl font-bold`}
           >
-            Mes Snippets Sauvegardés
+            My Saved Snippets
           </h1>
 
           <div className="flex flex-col sm:flex-row gap-4">
@@ -215,14 +215,14 @@ const BookmarksPage = () => {
                       darkMode ? "text-gray-400" : "text-gray-600"
                     } text-lg`}
                   >
-                    Aucun snippet trouvé
+                    No snippet found
                   </p>
                   <p
                     className={`${
                       darkMode ? "text-gray-500" : "text-gray-600"
                     } mt-2`}
                   >
-                    Explorez le hub pour trouver des snippets intéressants
+                    Explore the hub to find interesting snippets
                   </p>
                 </div>
               )}

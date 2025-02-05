@@ -56,7 +56,7 @@ export const Navbar = () => {
               >
                 <span className="relative z-10 flex items-center gap-2">
                   <BiCode className="text-xl" />
-                  Mes Snippets
+                  My Snippets
                 </span>
                 <div
                   className={`absolute inset-0 bg-zinc-800 rounded-lg transform scale-95 opacity-0 transition-all duration-300
@@ -100,7 +100,7 @@ export const Navbar = () => {
               >
                 <span className="relative z-10 flex items-center gap-2">
                   <BiBookmark className="text-xl" />
-                  Favoris
+                  Bookmarks
                 </span>
                 <div
                   className={`absolute inset-0 bg-zinc-800 rounded-lg transform scale-95 opacity-0 transition-all duration-300
@@ -126,7 +126,7 @@ export const Navbar = () => {
               onClick={handleLogout}
               className="bg-zinc-800 text-zinc-100 px-5 py-2 rounded-lg hover:bg-zinc-700 transition-colors font-medium border border-zinc-700"
             >
-              Déconnexion
+              Logout
             </button>
 
             <button

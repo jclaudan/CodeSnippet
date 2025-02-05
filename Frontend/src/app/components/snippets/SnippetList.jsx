@@ -98,7 +98,7 @@ const SnippetList = ({ snippets, onEdit, onDelete }) => {
               darkMode ? "text-gray-400" : "text-gray-600"
             } text-center text-lg`}
           >
-            Aucun snippet trouvé
+            No snippet found
           </p>
         </div>
       ) : (
@@ -159,11 +159,11 @@ const SnippetList = ({ snippets, onEdit, onDelete }) => {
                   >
                     {copiedSnippetId === snippet.id ? (
                       <>
-                        Copié ! <IoCheckmark className="ml-2" />
+                        Copied ! <IoCheckmark className="ml-2" />
                       </>
                     ) : (
                       <>
-                        Copier <IoCopyOutline className="ml-2" />
+                        Copy <IoCopyOutline className="ml-2" />
                       </>
                     )}
                   </button>

@@ -41,12 +41,12 @@ function AuthSuccessContent() {
   }, []);
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">
-      <div className="bg-white p-8 rounded-lg shadow-md text-center max-w-md w-full mx-4">
-        <h2 className="text-2xl font-bold mb-6">Authentification réussie !</h2>
+    <div className="flex items-center justify-center min-h-screen bg-zinc-900">
+      <div className="bg-zinc-800 p-8 rounded-lg shadow-md text-center max-w-md w-full mx-4">
+        <h2 className="text-2xl font-bold mb-6">Authentication successful !</h2>
         <div className="flex flex-col items-center gap-4">
-          <div className="animate-spin rounded-full h-10 w-10 border-4 border-gray-200 border-t-indigo-600"></div>
-          <p className="text-gray-600">Redirection en cours...</p>
+          <div className="animate-spin rounded-full h-10 w-10 border-4 border-zinc-700 border-t-indigo-600"></div>
+          <p className="text-gray-100">Redirecting...</p>
         </div>
       </div>
     </div>
@@ -57,10 +57,10 @@ export default function AuthSuccess() {
   return (
     <Suspense
       fallback={
-        <div className="flex items-center justify-center min-h-screen bg-gray-100">
-          <div className="bg-white p-8 rounded-lg shadow-md text-center max-w-md w-full mx-4">
-            <h2 className="text-2xl font-bold mb-6">Chargement...</h2>
-            <div className="animate-spin rounded-full h-10 w-10 border-4 border-gray-200 border-t-indigo-600"></div>
+        <div className="flex items-center justify-center min-h-screen bg-zinc-900">
+          <div className="bg-zinc-800 p-8 rounded-lg shadow-md text-center max-w-md w-full mx-4">
+            <h2 className="text-2xl font-bold mb-6">Loading...</h2>
+            <div className="animate-spin rounded-full h-10 w-10 border-4 border-zinc-700 border-t-indigo-600"></div>
           </div>
         </div>
       }

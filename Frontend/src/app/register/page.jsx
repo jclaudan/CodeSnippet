@@ -29,9 +29,7 @@ const Register = () => {
 
       const data = await response.json();
       localStorage.setItem("token", data.token);
-      setSuccessMessage(
-        "Inscription réussie ! Vous pouvez maintenant vous connecter."
-      );
+      setSuccessMessage("Registration successful! You can now login.");
       setTimeout(() => {
         router.push("/login");
       }, 2000);
@@ -42,12 +40,12 @@ const Register = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 flex flex-col">
+    <div className="min-h-screen bg-zinc-900 flex flex-col">
       <div className="flex items-center justify-center py-12 flex-grow">
         <div className="container mx-auto px-4 flex flex-col md:flex-row items-start justify-center gap-20">
-          <div className="bg-white p-8 rounded-lg shadow-md w-[400px] border border-gray-200">
-            <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">
-              Inscription
+          <div className="bg-zinc-800 p-8 rounded-lg shadow-md w-[400px] border border-zinc-700">
+            <h2 className="text-2xl font-bold text-center text-gray-100 mb-6">
+              Register
             </h2>
             {successMessage && (
               <p className="text-green-500 text-center text-sm">
@@ -61,19 +59,19 @@ const Register = () => {
             <form onSubmit={handleSubmit} className="space-y-4">
               <input
                 type="text"
-                placeholder="Nom d'utilisateur"
+                placeholder="Username"
                 required
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
-                className="w-full p-2.5 border border-gray-200 rounded-lg bg-white text-gray-800 placeholder-gray-400 outline-none focus:ring-1 focus:ring-indigo-500/20"
+                className="w-full p-2.5 border border-zinc-700 rounded-lg bg-zinc-700 text-gray-100 placeholder-gray-400 outline-none focus:ring-1 focus:ring-indigo-500/20"
               />
               <input
                 type="password"
-                placeholder="Mot de passe"
+                placeholder="Password"
                 required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full p-2.5 border border-gray-200 rounded-lg bg-white text-gray-800 placeholder-gray-400 outline-none focus:ring-1 focus:ring-indigo-500/20"
+                className="w-full p-2.5 border border-zinc-700 rounded-lg bg-zinc-700 text-gray-100 placeholder-gray-400 outline-none focus:ring-1 focus:ring-indigo-500/20"
               />
               <button
                 type="submit"
@@ -83,9 +81,9 @@ const Register = () => {
               </button>
             </form>
             <p className="text-center text-gray-500 text-sm mt-6">
-              Vous avez déjà un compte ?{" "}
-              <a href="/login" className="text-black hover:underline">
-                Connectez-vous ici
+              You already have an account ?{" "}
+              <a href="/login" className="text-gray-100 hover:underline">
+                Login here
               </a>
             </p>
           </div>

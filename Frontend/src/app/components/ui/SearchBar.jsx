@@ -7,7 +7,7 @@ const SearchBar = ({ setSearchTerm }) => {
   return (
     <input
       type="text"
-      placeholder="Rechercher un snippet..."
+      placeholder="Search a snippet..."
       onChange={(e) => setSearchTerm(e.target.value)}
       className={`${
         darkMode

@@ -14,13 +14,13 @@ const TrendingSidebar = ({ categoryStyles }) => {
           darkMode ? "text-gray-200" : "text-gray-800"
         } font-bold text-lg mb-4`}
       >
-        Tendances
+        Trending
       </h2>
       <div className="space-y-3">
         <p
           className={`${darkMode ? "text-gray-400" : "text-gray-600"} text-sm`}
         >
-          Les catégories populaires :
+          Most popular categories :
         </p>
         {Object.keys(categoryStyles)
           .slice(0, 5)

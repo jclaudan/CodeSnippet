@@ -32,9 +32,9 @@ const HubPage = () => {
   const [sortBy, setSortBy] = useState("popular");
 
   const sortOptions = [
-    { value: "recent", label: "Plus récents" },
-    { value: "popular", label: "Plus populaires" },
-    { value: "oldest", label: "Plus anciens" },
+    { value: "recent", label: "Most recent" },
+    { value: "popular", label: "Most popular" },
+    { value: "oldest", label: "Oldest" },
   ];
 
   const fetchPublicSnippets = async () => {
@@ -154,7 +154,7 @@ const HubPage = () => {
                   darkMode ? "text-gray-200" : "text-gray-800"
                 } mb-4`}
               >
-                Catégories
+                Categories
               </h2>
               <CategoryFilter onSelectCategory={setSelectedCategory} />
             </div>
@@ -169,7 +169,7 @@ const HubPage = () => {
                   darkMode ? "text-gray-200" : "text-gray-800"
                 } mb-4`}
               >
-                Trier par
+                Sort by
               </h2>
               <div className="space-y-2">
                 {sortOptions.map((option) => (
@@ -237,9 +237,7 @@ const HubPage = () => {
                     />
                   ))
                 ) : (
-                  <p className="text-center text-gray-500">
-                    Aucun snippet trouvé
-                  </p>
+                  <p className="text-center text-gray-500">No snippet found</p>
                 )}
               </div>
             )}

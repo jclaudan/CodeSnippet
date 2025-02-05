@@ -127,7 +127,7 @@ const HomePage = () => {
               darkMode ? "text-gray-100" : "text-gray-800"
             }`}
           >
-            Mes snippets
+            My Snippets
           </h1>
         </div>
 

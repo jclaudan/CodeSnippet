@@ -42,7 +42,7 @@ const categories = [
 
   // Base de données & Autres
   {
-    group: "Autres",
+    group: "Others",
     items: ["SQL", "MongoDB", "PostgreSQL", "Redis", "JSON", "Regex"],
   },
 ];
@@ -92,7 +92,7 @@ const CategoryFilter = ({ onSelectCategory }) => {
         } custom-select p-2 border rounded-lg cursor-pointer flex justify-between items-center`}
       >
         <span className={`${darkMode ? "text-gray-400" : "text-gray-800"}`}>
-          {selectedCategory || "Toutes les catégories"}
+          {selectedCategory || "All categories"}
         </span>
         <span className="ml-2">▼</span>
       </div>
@@ -108,12 +108,12 @@ const CategoryFilter = ({ onSelectCategory }) => {
           <div className="p-2">
             <input
               type="text"
-              placeholder="Rechercher une catégorie..."
+              placeholder="Search a category..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className={`w-full p-2 rounded border outline-none ${
                 darkMode
-                  ? "bg-zinc-700 text-gray-200 border-zinc-600 focus:ring-1 focus:ring-zinc-700"
+                  ? "bg-zinc-700 text-gray-200 rder-zinc-600 focus:ring-1 focus:ring-zinc-700"
                   : "bg-gray-50 border-gray-300 focus:ring-1 focus:ring-gray-400"
               }`}
               onClick={(e) => e.stopPropagation()}
@@ -135,7 +135,7 @@ const CategoryFilter = ({ onSelectCategory }) => {
               }`}
               onClick={() => handleSelectCategory("")}
             >
-              Toutes les catégories
+              All categories
             </div>
 
             {filteredCategories.map((group) => (

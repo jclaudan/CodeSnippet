@@ -17,7 +17,7 @@ export default function UserInfo({ user, setUser }) {
         const updatedUser = await response.json();
         setUser(updatedUser);
         setIsEditing(false);
-        toast.success("Nom d'utilisateur mis à jour avec succès !", {
+        toast.success("Username updated successfully !", {
           position: "bottom-right",
           autoClose: 3000,
           hideProgressBar: false,
@@ -30,7 +30,7 @@ export default function UserInfo({ user, setUser }) {
         toast.error(error.message);
       }
     } catch (error) {
-      toast.error("Erreur lors de la mise à jour du nom d'utilisateur");
+      toast.error("Error updating username");
     }
   };
 
@@ -50,7 +50,7 @@ export default function UserInfo({ user, setUser }) {
             darkMode ? "bg-zinc-700" : "bg-indigo-100"
           } rounded-lg px-4 py-2`}
         >
-          Informations de connexion
+          Login information
         </span>
       </h3>
       <div
@@ -68,7 +68,7 @@ export default function UserInfo({ user, setUser }) {
               darkMode ? "text-gray-400" : "text-gray-600"
             } w-40 font-medium`}
           >
-            Nom d'utilisateur:
+            Username:
           </span>
           {isEditing ? (
             <div className="flex gap-2">
@@ -84,7 +84,7 @@ export default function UserInfo({ user, setUser }) {
                 onClick={handleUsernameUpdate}
                 className="px-3 py-1 bg-indigo-500 text-white rounded hover:bg-indigo-600"
               >
-                Sauvegarder
+                Save
               </button>
               <button
                 onClick={() => {
@@ -93,7 +93,7 @@ export default function UserInfo({ user, setUser }) {
                 }}
                 className="px-3 py-1 bg-gray-500 text-white rounded hover:bg-gray-600"
               >
-                Annuler
+                Cancel
               </button>
             </div>
           ) : (
@@ -121,7 +121,7 @@ export default function UserInfo({ user, setUser }) {
               darkMode ? "text-gray-400" : "text-gray-600"
             } w-40 font-medium`}
           >
-            Méthode de connexion:
+            Login method:
           </span>
           <span className="font-medium text-indigo-600">
             {user?.provider === "google"
@@ -142,7 +142,7 @@ export default function UserInfo({ user, setUser }) {
               darkMode ? "text-gray-400" : "text-gray-600"
             } w-40 font-medium`}
           >
-            Membre depuis:
+            Member since:
           </span>
           <span className="font-medium text-indigo-600">
             {new Date(user?.createdAt).toLocaleDateString()}

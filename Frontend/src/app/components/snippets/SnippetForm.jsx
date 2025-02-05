@@ -87,7 +87,7 @@ const CategorySelect = ({ value, onChange }) => {
             : "bg-white text-gray-800 outline-none ring-0"
         } p-2 rounded border cursor-pointer outline-none flex justify-between items-center`}
       >
-        <span>{value || "Sélectionner une catégorie"}</span>
+        <span>{value || "Select a category"}</span>
         <span className="ml-2">▼</span>
       </div>
 
@@ -102,7 +102,7 @@ const CategorySelect = ({ value, onChange }) => {
           <div className="p-2">
             <input
               type="text"
-              placeholder="Rechercher..."
+              placeholder="Search..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className={`w-full p-2 rounded border outline-none f ${
@@ -168,8 +168,6 @@ const SnippetForm = ({ setSnippets, setMessage, closeModal, initialData }) => {
   const handleSubmit = async () => {
     if (title && description) {
       try {
-        console.log("État isPublic avant envoi:", isPublic);
-
         const method = initialData ? "PUT" : "POST";
         const url = initialData
           ? `${process.env.NEXT_PUBLIC_API_URL}/snippets/${initialData.id}`
@@ -203,37 +201,32 @@ const SnippetForm = ({ setSnippets, setMessage, closeModal, initialData }) => {
                 snippet.id === initialData.id ? updatedSnippet : snippet
               )
             );
-            toast.success("Snippet modifié avec succès !", {
+            toast.success("Snippet updated successfully !", {
               style: { backgroundColor: "#BB86FC", color: "white" },
             });
           } else {
             setSnippets((prevSnippets) => [...prevSnippets, updatedSnippet]);
-            toast.success("Snippet ajouté avec succès !", {
+            toast.success("Snippet added successfully !", {
               style: { backgroundColor: "#81C784", color: "white" },
             });
           }
           closeModal();
         } else {
-          setMessage("Erreur lors de la soumission du snippet.");
-          toast.error("Erreur lors de la soumission du snippet.", {
+          setMessage("Error submitting snippet.");
+          toast.error("Error submitting snippet.", {
             style: { backgroundColor: "#F44336", color: "white" },
           });
         }
       } catch (error) {
         console.error("Erreur :", error);
-        setMessage(
-          "Une erreur s'est produite lors de la soumission du snippet."
-        );
-        toast.error(
-          "Une erreur s'est produite lors de la soumission du snippet.",
-          {
-            style: { backgroundColor: "#F44336", color: "white" },
-          }
-        );
+        setMessage("An error occurred while submitting the snippet.");
+        toast.error("An error occurred while submitting the snippet.", {
+          style: { backgroundColor: "#F44336", color: "white" },
+        });
       }
     } else {
-      setMessage("Veuillez remplir tous les champs.");
-      toast.error("Veuillez remplir tous les champs.", {
+      setMessage("Please fill all fields.");
+      toast.error("Please fill all fields.", {
         style: { backgroundColor: "#FFEB3B", color: "black" },
       });
     }
@@ -287,7 +280,7 @@ const SnippetForm = ({ setSnippets, setMessage, closeModal, initialData }) => {
           darkMode ? "text-gray-300" : "text-gray-800"
         } text-md font-semibold`}
       >
-        Titre
+        Title
       </label>
       <input
         id="title"
@@ -308,7 +301,7 @@ const SnippetForm = ({ setSnippets, setMessage, closeModal, initialData }) => {
             darkMode ? "text-gray-200" : "text-gray-700"
           } text-sm font-bold mb-2`}
         >
-          Catégorie
+          Category
         </label>
         <CategorySelect value={category} onChange={setCategory} />
       </div>
@@ -356,9 +349,7 @@ const SnippetForm = ({ setSnippets, setMessage, closeModal, initialData }) => {
               darkMode ? "text-gray-400" : "text-gray-800"
             } w-4 h-4 rounded focus:ring-black mr-2`}
           />
-          {isPublic
-            ? "Supprimer de la communauté"
-            : "Partager avec la communauté"}
+          {isPublic ? "Remove from community" : "Share with the community"}
         </label>
       </div>
 
