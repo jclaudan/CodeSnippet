@@ -120,10 +120,10 @@ const HomePage = () => {
         <Navbar />
       </header>
 
-      <main className="flex flex-col flex-grow p-6 max-w-[1500px] mx-auto w-full">
-        <div className="mb-6">
+      <main className="flex flex-col flex-grow p-4 sm:p-6 max-w-[1500px] mx-auto w-full">
+        <div className="mb-4 sm:mb-6">
           <h1
-            className={`text-2xl font-bold ${
+            className={`text-xl sm:text-2xl font-bold ${
               darkMode ? "text-gray-100" : "text-gray-800"
             }`}
           >
@@ -139,11 +139,13 @@ const HomePage = () => {
         {isLoading ? (
           <LoadingHome />
         ) : (
-          <SnippetList
-            snippets={filteredSnippets}
-            onEdit={handleEditSnippet}
-            onDelete={handleDeleteSnippet}
-          />
+          <div className="w-full overflow-x-auto">
+            <SnippetList
+              snippets={filteredSnippets}
+              onEdit={handleEditSnippet}
+              onDelete={handleDeleteSnippet}
+            />
+          </div>
         )}
       </main>
 

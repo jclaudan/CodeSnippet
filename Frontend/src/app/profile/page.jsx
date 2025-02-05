@@ -85,18 +85,18 @@ const ProfilePage = () => {
       className={`${darkMode ? "bg-zinc-900" : "bg-gray-100"} flex flex-col`}
     >
       <Navbar />
-      <main className="flex-grow max-w-4xl mx-auto py-16 w-full">
+      <main className="flex-grow max-w-4xl mx-auto py-16 w-full px-4 sm:px-6">
         <div
           className={`${
             darkMode ? "bg-zinc-800" : "bg-white"
-          } rounded-xl shadow-lg p-10 px-24 transform transition-all duration-300`}
+          } rounded-xl shadow-lg p-4 sm:p-10 sm:px-24 transform transition-all duration-300`}
         >
           <h1
             className={`${
               darkMode
                 ? "text-gray-200 border-b border-zinc-700"
                 : "text-gray-800 border-b border-gray-200"
-            } text-3xl font-bold mb-8 border-b pb-4 text-center`}
+            } text-2xl sm:text-3xl font-bold mb-6 sm:mb-8 border-b pb-4 text-center`}
           >
             My Profile
           </h1>

@@ -42,7 +42,7 @@ const categories = [
 
   // Base de données & Autres
   {
-    group: "Others",
+    group: "Autres",
     items: ["SQL", "MongoDB", "PostgreSQL", "Redis", "JSON", "Regex"],
   },
 ];
@@ -82,14 +82,14 @@ const CategoryFilter = ({ onSelectCategory }) => {
     .filter((group) => group.items.length > 0);
 
   return (
-    <div className="relative" ref={dropdownRef}>
+    <div className="relative w-full" ref={dropdownRef}>
       <div
         onClick={() => setIsOpen(!isOpen)}
         className={`${
           darkMode
             ? "bg-zinc-800 border-zinc-700 text-gray-300"
             : "bg-white border-gray-200"
-        } custom-select p-2 border rounded-lg cursor-pointer flex justify-between items-center`}
+        } w-full custom-select p-2 border rounded-lg cursor-pointer flex justify-between items-center`}
       >
         <span className={`${darkMode ? "text-gray-400" : "text-gray-800"}`}>
           {selectedCategory || "All categories"}
@@ -135,7 +135,7 @@ const CategoryFilter = ({ onSelectCategory }) => {
               }`}
               onClick={() => handleSelectCategory("")}
             >
-              All categories
+              Toutes les catégories
             </div>
 
             {filteredCategories.map((group) => (

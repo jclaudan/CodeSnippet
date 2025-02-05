@@ -43,7 +43,7 @@ export default function UserInfo({ user, setUser }) {
       <h3
         className={`${
           darkMode ? "text-gray-200" : "text-gray-800"
-        } text-xl font-semibold mb-6 flex items-center`}
+        } text-xl font-semibold mb-6 flex flex-wrap items-center`}
       >
         <span
           className={`${
@@ -56,45 +56,47 @@ export default function UserInfo({ user, setUser }) {
       <div
         className={`${
           darkMode ? "bg-zinc-700" : "bg-gray-50"
-        } space-y-6 rounded-lg p-6`}
+        } space-y-6 rounded-lg p-4 sm:p-6`}
       >
         <div
           className={`${
             darkMode ? "hover:bg-zinc-800" : "hover:bg-white"
-          } flex items-center p-3 rounded-lg transition-all duration-300`}
+          } flex flex-col sm:flex-row items-start sm:items-center p-3 rounded-lg transition-all duration-300 gap-2 sm:gap-0`}
         >
           <span
             className={`${
               darkMode ? "text-gray-400" : "text-gray-600"
-            } w-40 font-medium`}
+            } sm:w-40 font-medium`}
           >
             Username:
           </span>
           {isEditing ? (
-            <div className="flex gap-2">
+            <div className="flex flex-wrap gap-2 w-full sm:w-auto">
               <input
                 type="text"
                 value={newUsername}
                 onChange={(e) => setNewUsername(e.target.value)}
                 className={`${
                   darkMode ? "bg-zinc-700 text-gray-200" : "bg-white"
-                } px-2 py-1 border rounded`}
+                } px-2 py-1 border rounded flex-1 sm:flex-none`}
               />
-              <button
-                onClick={handleUsernameUpdate}
-                className="px-3 py-1 bg-indigo-500 text-white rounded hover:bg-indigo-600"
-              >
-                Save
-              </button>
-              <button
-                onClick={() => {
-                  setIsEditing(false);
-                  setNewUsername(user?.username || "");
-                }}
-                className="px-3 py-1 bg-gray-500 text-white rounded hover:bg-gray-600"
-              >
-                Cancel
-              </button>
+              <div className="flex gap-2 w-full sm:w-auto">
+                <button
+                  onClick={handleUsernameUpdate}
+                  className="px-3 py-1 bg-indigo-500 text-white rounded hover:bg-indigo-600 flex-1 sm:flex-none"
+                >
+                  Save
+                </button>
+                <button
+                  onClick={() => {
+                    setIsEditing(false);
+                    setNewUsername(user?.username || "");
+                  }}
+                  className="px-3 py-1 bg-gray-500 text-white rounded hover:bg-gray-600 flex-1 sm:flex-none"
+                >
+                  Cancel
+                </button>
+              </div>
             </div>
           ) : (
             <div className="flex items-center gap-2">
@@ -114,12 +116,12 @@ export default function UserInfo({ user, setUser }) {
         <div
           className={`${
             darkMode ? "hover:bg-zinc-800" : "hover:bg-white"
-          } flex items-center p-3 rounded-lg transition-all duration-300`}
+          } flex flex-col sm:flex-row items-start sm:items-center p-3 rounded-lg transition-all duration-300 gap-2 sm:gap-0`}
         >
           <span
             className={`${
               darkMode ? "text-gray-400" : "text-gray-600"
-            } w-40 font-medium`}
+            } sm:w-40 font-medium`}
           >
             Login method:
           </span>
@@ -135,12 +137,12 @@ export default function UserInfo({ user, setUser }) {
         <div
           className={`${
             darkMode ? "hover:bg-zinc-800" : "hover:bg-white"
-          } flex items-center p-3 rounded-lg transition-all duration-300`}
+          } flex flex-col sm:flex-row items-start sm:items-center p-3 rounded-lg transition-all duration-300 gap-2 sm:gap-0`}
         >
           <span
             className={`${
               darkMode ? "text-gray-400" : "text-gray-600"
-            } w-40 font-medium`}
+            } sm:w-40 font-medium`}
           >
             Member since:
           </span>

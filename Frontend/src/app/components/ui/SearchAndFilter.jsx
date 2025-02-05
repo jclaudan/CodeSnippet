@@ -7,21 +7,21 @@ const SearchAndFilter = ({ setSearchTerm, setSelectedCategory }) => {
 
   return (
     <div
-      className={`flex flex-col md:flex-row gap-4 mb-6 ${
+      className={`flex flex-col sm:flex-row gap-4 mb-4 sm:mb-6 ${
         darkMode ? "text-gray-200" : "text-gray-800"
       }`}
     >
       <div
         className={`${
           darkMode ? "bg-zinc-800 text-gray-300" : "bg-white"
-        } w-full mr-4 p-4 rounded-lg shadow`}
+        } w-full flex items-center p-3 rounded-lg shadow`}
       >
         <SearchBar setSearchTerm={setSearchTerm} />
       </div>
       <div
         className={`${
           darkMode ? "bg-zinc-800 text-gray-300" : "bg-white"
-        } w-1/4 p-4 rounded-lg shadow`}
+        } w-full sm:w-1/4 p-3 rounded-lg shadow flex items-center`}
       >
         <CategoryFilter onSelectCategory={setSelectedCategory} />
       </div>
