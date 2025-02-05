@@ -70,7 +70,11 @@ const ProfilePage = () => {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gray-100 flex flex-col">
+      <div
+        className={`${
+          darkMode ? "bg-zinc-900" : "bg-gray-100"
+        } min-h-screen flex flex-col`}
+      >
         <Navbar />
         <main className="flex-grow  max-w-4xl mx-auto py-16 w-full">
           <LoadingProfile />
